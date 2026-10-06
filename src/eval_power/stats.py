@@ -130,9 +130,7 @@ def _target_noncentrality(alpha, power):
     upper = max(1.0, float(z + ndtri(power)))
     while _normal_power(upper, z) < power:
         upper *= 2
-    return float(
-        brentq(lambda value: _normal_power(value, z) - power, 0, upper, xtol=5e-15)
-    )
+    return float(brentq(lambda value: _normal_power(value, z) - power, 0, upper, xtol=5e-15))
 
 
 def required_items(delta, variance, alpha=0.05, power=0.8) -> int:
@@ -186,9 +184,7 @@ def holm_adjust(pvalues) -> np.ndarray:
     if np.any((values < 0) | (values > 1)):
         raise ValueError("pvalues must lie in [0, 1]")
     order = np.argsort(values, kind="stable")
-    adjusted = np.minimum(
-        1, np.maximum.accumulate(values[order] * np.arange(values.size, 0, -1))
-    )
+    adjusted = np.minimum(1, np.maximum.accumulate(values[order] * np.arange(values.size, 0, -1)))
     result = np.empty_like(values)
     result[order] = adjusted
     return result

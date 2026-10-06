@@ -1,0 +1,29 @@
+{
+  "seed": 20261006,
+  "benchmarks": [
+    "arc",
+    "gsm8k",
+    "winogrande",
+    "hellaswag",
+    "mmlu"
+  ],
+  "model_pair_selection": "uniform unordered index pairs, independent of scores",
+  "pair_count_per_benchmark": 40,
+  "pilot_sizes": [
+    128,
+    256
+  ],
+  "item_splits": 5,
+  "trials_per_curve_point": 1000,
+  "alpha": 0.05,
+  "target_power": 0.8,
+  "power_test": "exact two-sided conditional McNemar",
+  "planning_formula": "two-tail Gaussian paired-difference approximation",
+  "iid_plan_cap": 1000000,
+  "cluster_estimand": "item-weighted accuracy; independently sampled MMLU subjects",
+  "cluster_test": "CR1 standard error and t(56), Holm across all unordered model pairs",
+  "multiplicity_family": "all unordered model pairs, separately within each benchmark",
+  "finite_validation": "disjoint heldout items, without replacement; no future-item claim",
+  "iid_validation": "with-replacement empirical heldout distribution, not new items",
+  "pilot_gap_plans": "diagnostic transfer experiment, not evidence of model superiority"
+}

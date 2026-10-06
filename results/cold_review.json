@@ -1,0 +1,23 @@
+{
+  "reviewer": "Independent cold reviewer subagent, openai-codex/gpt-6.1-sol:high",
+  "overall_correctness": "correct",
+  "blocking_findings": [],
+  "review_method": "Read-only inspection; no tests or experiments run by reviewer",
+  "supported_methods": [
+    "paired and unpaired SE and empirical covariance",
+    "CR1 subject-cluster calculation",
+    "two-tail Gaussian power inversion",
+    "signed item-by-model axes and four-cell sampling",
+    "disjoint pilot and heldout partitions",
+    "full-family Holm before extracting microaccuracy-ranked adjacencies"
+  ],
+  "strongest_result": "128-item observed-gap plans targeting 80% achieved 49.3–78.6% benchmark-level median heldout empirical-IID detection; pilot-curve error was 10.0–25.4 percentage points versus 1.9–4.4 for the heldout-fitted normal reference.",
+  "interpretation": "The practical result narrowly warns against noisy-gap planning; it does not establish a reliable prespecified-effect budget estimator. fixed_target_plans.csv.gz records fixed-effect budget estimates and heldout-variance references, not a separate empirical power validation of that design.",
+  "limitations_to_keep_visible": [
+    "selected related historical models, not current frontier coverage",
+    "missing original evaluation revisions and document IDs",
+    "MMLU alignment inherited from exporter; non-MMLU ordering author-checked",
+    "conditional empirical resampling, not new questions or future-subject guarantees",
+    "qualified data-license evidence, not blanket MIT relicensing"
+  ]
+}

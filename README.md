@@ -54,8 +54,6 @@ Noisy pilot effects producing underpowered follow-ups are established concerns: 
 
 CPU-only, $0 paid compute; Ryzen AI 5 PRO 340, one numerical thread, Python 3.11 ([environment](results/environment.json)). Matrices are committed; the optional [importer](scripts/import_data.py) pins source hashes. Model inference was not run.
 
-Shared machine: use `pp-run heavy` instead of `nice -n 19`.
-
 ```sh
 uv sync --locked
 nice -n 19 env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 uv run python scripts/analyze.py && uv run python scripts/figures.py

@@ -6,7 +6,7 @@
     {"command": "uv run python scripts/check_results.py", "result": "Validated five pinned binary matrices, all-pair Holm families, calibration rows, and four SVGs"}
   ],
   "readme_words": 800,
-  "compute": "Local CPU only, $0 paid compute; original source import and main analysis through pp-run heavy",
+  "compute": "Local CPU only, $0 paid compute; original source import and main analysis at low CPU priority (nice 19)",
   "model_inference": "not run",
   "timing_benchmark": "not run; no performance timing claim"
 }

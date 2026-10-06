@@ -9,6 +9,7 @@ not original documents; MMLU alignment remains a shared-order assumption.
 import argparse
 import hashlib
 import json
+import os
 import pickle
 import tempfile
 import urllib.request
@@ -154,8 +155,7 @@ def verify_source(
 
 
 def default_cache() -> Path:
-    shared = Path("/home/alp/Projects/profile-program/cache/eval-power")
-    directory = shared if shared.is_dir() else Path.home() / ".cache" / "eval-power"
+    directory = Path(os.environ.get("EVAL_POWER_CACHE", Path.home() / ".cache" / "eval-power"))
     return directory / "lb-e9a8b103.pickle"
 
 

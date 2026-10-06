@@ -53,9 +53,9 @@ def test_groups_report_cr1_without_cluster_item_count(pilot_path, tmp_path, caps
     group_path = tmp_path / "subjects.npy"
     groups = np.array(["anatomy", "anatomy", "math", "history", "history", "history"])
     np.save(group_path, groups)
-    assert main(
-        ["--difference", ".05", "--pilot", str(pilot_path), "--groups", str(group_path)]
-    ) == 0
+    assert (
+        main(["--difference", ".05", "--pilot", str(pilot_path), "--groups", str(group_path)]) == 0
+    )
     result = json.loads(capsys.readouterr().out)
     pilot = np.load(pilot_path)
     assert result["group_count"] == 3

@@ -8,6 +8,7 @@ import pytest
 from scipy.stats import binomtest
 
 from eval_power.analysis import (
+    calibrate,
     cell_counts,
     finite_detection_power,
     pairwise_metrics,
@@ -18,10 +19,19 @@ from eval_power.stats import clustered_se, holm_adjust
 
 
 def test_all_pair_sufficient_statistics_match_slow_vectors():
-    y = np.array([
-        [1, 1, 0, 1], [0, 1, 1, 1], [1, 0, 1, 1], [0, 0, 0, 1],
-        [1, 1, 1, 1], [1, 0, 0, 1], [0, 1, 0, 1], [0, 0, 1, 1],
-    ], dtype=np.uint8)
+    y = np.array(
+        [
+            [1, 1, 0, 1],
+            [0, 1, 1, 1],
+            [1, 0, 1, 1],
+            [0, 0, 0, 1],
+            [1, 1, 1, 1],
+            [1, 0, 0, 1],
+            [0, 1, 0, 1],
+            [0, 0, 1, 1],
+        ],
+        dtype=np.uint8,
+    )
     groups = np.array(["a", "a", "a", "b", "b", "c", "c", "c"])
     got = pairwise_metrics(y, groups)
     reference_p = []
@@ -67,15 +77,17 @@ def test_count_space_subsamples_equal_explicit_enumeration():
         reference.append(p <= 0.05)
     paired, _ = rejection_rates(np.array(rows), n)
     assert paired == np.mean(reference)
-    means = [float((a[list(s)].astype(float) - b[list(s)]).mean())
-             for s in itertools.combinations(range(len(a)), n)]
+    means = [
+        float((a[list(s)].astype(float) - b[list(s)]).mean())
+        for s in itertools.combinations(range(len(a)), n)
+    ]
     d = a.astype(float) - b
     expected_variance = (1 - n / len(a)) * d.var(ddof=1) / n
     assert np.var(means, ddof=0) == pytest.approx(expected_variance)
 
 
 def test_cell_mapping_preserves_shared_item_pairing():
-    assert cell_counts(np.array([0, 0, 1, 1]), np.array([0, 1, 0, 1])).tolist() == [1]*4
+    assert cell_counts(np.array([0, 0, 1, 1]), np.array([0, 1, 0, 1])).tolist() == [1] * 4
 
 
 def test_finite_correction_is_not_applied_to_test_threshold():
@@ -99,3 +111,21 @@ def test_rejects_nonbinary_or_misaligned_clusters():
         pairwise_metrics(np.array([[0.5, 1], [0, 1]]))
     with pytest.raises(ValueError):
         pairwise_metrics(np.array([[0, 1], [1, 0]]), np.array(["a"]))
+
+
+def test_pilot_and_heldout_moments_use_disjoint_item_partitions():
+    y = np.random.default_rng(73).integers(0, 2, size=(400, 2), dtype=np.uint8)
+    models = np.array(["model_a", "model_b"])
+    curves, plans, fixed = calibrate(y, "test", models, np.array([[0, 1]]), 1, 5, 42)
+    assert curves and len(plans) == 2 and fixed
+    for row in curves + plans + fixed:
+        pilot_n = row["pilot_n"]
+        rng = np.random.default_rng(np.random.SeedSequence([42, pilot_n, 0]))
+        order = rng.permutation(len(y))
+        pilot, heldout = order[:pilot_n], order[pilot_n:]
+        assert set(pilot).isdisjoint(heldout)
+        differences = y[:, 0].astype(float) - y[:, 1]
+        assert row["pilot_gap"] == pytest.approx(differences[pilot].mean())
+        assert row["heldout_gap"] == pytest.approx(differences[heldout].mean())
+        assert row["pilot_variance"] == pytest.approx(differences[pilot].var(ddof=1))
+        assert row["heldout_variance"] == pytest.approx(differences[heldout].var(ddof=1))

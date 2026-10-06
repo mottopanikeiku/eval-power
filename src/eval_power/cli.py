@@ -68,7 +68,8 @@ def main(argv=None) -> int:
             )
             result["assumptions"].extend(
                 [
-                    "Paired planning uses same-item differences and their sample variance (ddof=1).",
+                    "Paired planning uses same-item differences "
+                    "and their sample variance (ddof=1).",
                     "Unpaired planning assumes independent model outcomes and binomial marginals.",
                 ]
             )

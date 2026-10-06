@@ -27,11 +27,18 @@ def main() -> None:
     if min(args.pairs, args.splits, args.trials) < 1:
         parser.error("pairs, splits, and trials must be positive")
     run_analysis(args.data_dir, args.result_dir, args.pairs, args.splits, args.trials, args.seed)
-    cpu = next(
-        (line.split(":", 1)[1].strip() for line in Path("/proc/cpuinfo").read_text().splitlines()
-         if line.startswith("model name")),
-        platform.processor(),
-    ) if Path("/proc/cpuinfo").exists() else platform.processor()
+    cpu = (
+        next(
+            (
+                line.split(":", 1)[1].strip()
+                for line in Path("/proc/cpuinfo").read_text().splitlines()
+                if line.startswith("model name")
+            ),
+            platform.processor(),
+        )
+        if Path("/proc/cpuinfo").exists()
+        else platform.processor()
+    )
     environment = {
         "recorded_at_utc": datetime.now(UTC).isoformat(),
         "cpu": cpu,
@@ -40,8 +47,10 @@ def main() -> None:
         "numpy": np.__version__,
         "scipy": scipy.__version__,
         "matplotlib": matplotlib.__version__,
-        "threads": {name: os.environ.get(name, "not set")
-                    for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS")},
+        "threads": {
+            name: os.environ.get(name, "not set")
+            for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS")
+        },
         "analysis_command": "uv run python " + " ".join(sys.argv),
         "paid_compute_usd": 0,
         "model_inference": "not run",

@@ -243,9 +243,7 @@ def test_nontrivial_correlation_against_scalar_reference():
     a, b = [0, 0, 1, 1, 1, 1], [0, 1, 0, 1, 1, 1]
     mean_a, mean_b = sum(a) / len(a), sum(b) / len(b)
     covariance = sum((x - mean_a) * (y - mean_b) for x, y in zip(a, b, strict=True))
-    denominator = math.sqrt(
-        sum((x - mean_a) ** 2 for x in a) * sum((y - mean_b) ** 2 for y in b)
-    )
+    denominator = math.sqrt(sum((x - mean_a) ** 2 for x in a) * sum((y - mean_b) ** 2 for y in b))
     assert correlation(a, b) == pytest.approx(covariance / denominator)
     assert correlation(a, [1 - y for y in b]) == pytest.approx(-covariance / denominator)
 

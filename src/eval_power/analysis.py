@@ -52,9 +52,7 @@ def pairwise_metrics(y: np.ndarray, groups: np.ndarray | None = None) -> dict:
     unpaired = p[i] * (1 - p[i]) + p[j] * (1 - p[j])
     denominator = np.sqrt(p[i] * (1 - p[i]) * p[j] * (1 - p[j]))
     covariance = both[i, j] / n - p[i] * p[j]
-    rho = np.divide(
-        covariance, denominator, out=np.full(len(i), np.nan), where=denominator > 0
-    )
+    rho = np.divide(covariance, denominator, out=np.full(len(i), np.nan), where=denominator > 0)
     exact_p = np.minimum(1, 2 * binom.cdf(np.minimum(wins, losses), wins + losses, 0.5))
     result = {
         "i": i,
@@ -81,13 +79,11 @@ def pairwise_metrics(y: np.ndarray, groups: np.ndarray | None = None) -> dict:
         np.add.at(cluster_totals, inverse, x)
         residuals = cluster_totals - sizes[:, None] * p[None, :]
         cross = residuals.T @ residuals
-        cluster_variance = g / (g - 1) * (
-            np.diag(cross)[i] + np.diag(cross)[j] - 2 * cross[i, j]
-        ) / n**2
-        cluster_se = np.sqrt(np.maximum(0, cluster_variance))
-        statistic = np.divide(
-            np.abs(gap), cluster_se, out=np.zeros(len(i)), where=cluster_se > 0
+        cluster_variance = (
+            g / (g - 1) * (np.diag(cross)[i] + np.diag(cross)[j] - 2 * cross[i, j]) / n**2
         )
+        cluster_se = np.sqrt(np.maximum(0, cluster_variance))
+        statistic = np.divide(np.abs(gap), cluster_se, out=np.zeros(len(i)), where=cluster_se > 0)
         cluster_p = 2 * t.sf(statistic, g - 1)
         # Zero residual variation cannot support empirical generalization.
         cluster_p[cluster_se == 0] = 1.0
@@ -114,9 +110,9 @@ def finite_detection_power(delta: float, variance: float, n: int, population: in
     spread = math.sqrt(variance / n * (1 - n / population))
     if spread == 0:
         return float(abs(delta) > threshold)
-    return float(norm.cdf((-threshold - abs(delta)) / spread) + norm.sf(
-        (threshold - abs(delta)) / spread
-    ))
+    return float(
+        norm.cdf((-threshold - abs(delta)) / spread) + norm.sf((threshold - abs(delta)) / spread)
+    )
 
 
 def rejection_rates(counts: np.ndarray, n: int) -> tuple[float, float]:
@@ -141,7 +137,7 @@ def wilson_interval(successes: int, trials: int) -> tuple[float, float]:
     divisor = 1 + z * z / trials
     center = (p + z * z / (2 * trials)) / divisor
     radius = z / divisor * math.sqrt(p * (1 - p) / trials + z * z / (4 * trials**2))
-    return center - radius, center + radius
+    return max(0.0, center - radius), min(1.0, center + radius)
 
 
 def cell_counts(a: np.ndarray, b: np.ndarray) -> np.ndarray:
@@ -196,16 +192,19 @@ def calibrate(
                     "heldout_n": available,
                 }
                 if variance > 0:
-                    fixed_targets.append({
-                        **identity,
-                        "target_difference": 0.02,
-                        "paired_items": required_items(0.02, variance),
-                        "unpaired_items": required_items(0.02, unpaired_variance),
-                        "heldout_variance_reference_items": (
-                            required_items(0.02, heldout_variance)
-                            if heldout_variance > 0 else ""
-                        ),
-                    })
+                    fixed_targets.append(
+                        {
+                            **identity,
+                            "target_difference": 0.02,
+                            "paired_items": required_items(0.02, variance),
+                            "unpaired_items": required_items(0.02, unpaired_variance),
+                            "heldout_variance_reference_items": (
+                                required_items(0.02, heldout_variance)
+                                if heldout_variance > 0
+                                else ""
+                            ),
+                        }
+                    )
                 for n in sizes:
                     finite_counts = rng.multivariate_hypergeometric(cells, n, size=trials)
                     iid_counts = rng.multinomial(n, cells / available, size=trials)
@@ -216,32 +215,38 @@ def calibrate(
                         ("empirical_iid", iid_rate, iid_unpaired),
                     ):
                         low, high = wilson_interval(round(rate * trials), trials)
-                        curves.append({
-                            **identity,
-                            "design": design,
-                            "n": n,
-                            "trials": trials,
-                            "pilot_predicted_iid": (
-                                gaussian_power(delta, variance, n) if variance > 0 else ""
-                            ),
-                            "pilot_predicted_finite": (
-                                finite_detection_power(delta, variance, n, available)
-                                if variance > 0 else ""
-                            ),
-                            "heldout_oracle_iid": (
-                                gaussian_power(heldout_delta, heldout_variance, n)
-                                if heldout_variance > 0 else ""
-                            ),
-                            "heldout_oracle_finite": (
-                                finite_detection_power(
-                                    heldout_delta, heldout_variance, n, available
-                                ) if heldout_variance > 0 else ""
-                            ),
-                            "observed_paired": rate,
-                            "observed_unpaired": naive_rate,
-                            "mc_low": low,
-                            "mc_high": high,
-                        })
+                        curves.append(
+                            {
+                                **identity,
+                                "design": design,
+                                "n": n,
+                                "trials": trials,
+                                "pilot_predicted_iid": (
+                                    gaussian_power(delta, variance, n) if variance > 0 else ""
+                                ),
+                                "pilot_predicted_finite": (
+                                    finite_detection_power(delta, variance, n, available)
+                                    if variance > 0
+                                    else ""
+                                ),
+                                "heldout_oracle_iid": (
+                                    gaussian_power(heldout_delta, heldout_variance, n)
+                                    if heldout_variance > 0
+                                    else ""
+                                ),
+                                "heldout_oracle_finite": (
+                                    finite_detection_power(
+                                        heldout_delta, heldout_variance, n, available
+                                    )
+                                    if heldout_variance > 0
+                                    else ""
+                                ),
+                                "observed_paired": rate,
+                                "observed_unpaired": naive_rate,
+                                "mc_low": low,
+                                "mc_high": high,
+                            }
+                        )
                 # This separate diagnostic uses the noisy pilot gap as a design
                 # alternative; it is NOT evidence that the original pair differs.
                 plan_n = required_items(delta, variance) if delta != 0 and variance > 0 else None
@@ -280,60 +285,96 @@ def summarize_calibration(curves: list[dict], plans: list[dict]) -> list[dict]:
             evaluated = [p for p in subset if p["iid_evaluated"]]
             finite = [p for p in subset if p["finite_attainable"]]
             relevant = [
-                c for c in curves
-                if c["benchmark"] == benchmark and c["pilot_n"] == pilot_n
-                and c["design"] == "empirical_iid" and c["pilot_predicted_iid"] != ""
+                c
+                for c in curves
+                if c["benchmark"] == benchmark
+                and c["pilot_n"] == pilot_n
+                and c["design"] == "empirical_iid"
+                and c["pilot_predicted_iid"] != ""
             ]
             finite_curves = [
-                c for c in curves
-                if c["benchmark"] == benchmark and c["pilot_n"] == pilot_n
-                and c["design"] == "without_replacement" and c["pilot_predicted_finite"] != ""
+                c
+                for c in curves
+                if c["benchmark"] == benchmark
+                and c["pilot_n"] == pilot_n
+                and c["design"] == "without_replacement"
+                and c["pilot_predicted_finite"] != ""
             ]
-            result.append({
-                "benchmark": benchmark,
-                "pilot_n": pilot_n,
-                "pair_split_plans": len(subset),
-                "plannable": len(fitted),
-                "zero_gap_or_variance": len(subset) - len(fitted),
-                "finite_attainable": len(finite),
-                "finite_attainable_fraction": len(finite) / len(subset),
-                "iid_evaluated": len(evaluated),
-                "iid_power_median": float(np.median([p["observed_iid"] for p in evaluated])),
-                "iid_power_q25": float(np.quantile([p["observed_iid"] for p in evaluated], 0.25)),
-                "iid_power_q75": float(np.quantile([p["observed_iid"] for p in evaluated], 0.75)),
-                "iid_below_target_95mc_fraction": (
-                    sum(p["mc_high_iid"] < TARGET_POWER for p in evaluated) / len(evaluated)
-                ),
-                "iid_above_target_95mc_fraction": (
-                    sum(p["mc_low_iid"] > TARGET_POWER for p in evaluated) / len(evaluated)
-                ),
-                "finite_power_median": (
-                    float(np.median([p["observed_finite"] for p in finite])) if finite else ""
-                ),
-                "iid_curve_mean_absolute_error": float(np.mean([
-                    abs(c["pilot_predicted_iid"] - c["observed_paired"]) for c in relevant
-                ])),
-                "iid_curve_within_10pp_fraction": float(np.mean([
-                    abs(c["pilot_predicted_iid"] - c["observed_paired"]) <= 0.10
-                    for c in relevant
-                ])),
-                "iid_oracle_mean_absolute_error": float(np.mean([
-                    abs(c["heldout_oracle_iid"] - c["observed_paired"])
-                    for c in relevant if c["heldout_oracle_iid"] != ""
-                ])),
-                "finite_curve_mean_absolute_error": float(np.mean([
-                    abs(c["pilot_predicted_finite"] - c["observed_paired"])
-                    for c in finite_curves
-                ])),
-                "finite_curve_within_10pp_fraction": float(np.mean([
-                    abs(c["pilot_predicted_finite"] - c["observed_paired"]) <= 0.10
-                    for c in finite_curves
-                ])),
-                "finite_oracle_mean_absolute_error": float(np.mean([
-                    abs(c["heldout_oracle_finite"] - c["observed_paired"])
-                    for c in finite_curves if c["heldout_oracle_finite"] != ""
-                ])),
-            })
+            result.append(
+                {
+                    "benchmark": benchmark,
+                    "pilot_n": pilot_n,
+                    "pair_split_plans": len(subset),
+                    "plannable": len(fitted),
+                    "zero_gap_or_variance": len(subset) - len(fitted),
+                    "finite_attainable": len(finite),
+                    "finite_attainable_fraction": len(finite) / len(subset),
+                    "iid_evaluated": len(evaluated),
+                    "iid_power_median": float(np.median([p["observed_iid"] for p in evaluated])),
+                    "iid_power_q25": float(
+                        np.quantile([p["observed_iid"] for p in evaluated], 0.25)
+                    ),
+                    "iid_power_q75": float(
+                        np.quantile([p["observed_iid"] for p in evaluated], 0.75)
+                    ),
+                    "iid_below_target_95mc_fraction": (
+                        sum(p["mc_high_iid"] < TARGET_POWER for p in evaluated) / len(evaluated)
+                    ),
+                    "iid_above_target_95mc_fraction": (
+                        sum(p["mc_low_iid"] > TARGET_POWER for p in evaluated) / len(evaluated)
+                    ),
+                    "finite_power_median": (
+                        float(np.median([p["observed_finite"] for p in finite])) if finite else ""
+                    ),
+                    "iid_curve_mean_absolute_error": float(
+                        np.mean(
+                            [abs(c["pilot_predicted_iid"] - c["observed_paired"]) for c in relevant]
+                        )
+                    ),
+                    "iid_curve_within_10pp_fraction": float(
+                        np.mean(
+                            [
+                                abs(c["pilot_predicted_iid"] - c["observed_paired"]) <= 0.10
+                                for c in relevant
+                            ]
+                        )
+                    ),
+                    "iid_oracle_mean_absolute_error": float(
+                        np.mean(
+                            [
+                                abs(c["heldout_oracle_iid"] - c["observed_paired"])
+                                for c in relevant
+                                if c["heldout_oracle_iid"] != ""
+                            ]
+                        )
+                    ),
+                    "finite_curve_mean_absolute_error": float(
+                        np.mean(
+                            [
+                                abs(c["pilot_predicted_finite"] - c["observed_paired"])
+                                for c in finite_curves
+                            ]
+                        )
+                    ),
+                    "finite_curve_within_10pp_fraction": float(
+                        np.mean(
+                            [
+                                abs(c["pilot_predicted_finite"] - c["observed_paired"]) <= 0.10
+                                for c in finite_curves
+                            ]
+                        )
+                    ),
+                    "finite_oracle_mean_absolute_error": float(
+                        np.mean(
+                            [
+                                abs(c["heldout_oracle_finite"] - c["observed_paired"])
+                                for c in finite_curves
+                                if c["heldout_oracle_finite"] != ""
+                            ]
+                        )
+                    ),
+                }
+            )
     return result
 
 
@@ -356,99 +397,114 @@ def run_analysis(
         i, j = metrics["i"], metrics["j"]
         score_order = np.lexsort((models, -metrics["accuracy"]))
         pair_lookup = {(int(a), int(b)): row for row, (a, b) in enumerate(zip(i, j, strict=True))}
-        rows = [pair_lookup[tuple(sorted((int(a), int(b))))] for a, b in zip(
-            score_order[:-1], score_order[1:], strict=True
-        )]
+        rows = [
+            pair_lookup[tuple(sorted((int(a), int(b))))]
+            for a, b in zip(score_order[:-1], score_order[1:], strict=True)
+        ]
         adjacent_p = metrics["p"][rows]
         adjacent_holm = holm_adjust(adjacent_p)
         positive = np.array([row for row in rows if metrics["variance"][row] > 0])
         ratios = np.sqrt(metrics["variance"][positive] / metrics["unpaired_variance"][positive])
         correlations = metrics["rho"][rows]
-        audit.append({
-            "benchmark": benchmark,
-            "models": k,
-            "items": n,
-            "all_pair_family": len(i),
-            "adjacent_pairs": len(rows),
-            "tied_adjacent_scores": int(np.sum(metrics["gap"][rows] == 0)),
-            "identical_adjacent_vectors": len(rows) - len(positive),
-            "paired_uncorrected_distinguishable": int(np.sum(adjacent_p <= ALPHA)),
-            "paired_adjacent_only_holm_distinguishable": int(np.sum(adjacent_holm <= ALPHA)),
-            "paired_full_holm_distinguishable": int(np.sum(metrics["holm"][rows] <= ALPHA)),
-            "paired_full_holm_not_distinguishable_fraction": float(np.mean(
-                metrics["holm"][rows] > ALPHA
-            )),
-            "median_adjacent_item_correlation": float(np.nanmedian(correlations)),
-            "adjacent_correlation_q25": float(np.nanquantile(correlations, 0.25)),
-            "adjacent_correlation_q75": float(np.nanquantile(correlations, 0.75)),
-            "median_nonzero_adjacent_paired_over_unpaired_se": float(np.median(ratios)),
-            "median_nonzero_adjacent_item_saving_fraction": float(np.median(1 - ratios**2)),
-            "median_all_pair_correlation": float(np.nanmedian(metrics["rho"])),
-            "cluster_groups": metrics.get("group_count", ""),
-            "cluster_full_holm_distinguishable": (
-                int(np.sum(metrics["cluster_holm"][rows] <= ALPHA))
-                if "cluster_holm" in metrics else ""
-            ),
-            "median_adjacent_cluster_over_paired_se": (
-                float(np.median(metrics["cluster_se"][positive]
-                                / np.sqrt(metrics["variance"][positive] / n)))
-                if "cluster_se" in metrics else ""
-            ),
-        })
+        audit.append(
+            {
+                "benchmark": benchmark,
+                "models": k,
+                "items": n,
+                "all_pair_family": len(i),
+                "adjacent_pairs": len(rows),
+                "tied_adjacent_scores": int(np.sum(metrics["gap"][rows] == 0)),
+                "identical_adjacent_vectors": len(rows) - len(positive),
+                "paired_uncorrected_distinguishable": int(np.sum(adjacent_p <= ALPHA)),
+                "paired_adjacent_only_holm_distinguishable": int(np.sum(adjacent_holm <= ALPHA)),
+                "paired_full_holm_distinguishable": int(np.sum(metrics["holm"][rows] <= ALPHA)),
+                "paired_full_holm_not_distinguishable_fraction": float(
+                    np.mean(metrics["holm"][rows] > ALPHA)
+                ),
+                "median_adjacent_item_correlation": float(np.nanmedian(correlations)),
+                "adjacent_correlation_q25": float(np.nanquantile(correlations, 0.25)),
+                "adjacent_correlation_q75": float(np.nanquantile(correlations, 0.75)),
+                "median_nonzero_adjacent_paired_over_unpaired_se": float(np.median(ratios)),
+                "median_nonzero_adjacent_item_saving_fraction": float(np.median(1 - ratios**2)),
+                "median_all_pair_correlation": float(np.nanmedian(metrics["rho"])),
+                "cluster_groups": metrics.get("group_count", ""),
+                "cluster_full_holm_distinguishable": (
+                    int(np.sum(metrics["cluster_holm"][rows] <= ALPHA))
+                    if "cluster_holm" in metrics
+                    else ""
+                ),
+                "median_adjacent_cluster_over_paired_se": (
+                    float(
+                        np.median(
+                            metrics["cluster_se"][positive]
+                            / np.sqrt(metrics["variance"][positive] / n)
+                        )
+                    )
+                    if "cluster_se" in metrics
+                    else ""
+                ),
+            }
+        )
         for rank, row in enumerate(rows):
             a, b = score_order[rank : rank + 2]
-            adjacent.append({
-                "benchmark": benchmark,
-                "rank_a": rank + 1,
-                "model_a": str(models[a]),
-                "model_b": str(models[b]),
-                "accuracy_a": float(metrics["accuracy"][a]),
-                "accuracy_b": float(metrics["accuracy"][b]),
-                "difference": abs(float(metrics["gap"][row])),
-                "paired_se": math.sqrt(float(metrics["variance"][row]) / n),
-                "unpaired_se": math.sqrt(float(metrics["unpaired_variance"][row]) / n),
-                "correlation": float(metrics["rho"][row]),
-                "mcnemar_p": float(metrics["p"][row]),
-                "adjacent_only_holm_p": float(adjacent_holm[rank]),
-                "full_family_holm_p": float(metrics["holm"][row]),
-                "cluster_se": (
-                    float(metrics["cluster_se"][row]) if "cluster_se" in metrics else ""
-                ),
-                "cluster_full_holm_p": (
-                    float(metrics["cluster_holm"][row]) if "cluster_holm" in metrics else ""
-                ),
-            })
+            adjacent.append(
+                {
+                    "benchmark": benchmark,
+                    "rank_a": rank + 1,
+                    "model_a": str(models[a]),
+                    "model_b": str(models[b]),
+                    "accuracy_a": float(metrics["accuracy"][a]),
+                    "accuracy_b": float(metrics["accuracy"][b]),
+                    "difference": abs(float(metrics["gap"][row])),
+                    "paired_se": math.sqrt(float(metrics["variance"][row]) / n),
+                    "unpaired_se": math.sqrt(float(metrics["unpaired_variance"][row]) / n),
+                    "correlation": float(metrics["rho"][row]),
+                    "mcnemar_p": float(metrics["p"][row]),
+                    "adjacent_only_holm_p": float(adjacent_holm[rank]),
+                    "full_family_holm_p": float(metrics["holm"][row]),
+                    "cluster_se": (
+                        float(metrics["cluster_se"][row]) if "cluster_se" in metrics else ""
+                    ),
+                    "cluster_full_holm_p": (
+                        float(metrics["cluster_holm"][row]) if "cluster_holm" in metrics else ""
+                    ),
+                }
+            )
         for difference in (0.005, 0.01, 0.02, 0.05):
-            paired_counts = [required_items(difference, float(metrics["variance"][r])) for r in positive]
+            paired_counts = [
+                required_items(difference, float(metrics["variance"][r])) for r in positive
+            ]
             unpaired_counts = [
                 required_items(difference, float(metrics["unpaired_variance"][r])) for r in positive
             ]
-            lookup.append({
-                "benchmark": benchmark,
-                "target_difference": difference,
-                "alpha": ALPHA,
-                "power": TARGET_POWER,
-                "nonzero_adjacent_pairs": len(positive),
-                "paired_items_median": float(np.median(paired_counts)),
-                "paired_items_q25": float(np.quantile(paired_counts, 0.25)),
-                "paired_items_q75": float(np.quantile(paired_counts, 0.75)),
-                "unpaired_items_median": float(np.median(unpaired_counts)),
-                "unpaired_items_q25": float(np.quantile(unpaired_counts, 0.25)),
-                "unpaired_items_q75": float(np.quantile(unpaired_counts, 0.75)),
-            })
+            lookup.append(
+                {
+                    "benchmark": benchmark,
+                    "target_difference": difference,
+                    "alpha": ALPHA,
+                    "power": TARGET_POWER,
+                    "nonzero_adjacent_pairs": len(positive),
+                    "paired_items_median": float(np.median(paired_counts)),
+                    "paired_items_q25": float(np.quantile(paired_counts, 0.25)),
+                    "paired_items_q75": float(np.quantile(paired_counts, 0.75)),
+                    "unpaired_items_median": float(np.median(unpaired_counts)),
+                    "unpaired_items_q25": float(np.quantile(unpaired_counts, 0.25)),
+                    "unpaired_items_q75": float(np.quantile(unpaired_counts, 0.75)),
+                }
+            )
         # Both normal tails are retained; the usual z_alpha + z_power is approximate.
         unit_noncentrality = minimum_detectable_difference(1.0, 1)
         for count in (100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000):
-            mde.append({
-                "benchmark": benchmark,
-                "items_per_model": count,
-                "paired_mde": unit_noncentrality * math.sqrt(
-                    float(np.median(metrics["variance"][positive])) / count
-                ),
-                "unpaired_mde": unit_noncentrality * math.sqrt(
-                    float(np.median(metrics["unpaired_variance"][positive])) / count
-                ),
-            })
+            mde.append(
+                {
+                    "benchmark": benchmark,
+                    "items_per_model": count,
+                    "paired_mde": unit_noncentrality
+                    * math.sqrt(float(np.median(metrics["variance"][positive])) / count),
+                    "unpaired_mde": unit_noncentrality
+                    * math.sqrt(float(np.median(metrics["unpaired_variance"][positive])) / count),
+                }
+            )
         for name in ("i", "j", "p", "holm", "cluster_p", "cluster_holm"):
             if name in metrics:
                 hypothesis_arrays[f"{benchmark}_{name}"] = metrics[name]

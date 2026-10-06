@@ -44,8 +44,9 @@ def main() -> None:
             expected = np.triu_indices(395, 1)
             np.testing.assert_array_equal(i, expected[0])
             np.testing.assert_array_equal(j, expected[1])
-            np.testing.assert_allclose(tests[f"{benchmark}_holm"],
-                                       holm_adjust(tests[f"{benchmark}_p"]), rtol=1e-13)
+            np.testing.assert_allclose(
+                tests[f"{benchmark}_holm"], holm_adjust(tests[f"{benchmark}_p"]), rtol=1e-13
+            )
             a = audit[benchmark]
             assert int(a["all_pair_family"]) == 395 * 394 // 2
             assert int(a["items"]) == output["shape"][0]
@@ -59,11 +60,14 @@ def main() -> None:
                 a["paired_full_holm_not_distinguishable_fraction"]
             )
             if benchmark == "mmlu":
-                np.testing.assert_allclose(tests["mmlu_cluster_holm"],
-                                           holm_adjust(tests["mmlu_cluster_p"]), rtol=1e-13)
+                np.testing.assert_allclose(
+                    tests["mmlu_cluster_holm"], holm_adjust(tests["mmlu_cluster_p"]), rtol=1e-13
+                )
     seen = set()
     for row in rows("validation_curves.csv.gz"):
-        key = tuple(row[field] for field in ("benchmark", "pilot_n", "split", "pair", "design", "n"))
+        key = tuple(
+            row[field] for field in ("benchmark", "pilot_n", "split", "pair", "design", "n")
+        )
         assert key not in seen
         seen.add(key)
         assert int(row["trials"]) == configuration["trials_per_curve_point"]
@@ -72,11 +76,18 @@ def main() -> None:
         assert 0 <= float(row["mc_low"]) <= rate + 1e-14
         assert rate - 1e-14 <= float(row["mc_high"]) <= 1
         assert abs(rate * int(row["trials"]) - round(rate * int(row["trials"]))) < 1e-9
-    for name in ("pilot_planning.svg", "leaderboard_noise.svg", "minimum_difference.svg",
-                 "pilot_calibration.svg"):
+    for name in (
+        "pilot_planning.svg",
+        "leaderboard_noise.svg",
+        "minimum_difference.svg",
+        "pilot_calibration.svg",
+    ):
         assert ET.parse(Path("figures") / name).getroot().tag.endswith("svg")
     assert Path("README.md").read_text().rstrip().endswith("Written with AI coding assistance.")
-    print("Validated five pinned binary matrices, all-pair Holm families, calibration rows, and four SVGs.")
+    print(
+        "Validated five pinned binary matrices, all-pair Holm families, "
+        "calibration rows, and four SVGs."
+    )
 
 
 if __name__ == "__main__":

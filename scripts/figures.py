@@ -30,7 +30,7 @@ def read_csv(name: str) -> list[dict]:
 
 
 def save(fig: plt.Figure, name: str) -> None:
-    fig.savefig(Path("figures") / name, format="svg", metadata={"Date": None})
+    fig.savefig(Path("figures") / name, format="svg", bbox_inches="tight", metadata={"Date": None})
     plt.close(fig)
 
 

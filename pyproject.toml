@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eval-power"
+version = "0.1.0"
+description = "Pilot-calibrated paired sample-size planning on historical LLM benchmarks"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["numpy>=2.2,<3", "scipy>=1.15,<2", "matplotlib>=3.9,<4"]
+
+[project.scripts]
+eval-power = "eval_power.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.3,<10", "ruff>=0.11,<1"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/eval_power"]

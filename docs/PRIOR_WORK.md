@@ -24,6 +24,8 @@ Labels: **EXT** = opened external source; **INFERENCE** = derivation or proposal
 
 **EXT** Basile et al. [7] introduce sk-power, paired simulation-based planning, and an OLL audit exceeding 2,000 comparisons across five datasets. A larger panel alone is not methodological novelty. Blackwell et al. [8] study repeated-run score prediction intervals, a different uncertainty target.
 
+**EXT** The pilot-effect pitfall itself predates LLM evaluation. Albers and Lakens [9, §§3–8] show how noisy pilot effect estimates and selective follow-up can produce underpowered main studies, and recommend a smallest effect size of interest fixed independently of the pilot. Their full publisher PDF was opened. Kraemer et al. [10] warn against using pilot studies to guide proposal power calculations; publisher and PubMed abstracts/metadata were opened, not the paywalled full text. **INFERENCE** This project measures the size of that known problem for paired LLM benchmarks. Using pilots to estimate variance while fixing a meaningful effect beforehand is the standard alternative, not a newly validated future-power guarantee.
+
 ## 3. Statistical recommendations
 
 **INFERENCE**, following [1,4,5]: align item IDs; define $D_i=X_{Ai}-X_{Bi}$ and $\hat\delta=\bar D$. For independent items,
@@ -44,7 +46,7 @@ Here $z_p=\Phi^{-1}(p)$, reversing Miller's tail-index convention; this is not e
 
 ## 4. Modest, testable extension
 
-**INFERENCE** Proposed scope: all 395 models in the **2024 Open LLM Leaderboard source population**, across five binary-accuracy benchmarks—not today's frontier leaderboard. The extension is **out-of-pilot calibration**, not invention of paired power. Estimate variance/disagreement and choose planning pairs on pilot items; freeze choices; assess predicted versus heldout rejection curves, including close gaps. Report calibration error, sign errors, and Monte Carlo intervals. Separate observed-gap diagnostics from prespecified-effect planning. Unattainable sample sizes remain unattainable.
+**INFERENCE** Proposed scope: all 395 models in the **2024 Open LLM Leaderboard source population**, across five binary-accuracy benchmarks—not today's frontier leaderboard. The extension measures the known pilot-effect planning problem on disjoint paired benchmark items; it does not invent paired power or discover that pitfall [9,10]. Estimate variance/disagreement; fix the meaningful target effect before evaluation; assess predicted versus heldout rejection curves. Keep observed-gap diagnostics separate from prespecified-effect planning, and leave unattainable sample sizes unattainable.
 
 **INFERENCE** Compare IID/subject-sensitive designs where metadata exist and full-family Holm/descriptive adjacent-only results. Separately measure finite-benchmark recovery by without-replacement subsampling. For $N$ fixed observed differences, simple random sampling gives
 
@@ -63,5 +65,7 @@ with $S_D^2$ using denominator $N-1$. This concerns the fixed pool mean, **not**
 6. Bitya Neuhof, Yuval Benjamini. 2026. *Quantifying Ranking Uncertainty in LLM Benchmarks*. [arXiv 2607.16259 full text](https://arxiv.org/html/2607.16259); conference venue unknown from opened metadata.
 7. Angelo Basile, Areg Mikael Sarvazyan, José Ángel González. 2026. *How Many Samples Do We Need? A Toolkit for Power-Aware Evaluation Design*. LREC, pp. 4507–4513. [Publication record](https://aclanthology.org/2026.lrec-1.353/); [read PDF](https://aclanthology.org/2026.lrec-1.353.pdf).
 8. Robert E. Blackwell, Jon Barry, Anthony G. Cohn. 2025 revision of 2024 preprint. *Towards Reproducible LLM Evaluation: Quantifying Uncertainty in LLM Benchmark Scores*. [arXiv 2410.03492v2 full text](https://arxiv.org/html/2410.03492v2).
+9. Casper Albers, Daniël Lakens. 2018. *When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias*. Journal of Experimental Social Psychology 74:187–195. [DOI](https://doi.org/10.1016/j.jesp.2017.09.004); [opened publisher PDF via Groningen](https://pure.rug.nl/ws/files/64849114/1_s2.0_S002210311630230X_main.pdf).
+10. Helena Chmura Kraemer, Jim Mintz, Art Noda, Jared Tinklenberg, Jerome A. Yesavage. 2006. *Caution regarding the use of pilot studies to guide power calculations for study proposals*. Archives of General Psychiatry 63(5):484–489. DOI: 10.1001/archpsyc.63.5.484. [Opened PubMed record/abstract](https://pubmed.ncbi.nlm.nih.gov/16651505/); [opened publisher metadata/abstract](https://www.ovid.com/journals/aogp/abstract/00000756-200605000-00003~caution-regarding-the-use-of-pilot-studies-to-guide-power).
 
 Written with AI coding assistance.

@@ -8,7 +8,7 @@ This extends [Kotawala’s paired audit](https://arxiv.org/abs/2605.30315) and [
 
 [stats.py](src/eval_power/stats.py) contains paired, unpaired and clustered errors plus an item-count planner. [analysis.py](src/eval_power/analysis.py) fits small pilots, then checks their predictions using heldout item subsampling and exact McNemar tests.
 
-**Result:** plans targeting 80% power from a 128-item pilot’s observed gap delivered only **49.3–78.6% median heldout detection**, depending on benchmark ([calibration](results/calibration.csv)). A noisy pilot gap is not a safe design target.
+**Result:** 128-item observed-gap plans targeting 80% power delivered **49.3–78.6% median heldout detection** ([calibration](results/calibration.csv)). This measures a known pilot-planning problem for LLM comparisons—not a new statistical discovery.
 
 ## Planning budgets and leaderboard noise
 
@@ -22,7 +22,9 @@ Rounded medians, **items/model (paired / unpaired)**: prespecified differences, 
 | HellaSwag | 5.7k / 22.4k | 1.4k / 5.6k | 98.7% |
 | MMLU | 17.0k / 37.6k | 4.3k / 9.4k | 99.7% |
 
-Noise counts use exact paired McNemar tests and Holm correction over **all 77,815 unordered pairs per benchmark**, before extracting the selected population’s 394 adjacencies. Rankings use item-weighted accuracy, with deterministic tie ordering ([audit](results/audit.csv), [all pair tests](results/all_pair_tests.npz)). Not distinguishable does **not** mean equal.
+Exact McNemar tests use Holm over **all 77,815 pairs/benchmark**, before selecting 394 adjacencies; rankings use item-weighted accuracy and label-sorted ties ([audit](results/audit.csv), [tests](results/all_pair_tests.npz)). Not distinguishable does **not** mean equal.
+
+Without correction, only **1–12 of 394** adjacent pairs differ at α = 0.05 (ARC 1, GSM8K 1, WinoGrande 1, HellaSwag 12, MMLU 11). Exact score ties (same order): 171, 93, 220, 56, 13; trivially indistinguishable ([audit](results/audit.csv)).
 
 Measured adjacent-item correlations were 0.34–0.73; pairing reduced median standard errors by 19–48%. For MMLU, clustering its 57 subjects increased median adjacent SE by 1.60× and left no adjacent gap distinguishable ([audit](results/audit.csv)).
 
@@ -40,7 +42,9 @@ Pairs are selected by indices, not scores: 40 pairs per benchmark, five disjoint
 
 *Among nonzero-gap, positive-variance plans: upper Monte Carlo 95% bounds below 80%; not future-population guarantees.*
 
-Larger pilots did not uniformly improve this gap-based rule. Pilot-predicted rejection curves had 10.0–25.4 percentage-point mean absolute error at the smaller pilot size; a heldout-fitted normal reference had 1.9–4.4 points ([calibration](results/calibration.csv)). [Raw curves](results/validation_curves.csv.gz) and [plans](results/pilot_plans.csv.gz) include Monte Carlo intervals and unattainable finite-pool budgets. Without-replacement subsampling is reported separately; its finite-population correction is never used to erase future-item uncertainty.
+At the smaller pilot size, power-curve mean absolute error was 10.0–25.4 percentage points versus 1.9–4.4 for a heldout-fitted normal reference ([calibration](results/calibration.csv)). Larger pilots did not uniformly improve the gap-based rule. Raw [curves](results/validation_curves.csv.gz) and [plans](results/pilot_plans.csv.gz) retain Monte Carlo intervals; without-replacement results describe only the fixed pool.
+
+Noisy pilot effects producing underpowered follow-ups are established concerns: [Albers & Lakens 2018](https://doi.org/10.1016/j.jesp.2017.09.004) and [Kraemer et al. 2006](https://pubmed.ncbi.nlm.nih.gov/16651505/). The safer variance-based plan fixes the smallest meaningful difference beforehand and uses the pilot for variance, not the target effect; variance transfer still needs checking.
 
 ![Out-of-pilot planning](figures/pilot_planning.svg)
 
@@ -48,9 +52,9 @@ Larger pilots did not uniformly improve this gap-based rule. Pilot-predicted rej
 
 ## Reproduce and plan
 
-Local CPU only; $0 paid compute, no model inference. Recorded hardware: Ryzen AI 5 PRO 340, single-threaded numerical libraries and Python 3.11 ([environment](results/environment.json)). Committed compressed matrices suffice; the optional [importer](scripts/import_data.py) pins and caches the original correctness artifact.
+CPU-only, $0 paid compute; Ryzen AI 5 PRO 340, one numerical thread, Python 3.11 ([environment](results/environment.json)). Matrices are committed; the optional [importer](scripts/import_data.py) pins source hashes. Model inference was not run.
 
-On the owner's shared machine, use `pp-run heavy` in place of `nice -n 19`; that scheduling wrapper is not a package dependency.
+Shared machine: use `pp-run heavy` instead of `nice -n 19`.
 
 ```sh
 uv sync --locked
@@ -58,7 +62,7 @@ nice -n 19 env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 uv run
 uv run eval-power --difference .01 --variance .2
 ```
 
-The last command illustrates fixed-effect planning. Alternatively, `--pilot pilot.npy` takes an item-by-two-model binary matrix and reports paired and unpaired budgets. Choose the smallest meaningful difference **before** evaluating; a zero-variance pilot is refused. Optional group labels report clustered SE, not an IID item-budget extrapolation. [Tests](tests/) cover scalar references, exact binomial tests, cluster sums, integer power inversion and safe data import; [CI](.github/workflows/ci.yml) checks the committed results.
+CLI example. `--pilot pilot.npy` estimates paired/unpaired variance; choose the meaningful difference **before** evaluating, not the pilot gap. Zero-variance pilots are refused. Group labels report clustered SE, not IID item-budget extrapolation. [Tests](tests/) and [CI](.github/workflows/ci.yml) check references and committed results.
 
 ## Limits and prior work
 

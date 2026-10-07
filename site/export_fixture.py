@@ -82,6 +82,41 @@ def fixture():
     }
 
 
+def check_fixture(reference, committed):
+    """Check numerical agreement, allowing the documented cross-platform rounding."""
+    if reference.keys() != committed.keys():
+        raise SystemExit("Fixture fields changed; regenerate the fixture")
+    for key in reference.keys() - {"cases", "comparisons"}:
+        if reference[key] != committed[key]:
+            raise SystemExit(f"Fixture metadata changed: {key}")
+    for group in ("cases", "comparisons"):
+        if len(reference[group]) != len(committed[group]):
+            raise SystemExit(f"Fixture grid changed: {group}")
+        for index, (actual, expected) in enumerate(
+            zip(reference[group], committed[group], strict=True)
+        ):
+            if actual.keys() != expected.keys():
+                raise SystemExit(f"Fixture fields changed: {group}[{index}]")
+            for key, value in actual.items():
+                old = expected[key]
+                tolerance = 0
+                if key == "items":
+                    tolerance = reference["item_tolerance"]
+                elif key.startswith("power_"):
+                    tolerance = reference["power_absolute_tolerance"]
+                elif key in ("rho", "paired_variance", "unpaired_variance"):
+                    tolerance = reference["variance_absolute_tolerance"]
+                if value is None or old is None:
+                    matches = value is old
+                else:
+                    matches = abs(value - old) <= tolerance
+                if not matches:
+                    raise SystemExit(
+                        f"Fixture is stale: {group}[{index}].{key}: {old} vs {value}; "
+                        "run python site/export_fixture.py"
+                    )
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -92,9 +127,8 @@ def main():
     reference = fixture()
     content = json.dumps(reference, indent=2, allow_nan=False) + "\n"
     if args.check:
-        if destination.read_text() != content:
-            raise SystemExit("Python fixture is stale; run python site/export_fixture.py")
-        print("Python fixture matches the current planner")
+        check_fixture(reference, json.loads(destination.read_text()))
+        print("Python fixture matches the current planner within documented tolerances")
     else:
         destination.write_text(content)
         print(f"Exported {len(reference['cases'])} planner cases")

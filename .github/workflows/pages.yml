@@ -19,6 +19,7 @@ jobs:
           enable-cache: true
       - run: uv sync --locked
       - run: uv run python site/export_fixture.py --check
+      - run: uv run pytest -q site/test_fixture.py
       - run: node --test site/*.test.mjs
       - run: node site/build.mjs
       - uses: actions/upload-pages-artifact@v3

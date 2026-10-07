@@ -1,5 +1,7 @@
 {
-  "cost_upper_usd": 3.0142,
+  "cost_upper_usd": 3.02,
+  "sum_of_rounded_call_estimates_usd": 3.0142,
+  "rounding": "I round the total up to whole cents after adding the rounded per-call resource estimates.",
   "allocation_usd": 5.5,
   "cost_scope": "All project cloud calls, including failed setup, image building/startup, diagnostics, the final pilot, confirmation and cleanup.",
   "cost_method": "Client wall time times booked concurrent resources, using list prices plus a 10% margin. This conservative booking-based estimate is not a Modal invoice; idle and queue time are included.",

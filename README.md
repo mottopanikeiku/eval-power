@@ -51,7 +51,7 @@ uv run python scripts/check_results.py
 uv run pytest
 ```
 
-These commands analyze committed outputs without model downloads. The [collector](modal_app.py) records prompts' hashes, answers, seeds, revisions and generation settings. All cloud calls—including failed setup and diagnostic reruns—cost **at most $3.0142** by my conservative [booking-based estimate](results/prospective/costs.json), not an invoice. I make no local timing claim.
+These commands analyze committed outputs without model downloads. The [collector](modal_app.py) records prompts' hashes, answers, seeds, revisions and generation settings. All cloud calls—including failed setup and diagnostic reruns—cost **at most $3.02** by my conservative [booking-based estimate](results/prospective/costs.json), not an invoice. I make no local timing claim.
 
 My limits: public benchmark contamination is possible; these are small instruction-tuned models; finite pilots can misestimate effects and variance; overlapping comparisons have no multiplicity correction; and Arena's IID, transitive Bradley–Terry model cannot recover unavailable user/prompt clustering. My [earlier single-answer analysis](results/calibration.csv) and calculator remain separate from this new experiment.
 

@@ -1,0 +1,23 @@
+{
+  "source": "throughput/qwen15.json.gz",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "gpu": "L4",
+  "cores": 2,
+  "memory_gib": 8,
+  "items_per_benchmark": 8,
+  "benchmarks": ["gsm8k", "arc"],
+  "sampled_answers_per_item": 5,
+  "greedy_answers_per_item": 1,
+  "output_tokens": 10604,
+  "remote_load_seconds": 54.72257666,
+  "remote_function_seconds": 81.484230085,
+  "output_tokens_per_second_including_load": 130.13561015350422,
+  "successful_run_compute_upper_usd": 0.0342,
+  "setup_attempts": [
+    {"outcome": "Failed: unpinned Transformers was incompatible with vLLM", "compute_upper_usd": 0.1201},
+    {"outcome": "Interrupted after image build before answers returned; client exited zero but no experiment result was produced", "compute_upper_usd": 0.1231}
+  ],
+  "cost_method": "Conservative resource reservation cost for total client wall time, including image builds and idle capacity, plus 10 percent margin; not an invoice. L4 USD/hour=0.7992, vCPU USD/hour=0.047160, GiB USD/hour=0.007992.",
+  "formal_pilot_booking": {"minutes": 30, "max_containers": 2, "compute_upper_usd": 1.0532},
+  "interpretation": "One small model throughput probe, not a throughput comparison between models. Cold image build attempts are included in costs. The formal pilot measures all selected models before confirmation planning."
+}

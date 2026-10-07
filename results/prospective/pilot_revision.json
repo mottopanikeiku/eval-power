@@ -1,0 +1,1954 @@
+{
+  "changed_after_pilot_before_confirmation": true,
+  "reason": "The original evaluation confused answer formatting with accuracy and cut off many ARC explanations. Increasing ARC's cap to 1024 still left 58 of 320 Phi samples truncated, and later prose could overwrite the first answer. I changed ARC to controlled direct-label generation for every model; the rule requires re-collecting all ARC pilots and revising GSM8K grading on stored text before planning or collecting confirmation.",
+  "protocols": {
+    "initial": {
+      "file": "results/prospective/protocol_initial.json",
+      "sha256": "ea46e9eb4c4f3eacb2c65eec8acc61c495239073fe1269bb8bb281571a2aa5d3"
+    },
+    "long_arc": {
+      "file": "results/prospective/protocol_arc_long_collection.json",
+      "sha256": "b31d3ec5e038d56539aea92e944c2d93104acc7d1c2adf9323f13023bd8a6a3a"
+    },
+    "guided_before_seed_fix": {
+      "file": "results/prospective/protocol_arc_direct_before_seed_fix.json",
+      "sha256": "0e1deb407e346003331d4f2a49f3e893dcda202dc3d993e40af8b23ec3207b08"
+    },
+    "primary": {
+      "file": "results/prospective/protocol.json",
+      "sha256": "42da27e203d5ebf126e74882c62b4a6b1ac31cd2049c460b4362e796b827572f"
+    }
+  },
+  "sources": [
+    {
+      "file": "results/prospective/pilot/qwen15.json.gz",
+      "sha256": "de04026ea2d0de21cc62e939ac7668a17630ea3fc232560879af85cf0653797d"
+    },
+    {
+      "file": "results/prospective/pilot/qwen3.json.gz",
+      "sha256": "b5f8903dbd1c61ea893735882c9c0138402357cc688178281b70a0bccf6dafaf"
+    },
+    {
+      "file": "results/prospective/pilot/qwen7.json.gz",
+      "sha256": "690715a76995e3f83739e4edc2e667efe0eec1819a36cf5b2d7b59050314a4f6"
+    },
+    {
+      "file": "results/prospective/pilot/smol17.json.gz",
+      "sha256": "7ed05fd5623fc68c263c41fb0c9d3af0971619f0550e43ca5d243ef963bf04f9"
+    },
+    {
+      "file": "results/prospective/pilot/phi35.json.gz",
+      "sha256": "46ab80468638360dfc0a10df28d1496d1fd7b0e34c9e6ca554aa74ccadd5f7b9"
+    },
+    {
+      "file": "results/prospective/pilot/mistral7.json.gz",
+      "sha256": "ad76bf20d205686a6e2eafd62d335530975e356663638418d819ed608fa6f9e1"
+    },
+    {
+      "file": "results/prospective/arc_revised/pilot/qwen15.json.gz",
+      "sha256": "7fd286cd7504b0de397a1b52ff891afa58e37e9031c1f1b1b6b488e4088a0f29"
+    },
+    {
+      "file": "results/prospective/arc_revised/pilot/qwen3.json.gz",
+      "sha256": "9dc93b9df31d63e4142b5f8bd8f27d5b70cd6515248e6d615b67176a684f23a2"
+    },
+    {
+      "file": "results/prospective/arc_revised/pilot/qwen7.json.gz",
+      "sha256": "39b8e346d7b9540a3715345a04ac9f10edbecd56fdec0c316999131a015b795a"
+    },
+    {
+      "file": "results/prospective/arc_revised/pilot/smol17.json.gz",
+      "sha256": "bb752a335d04880484b1f5f4e98b0976a2b2578791e73ea763e8237bf9da0cc4"
+    },
+    {
+      "file": "results/prospective/arc_revised/pilot/phi35.json.gz",
+      "sha256": "bbf5e250f991be0fbed58f85e927fa1386ced5d2e339b05ea59baaaa6ab3a210"
+    },
+    {
+      "file": "results/prospective/arc_revised/pilot/mistral7.json.gz",
+      "sha256": "fb2ed1fcee37f04f3905ac80c6a7232e90ba569e970feb2ae577c20d5825c4d4"
+    },
+    {
+      "file": "results/prospective/arc_direct/pilot/qwen15.json.gz",
+      "sha256": "97a40057106db1d56f64ce086ac1e83c3400bd859650705807b562510ad36b4c"
+    },
+    {
+      "file": "results/prospective/arc_direct/pilot/qwen3.json.gz",
+      "sha256": "42dd4683e234848eb32f8c4d0c1abbfc8c56e94e841ef8f45a4905348dcd7a14"
+    },
+    {
+      "file": "results/prospective/arc_direct/pilot/qwen7.json.gz",
+      "sha256": "a7fe31571a832a3ff1fb6aa34e636a66b4f4f3d823b051bffa8d5e25ea509784"
+    },
+    {
+      "file": "results/prospective/arc_direct/pilot/smol17.json.gz",
+      "sha256": "2c9fd54d9b23671e85cb3459f91be34d4cee4b54805c461ee9d1dbb53f5336fc"
+    },
+    {
+      "file": "results/prospective/arc_direct/pilot/phi35.json.gz",
+      "sha256": "5ea3898c42c7b11620780178fc64d2cbfcb1260b560e380f0d15ab3b1f275d1b"
+    },
+    {
+      "file": "results/prospective/arc_direct/pilot/mistral7.json.gz",
+      "sha256": "09503fe4c7ef6056eff3bb05d49b55cae1bdab4d174c041906456465d4666bb1"
+    },
+    {
+      "file": "results/prospective/primary/pilot/qwen15.json.gz",
+      "sha256": "2fe68475cd0d81638c70aa930bbf57df6d00d05e06daba46a5839768a083cac8"
+    },
+    {
+      "file": "results/prospective/primary/pilot/qwen3.json.gz",
+      "sha256": "67a46639aca6beab18ebd99bffa63746f0d9ffa648b8bf9424199459a7ae2acc"
+    },
+    {
+      "file": "results/prospective/primary/pilot/qwen7.json.gz",
+      "sha256": "c174a0e97ae67c542c79f57c207a1c73fb856ac29d9493cb4e91e36f7e65276c"
+    },
+    {
+      "file": "results/prospective/primary/pilot/smol17.json.gz",
+      "sha256": "9d7adfbf4a9f36c81ef6c426510b8f5c249abb88b7c5e7b8cc94836d17a60da3"
+    },
+    {
+      "file": "results/prospective/primary/pilot/phi35.json.gz",
+      "sha256": "d97af0144610e38be09d6cbae35331136c86fc8e78e93bfbc16f4ff15955feb8"
+    },
+    {
+      "file": "results/prospective/primary/pilot/mistral7.json.gz",
+      "sha256": "8599a500b0d92943006c62d4989a978c3fc3450f0bb0f9956a77b2c2ff6b49e8"
+    }
+  ],
+  "primary_gsm8k_and_arc_recollected": true,
+  "same_items_prompts_references": true,
+  "arc_decoding": "guided_direct_choice",
+  "stop_token_audit_by_model": {
+    "qwen15": {
+      "native_stop_ids": [
+        151643,
+        151645
+      ],
+      "chat_template_end_ids": [
+        151645
+      ],
+      "native_plus_chat_end_ids": [
+        151643,
+        151645
+      ],
+      "additional_chat_end_ids_needed": [],
+      "note": "Audit only: I did not override native EOS or chat-end token handling."
+    },
+    "qwen3": {
+      "native_stop_ids": [
+        151643,
+        151645
+      ],
+      "chat_template_end_ids": [
+        151645
+      ],
+      "native_plus_chat_end_ids": [
+        151643,
+        151645
+      ],
+      "additional_chat_end_ids_needed": [],
+      "note": "Audit only: I did not override native EOS or chat-end token handling."
+    },
+    "qwen7": {
+      "native_stop_ids": [
+        151643,
+        151645
+      ],
+      "chat_template_end_ids": [
+        151645
+      ],
+      "native_plus_chat_end_ids": [
+        151643,
+        151645
+      ],
+      "additional_chat_end_ids_needed": [],
+      "note": "Audit only: I did not override native EOS or chat-end token handling."
+    },
+    "smol17": {
+      "native_stop_ids": [
+        2
+      ],
+      "chat_template_end_ids": [
+        2
+      ],
+      "native_plus_chat_end_ids": [
+        2
+      ],
+      "additional_chat_end_ids_needed": [],
+      "note": "Audit only: I did not override native EOS or chat-end token handling."
+    },
+    "phi35": {
+      "native_stop_ids": [
+        32000,
+        32001,
+        32007
+      ],
+      "chat_template_end_ids": [
+        32000
+      ],
+      "native_plus_chat_end_ids": [
+        32000,
+        32001,
+        32007
+      ],
+      "additional_chat_end_ids_needed": [],
+      "note": "Audit only: I did not override native EOS or chat-end token handling."
+    },
+    "mistral7": {
+      "native_stop_ids": [
+        2
+      ],
+      "chat_template_end_ids": [
+        2
+      ],
+      "native_plus_chat_end_ids": [
+        2
+      ],
+      "additional_chat_end_ids_needed": [],
+      "note": "Audit only: I did not override native EOS or chat-end token handling."
+    }
+  },
+  "seed_counts": {
+    "initial": {
+      "requested_child_streams": 3840,
+      "distinct_child_seeds": 3414,
+      "reused_child_streams": 426
+    },
+    "long_arc": {
+      "requested_child_streams": 1920,
+      "distinct_child_seeds": 1752,
+      "reused_child_streams": 168
+    },
+    "guided_before_seed_fix": {
+      "requested_child_streams": 1920,
+      "distinct_child_seeds": 1752,
+      "reused_child_streams": 168
+    },
+    "primary": {
+      "requested_child_streams": 3840,
+      "distinct_child_seeds": 3840,
+      "reused_child_streams": 0
+    }
+  },
+  "models": {
+    "qwen15": {
+      "gsm8k": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.203125,
+          "mean_sampled_accuracy": 0.159375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 13,
+            "accuracy": 0.203125,
+            "malformed_prediction_count": 44,
+            "malformed_prediction_rate": 0.6875,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 51,
+            "accuracy": 0.159375,
+            "malformed_prediction_count": 250,
+            "malformed_prediction_rate": 0.78125,
+            "truncated_count": 6,
+            "truncation_rate": 0.01875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.65625,
+          "mean_sampled_accuracy": 0.659375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 42,
+            "accuracy": 0.65625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 211,
+            "accuracy": 0.659375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 6,
+            "truncation_rate": 0.01875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.203125,
+          "mean_sampled_accuracy": 0.175,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 13,
+            "accuracy": 0.203125,
+            "malformed_prediction_count": 44,
+            "malformed_prediction_rate": 0.6875,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 56,
+            "accuracy": 0.175,
+            "malformed_prediction_count": 242,
+            "malformed_prediction_rate": 0.75625,
+            "truncated_count": 7,
+            "truncation_rate": 0.021875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.65625,
+          "mean_sampled_accuracy": 0.69375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 42,
+            "accuracy": 0.65625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 222,
+            "accuracy": 0.69375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 7,
+            "truncation_rate": 0.021875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      },
+      "arc": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.5625,
+          "mean_sampled_accuracy": 0.534375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 36,
+            "accuracy": 0.5625,
+            "malformed_prediction_count": 22,
+            "malformed_prediction_rate": 0.34375,
+            "truncated_count": 5,
+            "truncation_rate": 0.078125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 171,
+            "accuracy": 0.534375,
+            "malformed_prediction_count": 114,
+            "malformed_prediction_rate": 0.35625,
+            "truncated_count": 26,
+            "truncation_rate": 0.08125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.796875,
+          "mean_sampled_accuracy": 0.784375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 51,
+            "accuracy": 0.796875,
+            "malformed_prediction_count": 3,
+            "malformed_prediction_rate": 0.046875,
+            "truncated_count": 5,
+            "truncation_rate": 0.078125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 251,
+            "accuracy": 0.784375,
+            "malformed_prediction_count": 13,
+            "malformed_prediction_rate": 0.040625,
+            "truncated_count": 26,
+            "truncation_rate": 0.08125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.8125,
+          "mean_sampled_accuracy": 0.803125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 52,
+            "accuracy": 0.8125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 257,
+            "accuracy": 0.803125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.8125,
+          "mean_sampled_accuracy": 0.803125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 52,
+            "accuracy": 0.8125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 257,
+            "accuracy": 0.803125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "long_unconstrained_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.84375,
+          "mean_sampled_accuracy": 0.834375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 54,
+            "accuracy": 0.84375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 267,
+            "accuracy": 0.834375,
+            "malformed_prediction_count": 2,
+            "malformed_prediction_rate": 0.00625,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "guided_before_seed_fix": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.8125,
+          "mean_sampled_accuracy": 0.8,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 52,
+            "accuracy": 0.8125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 256,
+            "accuracy": 0.8,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "qwen3": {
+      "gsm8k": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.34375,
+          "mean_sampled_accuracy": 0.421875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 22,
+            "accuracy": 0.34375,
+            "malformed_prediction_count": 40,
+            "malformed_prediction_rate": 0.625,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 135,
+            "accuracy": 0.421875,
+            "malformed_prediction_count": 167,
+            "malformed_prediction_rate": 0.521875,
+            "truncated_count": 6,
+            "truncation_rate": 0.01875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.8125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 260,
+            "accuracy": 0.8125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 6,
+            "truncation_rate": 0.01875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.34375,
+          "mean_sampled_accuracy": 0.45,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 22,
+            "accuracy": 0.34375,
+            "malformed_prediction_count": 40,
+            "malformed_prediction_rate": 0.625,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 144,
+            "accuracy": 0.45,
+            "malformed_prediction_count": 163,
+            "malformed_prediction_rate": 0.509375,
+            "truncated_count": 3,
+            "truncation_rate": 0.009375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.859375,
+          "mean_sampled_accuracy": 0.840625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 55,
+            "accuracy": 0.859375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 269,
+            "accuracy": 0.840625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 3,
+            "truncation_rate": 0.009375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      },
+      "arc": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.828125,
+          "mean_sampled_accuracy": 0.79375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 53,
+            "accuracy": 0.828125,
+            "malformed_prediction_count": 4,
+            "malformed_prediction_rate": 0.0625,
+            "truncated_count": 4,
+            "truncation_rate": 0.0625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 254,
+            "accuracy": 0.79375,
+            "malformed_prediction_count": 29,
+            "malformed_prediction_rate": 0.090625,
+            "truncated_count": 27,
+            "truncation_rate": 0.084375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.84375,
+          "mean_sampled_accuracy": 0.796875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 54,
+            "accuracy": 0.84375,
+            "malformed_prediction_count": 2,
+            "malformed_prediction_rate": 0.03125,
+            "truncated_count": 4,
+            "truncation_rate": 0.0625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 255,
+            "accuracy": 0.796875,
+            "malformed_prediction_count": 22,
+            "malformed_prediction_rate": 0.06875,
+            "truncated_count": 27,
+            "truncation_rate": 0.084375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.878125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 281,
+            "accuracy": 0.878125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.878125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 281,
+            "accuracy": 0.878125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "long_unconstrained_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.890625,
+          "mean_sampled_accuracy": 0.86875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 57,
+            "accuracy": 0.890625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 278,
+            "accuracy": 0.86875,
+            "malformed_prediction_count": 2,
+            "malformed_prediction_rate": 0.00625,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "guided_before_seed_fix": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 280,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "qwen7": {
+      "gsm8k": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.859375,
+          "mean_sampled_accuracy": 0.865625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 55,
+            "accuracy": 0.859375,
+            "malformed_prediction_count": 3,
+            "malformed_prediction_rate": 0.046875,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 277,
+            "accuracy": 0.865625,
+            "malformed_prediction_count": 12,
+            "malformed_prediction_rate": 0.0375,
+            "truncated_count": 3,
+            "truncation_rate": 0.009375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.890625,
+          "mean_sampled_accuracy": 0.884375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 57,
+            "accuracy": 0.890625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 283,
+            "accuracy": 0.884375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 3,
+            "truncation_rate": 0.009375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.84375,
+          "mean_sampled_accuracy": 0.9125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 54,
+            "accuracy": 0.84375,
+            "malformed_prediction_count": 3,
+            "malformed_prediction_rate": 0.046875,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 292,
+            "accuracy": 0.9125,
+            "malformed_prediction_count": 8,
+            "malformed_prediction_rate": 0.025,
+            "truncated_count": 3,
+            "truncation_rate": 0.009375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.928125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 297,
+            "accuracy": 0.928125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 3,
+            "truncation_rate": 0.009375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      },
+      "arc": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.884375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 4,
+            "malformed_prediction_rate": 0.0625,
+            "truncated_count": 4,
+            "truncation_rate": 0.0625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 283,
+            "accuracy": 0.884375,
+            "malformed_prediction_count": 19,
+            "malformed_prediction_rate": 0.059375,
+            "truncated_count": 19,
+            "truncation_rate": 0.059375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.890625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 3,
+            "malformed_prediction_rate": 0.046875,
+            "truncated_count": 4,
+            "truncation_rate": 0.0625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 285,
+            "accuracy": 0.890625,
+            "malformed_prediction_count": 16,
+            "malformed_prediction_rate": 0.05,
+            "truncated_count": 19,
+            "truncation_rate": 0.059375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.9375,
+          "mean_sampled_accuracy": 0.93125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 60,
+            "accuracy": 0.9375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 298,
+            "accuracy": 0.93125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.9375,
+          "mean_sampled_accuracy": 0.93125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 60,
+            "accuracy": 0.9375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 298,
+            "accuracy": 0.93125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "long_unconstrained_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.9375,
+          "mean_sampled_accuracy": 0.94375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 60,
+            "accuracy": 0.9375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 302,
+            "accuracy": 0.94375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "guided_before_seed_fix": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.9375,
+          "mean_sampled_accuracy": 0.9375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 60,
+            "accuracy": 0.9375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 300,
+            "accuracy": 0.9375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "smol17": {
+      "gsm8k": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.03125,
+          "mean_sampled_accuracy": 0.046875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 2,
+            "accuracy": 0.03125,
+            "malformed_prediction_count": 50,
+            "malformed_prediction_rate": 0.78125,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 15,
+            "accuracy": 0.046875,
+            "malformed_prediction_count": 266,
+            "malformed_prediction_rate": 0.83125,
+            "truncated_count": 5,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.1875,
+          "mean_sampled_accuracy": 0.28125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 12,
+            "accuracy": 0.1875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 90,
+            "accuracy": 0.28125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 5,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.03125,
+          "mean_sampled_accuracy": 0.03125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 2,
+            "accuracy": 0.03125,
+            "malformed_prediction_count": 51,
+            "malformed_prediction_rate": 0.796875,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 10,
+            "accuracy": 0.03125,
+            "malformed_prediction_count": 272,
+            "malformed_prediction_rate": 0.85,
+            "truncated_count": 5,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.171875,
+          "mean_sampled_accuracy": 0.309375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 11,
+            "accuracy": 0.171875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 99,
+            "accuracy": 0.309375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 5,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      },
+      "arc": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.671875,
+          "mean_sampled_accuracy": 0.48125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 43,
+            "accuracy": 0.671875,
+            "malformed_prediction_count": 6,
+            "malformed_prediction_rate": 0.09375,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 154,
+            "accuracy": 0.48125,
+            "malformed_prediction_count": 65,
+            "malformed_prediction_rate": 0.203125,
+            "truncated_count": 1,
+            "truncation_rate": 0.003125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.734375,
+          "mean_sampled_accuracy": 0.571875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 47,
+            "accuracy": 0.734375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 183,
+            "accuracy": 0.571875,
+            "malformed_prediction_count": 2,
+            "malformed_prediction_rate": 0.00625,
+            "truncated_count": 1,
+            "truncation_rate": 0.003125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.75,
+          "mean_sampled_accuracy": 0.628125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 48,
+            "accuracy": 0.75,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 201,
+            "accuracy": 0.628125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.75,
+          "mean_sampled_accuracy": 0.628125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 48,
+            "accuracy": 0.75,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 201,
+            "accuracy": 0.628125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "long_unconstrained_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.734375,
+          "mean_sampled_accuracy": 0.571875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 47,
+            "accuracy": 0.734375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 183,
+            "accuracy": 0.571875,
+            "malformed_prediction_count": 2,
+            "malformed_prediction_rate": 0.00625,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "guided_before_seed_fix": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.75,
+          "mean_sampled_accuracy": 0.615625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 48,
+            "accuracy": 0.75,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 197,
+            "accuracy": 0.615625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "phi35": {
+      "gsm8k": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.84375,
+          "mean_sampled_accuracy": 0.80625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 54,
+            "accuracy": 0.84375,
+            "malformed_prediction_count": 6,
+            "malformed_prediction_rate": 0.09375,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 258,
+            "accuracy": 0.80625,
+            "malformed_prediction_count": 32,
+            "malformed_prediction_rate": 0.1,
+            "truncated_count": 7,
+            "truncation_rate": 0.021875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.90625,
+          "mean_sampled_accuracy": 0.871875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 58,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 279,
+            "accuracy": 0.871875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 7,
+            "truncation_rate": 0.021875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.84375,
+          "mean_sampled_accuracy": 0.775,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 54,
+            "accuracy": 0.84375,
+            "malformed_prediction_count": 6,
+            "malformed_prediction_rate": 0.09375,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 248,
+            "accuracy": 0.775,
+            "malformed_prediction_count": 39,
+            "malformed_prediction_rate": 0.121875,
+            "truncated_count": 4,
+            "truncation_rate": 0.0125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.90625,
+          "mean_sampled_accuracy": 0.865625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 58,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 277,
+            "accuracy": 0.865625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 4,
+            "truncation_rate": 0.0125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      },
+      "arc": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.734375,
+          "mean_sampled_accuracy": 0.715625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 47,
+            "accuracy": 0.734375,
+            "malformed_prediction_count": 12,
+            "malformed_prediction_rate": 0.1875,
+            "truncated_count": 28,
+            "truncation_rate": 0.4375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 229,
+            "accuracy": 0.715625,
+            "malformed_prediction_count": 67,
+            "malformed_prediction_rate": 0.209375,
+            "truncated_count": 175,
+            "truncation_rate": 0.546875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.890625,
+          "mean_sampled_accuracy": 0.896875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 57,
+            "accuracy": 0.890625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 28,
+            "truncation_rate": 0.4375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 287,
+            "accuracy": 0.896875,
+            "malformed_prediction_count": 5,
+            "malformed_prediction_rate": 0.015625,
+            "truncated_count": 175,
+            "truncation_rate": 0.546875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.90625,
+          "mean_sampled_accuracy": 0.90625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 58,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 290,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.90625,
+          "mean_sampled_accuracy": 0.90625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 58,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 290,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "long_unconstrained_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.90625,
+          "mean_sampled_accuracy": 0.9125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 58,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 292,
+            "accuracy": 0.9125,
+            "malformed_prediction_count": 3,
+            "malformed_prediction_rate": 0.009375,
+            "truncated_count": 58,
+            "truncation_rate": 0.18125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "guided_before_seed_fix": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.90625,
+          "mean_sampled_accuracy": 0.90625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 58,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 290,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "mistral7": {
+      "gsm8k": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.28125,
+          "mean_sampled_accuracy": 0.253125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 18,
+            "accuracy": 0.28125,
+            "malformed_prediction_count": 27,
+            "malformed_prediction_rate": 0.421875,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 81,
+            "accuracy": 0.253125,
+            "malformed_prediction_count": 152,
+            "malformed_prediction_rate": 0.475,
+            "truncated_count": 4,
+            "truncation_rate": 0.0125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.484375,
+          "mean_sampled_accuracy": 0.478125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 31,
+            "accuracy": 0.484375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 153,
+            "accuracy": 0.478125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 4,
+            "truncation_rate": 0.0125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.28125,
+          "mean_sampled_accuracy": 0.24375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 18,
+            "accuracy": 0.28125,
+            "malformed_prediction_count": 26,
+            "malformed_prediction_rate": 0.40625,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 78,
+            "accuracy": 0.24375,
+            "malformed_prediction_count": 158,
+            "malformed_prediction_rate": 0.49375,
+            "truncated_count": 5,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.46875,
+          "mean_sampled_accuracy": 0.4625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 30,
+            "accuracy": 0.46875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 148,
+            "accuracy": 0.4625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 5,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      },
+      "arc": {
+        "initial_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.59375,
+          "mean_sampled_accuracy": 0.6125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 38,
+            "accuracy": 0.59375,
+            "malformed_prediction_count": 17,
+            "malformed_prediction_rate": 0.265625,
+            "truncated_count": 15,
+            "truncation_rate": 0.234375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 196,
+            "accuracy": 0.6125,
+            "malformed_prediction_count": 85,
+            "malformed_prediction_rate": 0.265625,
+            "truncated_count": 64,
+            "truncation_rate": 0.2,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "initial_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.78125,
+          "mean_sampled_accuracy": 0.76875,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 50,
+            "accuracy": 0.78125,
+            "malformed_prediction_count": 3,
+            "malformed_prediction_rate": 0.046875,
+            "truncated_count": 15,
+            "truncation_rate": 0.234375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 246,
+            "accuracy": 0.76875,
+            "malformed_prediction_count": 11,
+            "malformed_prediction_rate": 0.034375,
+            "truncated_count": 64,
+            "truncation_rate": 0.2,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_strict": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.78125,
+          "mean_sampled_accuracy": 0.78125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 50,
+            "accuracy": 0.78125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 250,
+            "accuracy": 0.78125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "primary_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.78125,
+          "mean_sampled_accuracy": 0.78125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 50,
+            "accuracy": 0.78125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 250,
+            "accuracy": 0.78125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "long_unconstrained_flexible": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.765625,
+          "mean_sampled_accuracy": 0.775,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 49,
+            "accuracy": 0.765625,
+            "malformed_prediction_count": 2,
+            "malformed_prediction_rate": 0.03125,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 248,
+            "accuracy": 0.775,
+            "malformed_prediction_count": 8,
+            "malformed_prediction_rate": 0.025,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "guided_before_seed_fix": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.78125,
+          "mean_sampled_accuracy": 0.778125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 50,
+            "accuracy": 0.78125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 249,
+            "accuracy": 0.778125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    }
+  },
+  "interpretation": "Initial strict versus flexible GSM8K isolates a grader change on identical text. The primary pilot is recollected after spacing parent seeds by k: vLLM uses parent_seed+child_index, so the earlier stride of one reused streams. ARC also changes its decoding distribution to guided direct-label generation; these are not conventional option-likelihood ARC scores or pure grader effects. Native EOS handling already included Phi's end-of-turn token and was not changed."
+}

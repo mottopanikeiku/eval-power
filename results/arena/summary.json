@@ -1,0 +1,49 @@
+{
+  "eligible_models": 55,
+  "minimum_model_exposure": 500,
+  "excluded_models": 9,
+  "retained_votes": 54985,
+  "pilot_votes": 27458,
+  "heldout_votes": 27527,
+  "fit_status": "ok",
+  "pilot_fit_status": "ok",
+  "heldout_fit_status": "ok",
+  "adjacent_pairs": 54,
+  "wald_intervals_excluding_zero": 4,
+  "bootstrap_intervals_excluding_zero": 4,
+  "bootstrap_statuses": {
+    "ok": 500,
+    "disconnected": 0,
+    "separated": 0,
+    "singular": 0,
+    "line_search_failed": 0,
+    "not_converged": 0
+  },
+  "bootstrap_successes": 500,
+  "bootstrap_attempts": 500,
+  "median_adjacent_total_votes_for_80pct": 3304931.0,
+  "adjacent_zero_or_nonestimable_plans": 0,
+  "score_independent_planned_pairs": 12,
+  "median_heldout_resampling_rejection_rate": 0.9624999999999999,
+  "seed": 20261007,
+  "methods": {
+    "tie": "one vote with fractional outcome 0.5; ties and both-bad ties are pooled upstream",
+    "fit": "unpenalized Bradley-Terry, sum-zero log-odds scores; Elo=400/log(10)*score",
+    "wald": "pointwise 95% inverse-Hessian curvature intervals; not sandwich corrected",
+    "bootstrap": "pointwise percentile 95% IID vote bootstrap over pair/outcome counts",
+    "bootstrap_failures": "reported by status; intervals conditional on successful fits",
+    "adjacency": "descriptive full-data rank neighbors, not an independently selected test set",
+    "selection": "exposure >= minimum; planning pairs evenly spaced alphabetic neighbors",
+    "planning": "80% normal-approximation two-sided alpha=.05, total votes at pilot pair mix",
+    "evaluation": "multinomial resampling of disjoint heldout votes at each pilot plan; NOT new votes",
+    "failure_denominator": "all-trial rejection rate counts nonestimable fits as nonrejections; conditional also saved",
+    "limitations": [
+      "IID votes; user/prompt clustering unavailable in retained aggregates",
+      "historical nonrepresentative competition subset, not a current leaderboard",
+      "BT assumes a single transitive preference strength across matchups",
+      "pointwise intervals; no multiplicity or rank-selection correction",
+      "heldout resampling measures empirical stability, not prospective power",
+      "eligibility is exposure-only but uses full sample exposures"
+    ]
+  }
+}

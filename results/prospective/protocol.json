@@ -1,5 +1,4 @@
 {
-  "created_utc": "2026-10-07T10:05:00Z",
   "models": [
     {
       "id": "Qwen/Qwen2.5-1.5B-Instruct",
@@ -12,7 +11,7 @@
     {
       "id": "Qwen/Qwen2.5-3B-Instruct",
       "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
-      "license": "other",
+      "license": "Qwen Research License (non-commercial research/evaluation)",
       "gated": false,
       "source": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct",
       "slug": "qwen3"
@@ -150,7 +149,7 @@
       "mistral7"
     ]
   ],
-  "planning": "Two-sided Gaussian budget from pilot paired item means: ceil((z_(1-alpha/2)+z_power)^2 * sample_variance / observed_gap^2), minimum 16. Zero-gap or zero-variance pilots are nonestimable; budgets above 512 fresh items are infeasible and are not capped. Every other pair is confirmed.",
+  "planning": "Two-sided Gaussian budget from pilot paired item means: ceil((z_(1-alpha/2)+z_power)^2 * total_variance / observed_gap^2), minimum 16. total_variance = max(0, observed_variance - mean(within_item_variance)/k) + mean(within_item_variance)/k. Zero-gap or zero-variance pilots are nonestimable; budgets above 512 fresh items are infeasible and are not capped. Every other pair is confirmed.",
   "testing": "Two-sided paired t-test of sampled per-item mean accuracy, alpha .05, individual comparisons without multiplicity correction. Detection fraction across selected heterogeneous pairs is not a repeated-trial estimate of 80% power. Same fresh answers reused between overlapping pairs.",
   "freshness": "Newly generated responses to disjoint, existing public test items; not newly authored questions or contamination-free evaluation.",
   "grading": {

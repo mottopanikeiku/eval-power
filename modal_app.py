@@ -20,7 +20,13 @@ timeout_seconds = int(os.environ.get("EVAL_TIMEOUT_S", "1800"))
 container_limit = int(os.environ.get("EVAL_CONTAINERS", "2"))
 image = (
     modal.Image.debian_slim(python_version="3.11")
-    .pip_install("vllm==0.10.2", "datasets==4.1.1", "hf-transfer==0.1.9")
+    .pip_install(
+        "vllm==0.10.2",
+        "transformers==4.55.2",
+        "huggingface-hub==0.34.4",
+        "datasets==4.1.1",
+        "hf-transfer==0.1.9",
+    )
     .env({"HF_HUB_ENABLE_HF_TRANSFER": "1", "OMP_NUM_THREADS": "4"})
     .add_local_python_source("eval_power")
 )
@@ -158,7 +164,8 @@ def item_order(protocol, benchmark):
 
 @app.local_entrypoint()
 def main(phase: str = "pilot", models: str = "qwen15", throughput: bool = False):
-    protocol = json.loads((ROOT / "results/prospective/protocol.json").read_text())
+    protocol_bytes = (ROOT / "results/prospective/protocol.json").read_bytes()
+    protocol = json.loads(protocol_bytes)
     selected = [m for m in protocol["models"] if m["slug"] in models.split(",")]
     if not selected or len(selected) != len(models.split(",")):
         raise ValueError("Unknown or duplicate model slug")
@@ -167,8 +174,10 @@ def main(phase: str = "pilot", models: str = "qwen15", throughput: bool = False)
     if throughput and phase != "pilot":
         raise ValueError("throughput pilot cannot confirm comparisons")
     plan = None
+    plan_bytes = None
     if phase == "confirm":
-        plan = json.loads((ROOT / "results/prospective/plan.json").read_text())
+        plan_bytes = (ROOT / "results/prospective/plan.json").read_bytes()
+        plan = json.loads(plan_bytes)
     out = ROOT / "results/prospective" / ("throughput" if throughput else phase)
     out.mkdir(parents=True, exist_ok=True)
     jobs = []
@@ -186,20 +195,23 @@ def main(phase: str = "pilot", models: str = "qwen15", throughput: bool = False)
                 for pair in plan["pairs"]:
                     if (
                         pair["benchmark"] == bench
-                        and pair["status"] == "planned"
+                        and pair["status"] == "feasible"
                         and model["slug"] in (pair["model_a"], pair["model_b"])
                     ):
                         ids.update(int(i) for i in pair["item_ids"])
                 indices[bench] = sorted(ids)
         jobs.append((destination, generate.spawn(model, protocol, indices, phase)))
+    failures = []
     for destination, job in jobs:
-        result = job.get()
-        result["metadata"]["protocol_sha256"] = hashlib.sha256(
-            (ROOT / "results/prospective/protocol.json").read_bytes()
-        ).hexdigest()
+        try:
+            result = job.get()
+        except Exception as error:
+            failures.append(f"{destination.name}: {error}")
+            continue
+        result["metadata"]["protocol_sha256"] = hashlib.sha256(protocol_bytes).hexdigest()
         if plan is not None:
-            result["metadata"]["plan_sha256"] = hashlib.sha256(
-                (ROOT / "results/prospective/plan.json").read_bytes()
-            ).hexdigest()
+            result["metadata"]["plan_sha256"] = hashlib.sha256(plan_bytes).hexdigest()
         destination.write_bytes(gzip.compress(json.dumps(result).encode(), mtime=0))
         print(f"Saved {destination.name}: {result['metadata']}")
+    if failures:
+        raise RuntimeError("Some models did not finish:\n" + "\n".join(failures))

@@ -1,0 +1,17 @@
+{
+  "recorded_at_utc": "2026-10-07T09:55:21.158244+00:00",
+  "os": "Linux-7.2.5-200.fc44.x86_64-x86_64-with-glibc2.43",
+  "cpu": "AMD Ryzen AI 5 PRO 340 w/ Radeon 840M",
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "matplotlib": "3.11.2",
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "command": "uv run python scripts/arena.py --bootstrap 500 --trials 200 --pairs 12 --minimum-votes 500 --seed 20261007",
+  "paid_compute_usd": 0,
+  "timing_claim": "none"
+}

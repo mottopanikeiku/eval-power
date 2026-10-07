@@ -10,6 +10,8 @@ from pathlib import Path
 import numpy as np
 
 from eval_power.analysis import BENCHMARKS
+from eval_power.grading import grade_answer
+from eval_power.prospective import analyze_plan, validate_sources
 from eval_power.stats import holm_adjust
 
 
@@ -18,6 +20,56 @@ def rows(name: str) -> list[dict]:
     opener = gzip.open if path.suffix == ".gz" else open
     with opener(path, "rt", encoding="utf-8", newline="") as handle:
         return list(csv.DictReader(handle))
+
+
+def check_prospective() -> None:
+    directory = Path("results/prospective")
+    protocol_path, plan_path = directory / "protocol.json", directory / "plan.json"
+    protocol = json.loads(protocol_path.read_text())
+    plan = json.loads(plan_path.read_text())
+    summary = json.loads((directory / "summary.json").read_text())
+    stages = {}
+    item_references = {}
+    for stage in ("pilot", "confirm"):
+        documents = {}
+        for path in sorted((directory / stage).glob("*.json.gz")):
+            with gzip.open(path, "rt") as stream:
+                document = json.load(stream)
+            slug = path.name.removesuffix(".json.gz")
+            assert document["slug"] == slug
+            documents[slug] = document
+            for benchmark, items in document["benchmarks"].items():
+                for item in items:
+                    identity = (benchmark, item["item_id"])
+                    reference = (item["prompt_sha256"], item["reference"])
+                    assert item_references.setdefault(identity, reference) == reference
+                    for answer in (item["greedy"], *item["samples"]):
+                        prediction, correct = grade_answer(
+                            benchmark, answer["text"], item["reference"]
+                        )
+                        assert answer["prediction"] == prediction
+                        assert answer["correct"] == correct
+        stages[stage] = documents
+    validate_sources(
+        plan,
+        protocol,
+        stages["pilot"],
+        stages["confirm"],
+        hashlib.sha256(protocol_path.read_bytes()).hexdigest(),
+        hashlib.sha256(plan_path.read_bytes()).hexdigest(),
+    )
+    recalculated = analyze_plan(plan, stages["pilot"], stages["confirm"])
+    for key, value in recalculated.items():
+        assert summary[key] == value, f"Prospective summary differs: {key}"
+    for group in ("protocol", "plan"):
+        source = summary["sources"][group]
+        assert source["sha256"] == hashlib.sha256((directory / source["file"]).read_bytes()).hexdigest()
+    for stage in ("pilot", "confirm"):
+        for source in summary["sources"][stage]:
+            assert source["sha256"] == hashlib.sha256(
+                (directory / source["file"]).read_bytes()
+            ).hexdigest()
+    assert ET.parse("figures/prospective.svg").getroot().tag.endswith("svg")
 
 
 def main() -> None:
@@ -84,9 +136,10 @@ def main() -> None:
     ):
         assert ET.parse(Path("figures") / name).getroot().tag.endswith("svg")
     assert Path("README.md").read_text().rstrip().endswith("Written with AI coding assistance.")
+    check_prospective()
     print(
         "Validated five pinned binary matrices, all-pair Holm families, "
-        "calibration rows, and four SVGs."
+        "calibration rows, fresh-item response counts and grades, and SVGs."
     )
 
 

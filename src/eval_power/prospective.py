@@ -91,8 +91,9 @@ def required_items(delta, total_variance, alpha=0.05, target_power=0.8):
     if delta == 0:
         return None
     # Divide sequentially, avoiding underflow of delta**2 for small pilot gaps.
-    count = (float(norm.ppf(1 - alpha / 2) + norm.ppf(power)) ** 2 * variance / abs(delta)
-             / abs(delta))
+    count = (
+        float(norm.ppf(1 - alpha / 2) + norm.ppf(power)) ** 2 * variance / abs(delta) / abs(delta)
+    )
     if not math.isfinite(count):
         raise ValueError("required item count exceeds floating-point planning range")
     return math.ceil(count)
@@ -105,7 +106,9 @@ def plan_pair(a, b, fresh_pool, alpha=0.05, target_power=0.8):
     count = required_items(result["mean_difference"], result["total_variance"], alpha, target_power)
     if result["total_variance"] == 0:
         count = None
-    status = "nonestimable" if count is None else "feasible" if count <= fresh_pool else "infeasible"
+    status = (
+        "nonestimable" if count is None else "feasible" if count <= fresh_pool else "infeasible"
+    )
     return {
         **result,
         "required_items": count,
@@ -282,8 +285,7 @@ def _greedy_comparison(rows_a, rows_b, ids, fixed_gap, alpha, power):
 
 def _answer_quality(answers):
     correctness = np.asarray([answer["correct"] for answer in answers])
-    if (correctness.dtype.kind not in "buif"
-            or not np.all((correctness == 0) | (correctness == 1))):
+    if correctness.dtype.kind not in "buif" or not np.all((correctness == 0) | (correctness == 1)):
         raise ValueError("greedy/sample correctness must be binary")
     n = len(answers)
     missing_prediction = sum("prediction" not in answer for answer in answers)
@@ -313,19 +315,23 @@ def model_summary(models, k):
             aligned_samples(raw_rows, raw_rows, list(rows), k, exact=True)
             try:
                 greedy = _answer_quality([row["greedy"] for row in rows.values()])
-                samples = _answer_quality([
-                    answer for row in rows.values() for answer in row["samples"]
-                ])
+                samples = _answer_quality(
+                    [answer for row in rows.values() for answer in row["samples"]]
+                )
             except (KeyError, TypeError) as exc:
                 raise ValueError("raw output lacks explicit greedy/sample correctness") from exc
             benchmarks[benchmark] = {
-                "n_items": len(rows), "k": k,
+                "n_items": len(rows),
+                "k": k,
                 "greedy_accuracy": greedy["accuracy"],
                 "mean_sampled_accuracy": samples["accuracy"],
-                "greedy": greedy, "samples": samples,
+                "greedy": greedy,
+                "samples": samples,
             }
         result[slug] = {
-            "model": document["model"], "revision": document["revision"], "benchmarks": benchmarks
+            "model": document["model"],
+            "revision": document["revision"],
+            "benchmarks": benchmarks,
         }
     return result
 
@@ -374,16 +380,20 @@ def validate_sources(plan, protocol, pilot_models, confirm_models, protocol_sha2
     }
     protocol_pairs = {
         (benchmark, *sorted(pair))
-        for benchmark in protocol["benchmarks"] for pair in protocol["pairs"]
+        for benchmark in protocol["benchmarks"]
+        for pair in protocol["pairs"]
     }
     if planned_pairs != protocol_pairs:
         raise ValueError("plan comparisons differ from the protocol")
     for stage, documents in (("pilot", pilot_models), ("confirm", confirm_models)):
         for slug, document in documents.items():
             model = models.get(slug)
-            if (model is None or document.get("slug") != slug
-                    or document.get("model") != model["id"]
-                    or document.get("revision") != model["revision"]):
+            if (
+                model is None
+                or document.get("slug") != slug
+                or document.get("model") != model["id"]
+                or document.get("revision") != model["revision"]
+            ):
                 raise ValueError("raw model identity/revision differs from the protocol")
             metadata = document.get("metadata", {})
             if metadata.get("protocol_sha256") != protocol_sha256:
@@ -434,32 +444,59 @@ def analyze_plan(plan, pilot_models, confirm_models):
         except KeyError as exc:
             raise ValueError("a planned model has no pilot output") from exc
         for name, document in ((name_a, pilot_a), (name_b, pilot_b)):
-            if (document.get("slug") != name or not document.get("model")
-                    or not document.get("revision")):
+            if (
+                document.get("slug") != name
+                or not document.get("model")
+                or not document.get("revision")
+            ):
                 raise ValueError("pilot slug, model name, or pinned revision is missing/mismatched")
         rows_a, rows_b = _benchmark(pilot_a, benchmark), _benchmark(pilot_b, benchmark)
         ids = list(indexed_rows(rows_a))
         _pilot_ids_setting(plan["pilot_items"], benchmark, ids)
         a, b = aligned_samples(rows_a, rows_b, ids, k, exact=True)
         pilot = variance_decomposition(a, b)
-        for field, value in (("pilot_difference", pilot["mean_difference"]),
-                             ("pilot_variance", pilot["total_variance"])):
-            if field in pair and not math.isclose(_real(pair[field], field), value,
-                                                  rel_tol=1e-9, abs_tol=1e-12):
+        for field, value in (
+            ("pilot_difference", pilot["mean_difference"]),
+            ("pilot_variance", pilot["total_variance"]),
+        ):
+            if field in pair and not math.isclose(
+                _real(pair[field], field), value, rel_tol=1e-9, abs_tol=1e-12
+            ):
                 raise ValueError(f"{field} differs from the raw pilot")
-        count = (required_items(pilot["mean_difference"], pilot["total_variance"], alpha, power)
-                 if pilot["total_variance"] > 0 else None)
+        count = (
+            required_items(pilot["mean_difference"], pilot["total_variance"], alpha, power)
+            if pilot["total_variance"] > 0
+            else None
+        )
         scheduled_count = max(minimum_items, count) if count is not None else None
-        result = {"benchmark": benchmark, "model_a": name_a, "model_b": name_b,
-                  "pilot": pilot, "required_items": count, "planned_n_items": pair["n_items"]}
-        result["required_items_k1"] = required_items(
-            pilot["mean_difference"], pilot["item_variance"] + pilot["sampling_variance"],
-            alpha, power,
-        ) if pilot["total_variance"] > 0 else None
-        result["required_items_k5"] = required_items(
-            pilot["mean_difference"], pilot["item_variance"] + pilot["sampling_variance"] / 5,
-            alpha, power,
-        ) if pilot["total_variance"] > 0 else None
+        result = {
+            "benchmark": benchmark,
+            "model_a": name_a,
+            "model_b": name_b,
+            "pilot": pilot,
+            "required_items": count,
+            "planned_n_items": pair["n_items"],
+        }
+        result["required_items_k1"] = (
+            required_items(
+                pilot["mean_difference"],
+                pilot["item_variance"] + pilot["sampling_variance"],
+                alpha,
+                power,
+            )
+            if pilot["total_variance"] > 0
+            else None
+        )
+        result["required_items_k5"] = (
+            required_items(
+                pilot["mean_difference"],
+                pilot["item_variance"] + pilot["sampling_variance"] / 5,
+                alpha,
+                power,
+            )
+            if pilot["total_variance"] > 0
+            else None
+        )
         result["greedy"] = _greedy_comparison(
             rows_a, rows_b, ids, pilot["mean_difference"], alpha, power
         )
@@ -467,15 +504,21 @@ def analyze_plan(plan, pilot_models, confirm_models):
         if fresh_pool is not None:
             fresh_pool = _integer(fresh_pool, "fresh_pool", minimum=0)
             result["fresh_pool"] = fresh_pool
-        status = ("nonestimable" if count is None else
-                  "infeasible" if fresh_pool is not None and scheduled_count > fresh_pool
-                  else "feasible")
+        status = (
+            "nonestimable"
+            if count is None
+            else "infeasible"
+            if fresh_pool is not None and scheduled_count > fresh_pool
+            else "feasible"
+        )
         if pair.get("status", status) != status:
             raise ValueError("planned feasibility status differs from the raw pilot")
         result["status"] = status
         if status != "feasible":
             if pair["n_items"] not in (None, 0) or pair.get("item_ids"):
-                raise ValueError("infeasible/nonestimable comparisons cannot have confirmatory items")
+                raise ValueError(
+                    "infeasible/nonestimable comparisons cannot have confirmatory items"
+                )
             result["confirmation"] = None
             results.append(result)
             continue
@@ -489,13 +532,23 @@ def analyze_plan(plan, pilot_models, confirm_models):
             confirm_a, confirm_b = confirm_models[name_a], confirm_models[name_b]
         except KeyError as exc:
             raise ValueError("a feasible planned model has no confirmation output") from exc
-        for name, document, pilot_doc in ((name_a, confirm_a, pilot_a),
-                                           (name_b, confirm_b, pilot_b)):
-            if (document.get("slug") != name or document.get("model") != pilot_doc["model"]
-                    or document.get("revision") != pilot_doc["revision"]):
+        for name, document, pilot_doc in (
+            (name_a, confirm_a, pilot_a),
+            (name_b, confirm_b, pilot_b),
+        ):
+            if (
+                document.get("slug") != name
+                or document.get("model") != pilot_doc["model"]
+                or document.get("revision") != pilot_doc["revision"]
+            ):
                 raise ValueError("confirmation model or revision differs from the pilot")
-        a, b = aligned_samples(_benchmark(confirm_a, benchmark), _benchmark(confirm_b, benchmark),
-                               item_ids, k, pilot_item_ids=ids)
+        a, b = aligned_samples(
+            _benchmark(confirm_a, benchmark),
+            _benchmark(confirm_b, benchmark),
+            item_ids,
+            k,
+            pilot_item_ids=ids,
+        )
         result["confirmation"] = paired_t_test(a, b, alpha)
         results.append(result)
     tests = [row["confirmation"] for row in results if row["confirmation"] is not None]

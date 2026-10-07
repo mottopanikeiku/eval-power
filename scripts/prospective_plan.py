@@ -50,7 +50,9 @@ def main():
             )
             required = stats["required_items"]
             n = None if required is None else max(protocol["minimum_confirm_items"], required)
-            status = "nonestimable" if n is None else "feasible" if n <= len(fresh) else "infeasible"
+            status = (
+                "nonestimable" if n is None else "feasible" if n <= len(fresh) else "infeasible"
+            )
             pairs.append(
                 {
                     "benchmark": benchmark,
@@ -79,7 +81,11 @@ def main():
         "minimum_items": protocol["minimum_confirm_items"],
         "pilot_items": pilot_ids,
         "pairs": pairs,
-        "interpretation": "One fresh comparison per feasible model pair and benchmark. Shared model answers make detections dependent; observed detection fraction is not an independent estimate of a single pair's power.",
+        "interpretation": (
+            "One fresh comparison per feasible model pair and benchmark. Shared model answers "
+            "make detections dependent; observed detection fraction is not an independent "
+            "estimate of a single pair's power."
+        ),
     }
     destination.write_text(json.dumps(plan, indent=2) + "\n")
     print(

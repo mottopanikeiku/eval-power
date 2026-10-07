@@ -76,7 +76,9 @@ class RangeReader(io.RawIOBase):
         request = Request(URL + f"?range_start={start}", headers={"Range": f"bytes={start}-{stop}"})
         with urlopen(request, timeout=120) as response:
             if response.status != 206:
-                raise ValueError("source must support range projection; refusing full text download")
+                raise ValueError(
+                    "source must support range projection; refusing full text download"
+                )
             expected = f"bytes {start}-{stop}/{PARQUET_SIZE}"
             if response.headers.get("Content-Range") != expected:
                 raise ValueError("unexpected source byte range")
@@ -207,22 +209,35 @@ def analyze(args):
     ranking = np.argsort(-fit.scores, kind="stable")
     ranked = []
     for rank, i in enumerate(ranking, start=1):
-        ranked.append({"rank": rank, "model": names[i], "score_log_odds": fit.scores[i],
-                       "score_elo_centered": fit.scores[i] * ELO_SCALE})
+        ranked.append(
+            {
+                "rank": rank,
+                "model": names[i],
+                "score_log_odds": fit.scores[i],
+                "score_elo_centered": fit.scores[i] * ELO_SCALE,
+            }
+        )
     save_csv(args.result_dir / "ranking.csv", ranked)
     adjacent = []
     for i, j in zip(ranking[:-1], ranking[1:], strict=True):
         gap, se = contrast(fit, i, j)
-        low, high = (np.quantile(boots[:, i] - boots[:, j], [0.025, 0.975])
-                     if len(boots) else (None, None))
+        low, high = (
+            np.quantile(boots[:, i] - boots[:, j], [0.025, 0.975]) if len(boots) else (None, None)
+        )
         votes, status = planned_votes(gap, se, int(full.sum()))
         adjacent.append(
-            {"model_a": names[i], "model_b": names[j], "gap_log_odds": gap,
-             "gap_elo": gap * ELO_SCALE, "wald_low_elo": (gap - 1.96 * se) * ELO_SCALE,
-             "wald_high_elo": (gap + 1.96 * se) * ELO_SCALE,
-             "bootstrap_low_elo": None if low is None else low * ELO_SCALE,
-             "bootstrap_high_elo": None if high is None else high * ELO_SCALE,
-             "total_votes_for_80pct": votes, "plan_status": status}
+            {
+                "model_a": names[i],
+                "model_b": names[j],
+                "gap_log_odds": gap,
+                "gap_elo": gap * ELO_SCALE,
+                "wald_low_elo": (gap - 1.96 * se) * ELO_SCALE,
+                "wald_high_elo": (gap + 1.96 * se) * ELO_SCALE,
+                "bootstrap_low_elo": None if low is None else low * ELO_SCALE,
+                "bootstrap_high_elo": None if high is None else high * ELO_SCALE,
+                "total_votes_for_80pct": votes,
+                "plan_status": status,
+            }
         )
     save_csv(args.result_dir / "adjacent.csv", adjacent)
     # Fixed evenly spaced alphabetical neighbors, selected without score information.
@@ -246,18 +261,32 @@ def analyze(args):
                     delta, trial_se = contrast(trial, i, j)
                     rejected += int(abs(delta / trial_se) > z)
         planning.append(
-            {"model_a": names[i], "model_b": names[j], "pilot_fit_status": pilot_fit.status,
-             "pilot_gap_log_odds": gap, "pilot_se": se, "planned_total_votes": n,
-             "plan_status": status, "heldout_gap_log_odds": held_gap, "heldout_se": held_se,
-             "trials": args.trials if status == "ok" else 0, "successful_fits": successful,
-             "rejections": rejected,
-             "rejection_rate_all_trials": rejected / args.trials if status == "ok" else None,
-             "rejection_rate_conditional": rejected / successful if successful else None,
-             "mc_se": np.sqrt((rejected / args.trials) * (1 - rejected / args.trials)
-                              / args.trials) if status == "ok" else None,
-             "disconnected": failures["disconnected"], "separated": failures["separated"],
-             "other_fit_failures": sum(v for k, v in failures.items()
-                                       if k not in ("ok", "disconnected", "separated"))}
+            {
+                "model_a": names[i],
+                "model_b": names[j],
+                "pilot_fit_status": pilot_fit.status,
+                "pilot_gap_log_odds": gap,
+                "pilot_se": se,
+                "planned_total_votes": n,
+                "plan_status": status,
+                "heldout_gap_log_odds": held_gap,
+                "heldout_se": held_se,
+                "trials": args.trials if status == "ok" else 0,
+                "successful_fits": successful,
+                "rejections": rejected,
+                "rejection_rate_all_trials": rejected / args.trials if status == "ok" else None,
+                "rejection_rate_conditional": rejected / successful if successful else None,
+                "mc_se": np.sqrt(
+                    (rejected / args.trials) * (1 - rejected / args.trials) / args.trials
+                )
+                if status == "ok"
+                else None,
+                "disconnected": failures["disconnected"],
+                "separated": failures["separated"],
+                "other_fit_failures": sum(
+                    v for k, v in failures.items() if k not in ("ok", "disconnected", "separated")
+                ),
+            }
         )
     save_csv(args.result_dir / "pilot_planning.csv", planning)
     wald_excludes = sum(int(row["wald_low_elo"] > 0) for row in adjacent)
@@ -265,64 +294,87 @@ def analyze(args):
         int(row["bootstrap_low_elo"] is not None and row["bootstrap_low_elo"] > 0)
         for row in adjacent
     )
-    plan_sizes = [row["total_votes_for_80pct"] for row in adjacent
-                  if row["total_votes_for_80pct"] is not None]
-    rates = [row["rejection_rate_all_trials"] for row in planning
-             if row["rejection_rate_all_trials"] is not None]
+    plan_sizes = [
+        row["total_votes_for_80pct"] for row in adjacent if row["total_votes_for_80pct"] is not None
+    ]
+    rates = [
+        row["rejection_rate_all_trials"]
+        for row in planning
+        if row["rejection_rate_all_trials"] is not None
+    ]
     save_json(
         args.result_dir / "summary.json",
-        {"eligible_models": models, "minimum_model_exposure": args.minimum_votes,
-         "excluded_models": len(degree) - models,
-         "retained_votes": int(full.sum()), "pilot_votes": int(pilot.sum()),
-         "heldout_votes": int(heldout.sum()), "fit_status": fit.status,
-         "pilot_fit_status": pilot_fit.status, "heldout_fit_status": heldout_fit.status,
-         "adjacent_pairs": len(adjacent), "wald_intervals_excluding_zero": wald_excludes,
-         "bootstrap_intervals_excluding_zero": bootstrap_excludes,
-         "bootstrap_statuses": {
-             status: bootstrap_statuses[status]
-             for status in ("ok", "disconnected", "separated", "singular",
-                            "line_search_failed", "not_converged")
-         },
-         "bootstrap_successes": len(boots), "bootstrap_attempts": args.bootstrap,
-         "median_adjacent_total_votes_for_80pct": (
-             float(np.median(plan_sizes)) if plan_sizes else None
-         ),
-         "adjacent_zero_or_nonestimable_plans": len(adjacent) - len(plan_sizes),
-         "score_independent_planned_pairs": len(planning),
-         "median_heldout_resampling_rejection_rate": float(np.median(rates)) if rates else None,
-         "seed": args.seed,
-         "methods": {
-             "tie": (
-                 "one vote with fractional outcome 0.5; ties and both-bad ties are pooled upstream"
-             ),
-             "fit": "unpenalized Bradley-Terry, sum-zero log-odds scores; Elo=400/log(10)*score",
-             "wald": "pointwise 95% inverse-Hessian curvature intervals; not sandwich corrected",
-             "bootstrap": "pointwise percentile 95% IID vote bootstrap over pair/outcome counts",
-             "bootstrap_failures": "reported by status; intervals conditional on successful fits",
-             "adjacency": (
-                 "descriptive full-data rank neighbors, not an independently selected test set"
-             ),
-             "selection": "exposure >= minimum; planning pairs evenly spaced alphabetic neighbors",
-             "planning": (
-                 "80% normal-approximation two-sided alpha=.05, total votes at pilot pair mix"
-             ),
-             "evaluation": (
-                 "multinomial resampling of disjoint heldout votes at each pilot plan; "
-                 "NOT new votes"
-             ),
-             "failure_denominator": (
-                 "all-trial rejection rate counts nonestimable fits as nonrejections; "
-                 "conditional also saved"
-             ),
-             "limitations": [
-                 "IID votes; user/prompt clustering unavailable in retained aggregates",
-                 "historical nonrepresentative competition subset, not a current leaderboard",
-                 "BT assumes a single transitive preference strength across matchups",
-                 "pointwise intervals; no multiplicity or rank-selection correction",
-                 "heldout resampling measures empirical stability, not prospective power",
-                 "eligibility is exposure-only but uses full sample exposures",
-             ],
-         }},
+        {
+            "eligible_models": models,
+            "minimum_model_exposure": args.minimum_votes,
+            "excluded_models": len(degree) - models,
+            "retained_votes": int(full.sum()),
+            "pilot_votes": int(pilot.sum()),
+            "heldout_votes": int(heldout.sum()),
+            "fit_status": fit.status,
+            "pilot_fit_status": pilot_fit.status,
+            "heldout_fit_status": heldout_fit.status,
+            "adjacent_pairs": len(adjacent),
+            "wald_intervals_excluding_zero": wald_excludes,
+            "bootstrap_intervals_excluding_zero": bootstrap_excludes,
+            "bootstrap_statuses": {
+                status: bootstrap_statuses[status]
+                for status in (
+                    "ok",
+                    "disconnected",
+                    "separated",
+                    "singular",
+                    "line_search_failed",
+                    "not_converged",
+                )
+            },
+            "bootstrap_successes": len(boots),
+            "bootstrap_attempts": args.bootstrap,
+            "median_adjacent_total_votes_for_80pct": (
+                float(np.median(plan_sizes)) if plan_sizes else None
+            ),
+            "adjacent_zero_or_nonestimable_plans": len(adjacent) - len(plan_sizes),
+            "score_independent_planned_pairs": len(planning),
+            "median_heldout_resampling_rejection_rate": float(np.median(rates)) if rates else None,
+            "seed": args.seed,
+            "methods": {
+                "tie": (
+                    "one vote with fractional outcome 0.5; ties and both-bad ties "
+                    "are pooled upstream"
+                ),
+                "fit": "unpenalized Bradley-Terry, sum-zero log-odds scores; Elo=400/log(10)*score",
+                "wald": "pointwise 95% inverse-Hessian curvature intervals; not sandwich corrected",
+                "bootstrap": "pointwise percentile 95% IID vote bootstrap over pair/outcome counts",
+                "bootstrap_failures": (
+                    "reported by status; intervals conditional on successful fits"
+                ),
+                "adjacency": (
+                    "descriptive full-data rank neighbors, not an independently selected test set"
+                ),
+                "selection": (
+                    "exposure >= minimum; planning pairs evenly spaced alphabetic neighbors"
+                ),
+                "planning": (
+                    "80% normal-approximation two-sided alpha=.05, total votes at pilot pair mix"
+                ),
+                "evaluation": (
+                    "multinomial resampling of disjoint heldout votes at each pilot plan; "
+                    "NOT new votes"
+                ),
+                "failure_denominator": (
+                    "all-trial rejection rate counts nonestimable fits as nonrejections; "
+                    "conditional also saved"
+                ),
+                "limitations": [
+                    "IID votes; user/prompt clustering unavailable in retained aggregates",
+                    "historical nonrepresentative competition subset, not a current leaderboard",
+                    "BT assumes a single transitive preference strength across matchups",
+                    "pointwise intervals; no multiplicity or rank-selection correction",
+                    "heldout resampling measures empirical stability, not prospective power",
+                    "eligibility is exposure-only but uses full sample exposures",
+                ],
+            },
+        },
     )
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -339,16 +391,26 @@ def analyze(args):
         axes[0].vlines(x + offset, lows, highs, color=color, alpha=0.75, label=label)
     axes[0].scatter(x, [row["gap_elo"] for row in adjacent], s=10, color="black")
     axes[0].axhline(0, color="gray", linewidth=0.8)
-    axes[0].set(xlabel="Neighbor pair in fitted rank order", ylabel="Elo-scale gap (95% intervals)",
-                title="Many adjacent gaps include zero")
+    axes[0].set(
+        xlabel="Neighbor pair in fitted rank order",
+        ylabel="Elo-scale gap (95% intervals)",
+        title="Many adjacent gaps include zero",
+    )
     axes[0].legend(fontsize=8)
     valid = [row for row in planning if row["planned_total_votes"] is not None]
-    axes[1].scatter([row["planned_total_votes"] for row in valid],
-                    [row["rejection_rate_all_trials"] for row in valid], s=26)
+    axes[1].scatter(
+        [row["planned_total_votes"] for row in valid],
+        [row["rejection_rate_all_trials"] for row in valid],
+        s=26,
+    )
     axes[1].axhline(0.8, color="gray", linestyle="--", label="Planning target: 80%")
-    axes[1].set(xscale="log", ylim=(-0.03, 1.03), xlabel="Pilot-planned total Arena votes",
-                ylabel="Heldout resampling rejection rate",
-                title="Historical resampling, not new votes")
+    axes[1].set(
+        xscale="log",
+        ylim=(-0.03, 1.03),
+        xlabel="Pilot-planned total Arena votes",
+        ylabel="Heldout resampling rejection rate",
+        title="Historical resampling, not new votes",
+    )
     axes[1].legend(fontsize=8)
     args.figure.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(args.figure, metadata={"Date": None})
@@ -356,20 +418,32 @@ def analyze(args):
     cpu = platform.processor()
     if Path("/proc/cpuinfo").exists():
         cpu = next(
-            (line.split(":", 1)[1].strip()
-             for line in Path("/proc/cpuinfo").read_text().splitlines()
-             if line.startswith("model name")),
+            (
+                line.split(":", 1)[1].strip()
+                for line in Path("/proc/cpuinfo").read_text().splitlines()
+                if line.startswith("model name")
+            ),
             cpu,
         )
-    save_json(args.result_dir / "environment.json",
-              {"recorded_at_utc": datetime.now(UTC).isoformat(), "os": platform.platform(),
-               "cpu": cpu,
-               "python": platform.python_version(), "numpy": np.__version__,
-               "scipy": scipy.__version__, "matplotlib": matplotlib.__version__,
-               "threads": {name: os.environ.get(name, "unset") for name in
-                           ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS")},
-               "command": "uv run python " + " ".join(sys.argv), "paid_compute_usd": 0,
-               "timing_claim": "none"})
+    save_json(
+        args.result_dir / "environment.json",
+        {
+            "recorded_at_utc": datetime.now(UTC).isoformat(),
+            "os": platform.platform(),
+            "cpu": cpu,
+            "python": platform.python_version(),
+            "numpy": np.__version__,
+            "scipy": scipy.__version__,
+            "matplotlib": matplotlib.__version__,
+            "threads": {
+                name: os.environ.get(name, "unset")
+                for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS")
+            },
+            "command": "uv run python " + " ".join(sys.argv),
+            "paid_compute_usd": 0,
+            "timing_claim": "none",
+        },
+    )
 
 
 def main():

@@ -75,10 +75,12 @@ def test_three_model_fit_matches_scalar_vote_likelihood():
 
 @pytest.mark.parametrize(
     ("counts", "models", "status"),
-    [([[1, 0, 0]], 2, "separated"),
-     ([[0, 0, 0]], 2, "disconnected"),
-     ([[1, 1, 0], [0, 0, 0], [0, 0, 0]], 3, "disconnected"),
-     ([[1, 0, 0], [1, 0, 0], [1, 0, 0]], 3, "separated")],
+    [
+        ([[1, 0, 0]], 2, "separated"),
+        ([[0, 0, 0]], 2, "disconnected"),
+        ([[1, 1, 0], [0, 0, 0], [0, 0, 0]], 3, "disconnected"),
+        ([[1, 0, 0], [1, 0, 0], [1, 0, 0]], 3, "separated"),
+    ],
 )
 def test_graph_failures_are_not_regularized_away(counts, models, status):
     fit = fit_bt(counts, models)

@@ -40,6 +40,7 @@ cache = modal.Volume.from_name("eval-power-hf-cache", create_if_missing=True)
     memory=8192,
     timeout=timeout_seconds,
     max_containers=container_limit,
+    single_use_containers=True,
     volumes={"/cache": cache},
 )
 def generate(model, protocol, item_indices, phase):
@@ -109,8 +110,9 @@ def generate(model, protocol, item_indices, phase):
         outputs = llm.generate(prompts, parameters, use_tqdm=False)
         rows = []
         for j, idx in enumerate(indices):
-            def record(output):
-                prediction, correct = grade_answer(bench, output.text, references[j])
+
+            def record(output, benchmark=bench, reference=references[j]):
+                prediction, correct = grade_answer(benchmark, output.text, reference)
                 return {
                     "text": output.text,
                     "prediction": prediction,

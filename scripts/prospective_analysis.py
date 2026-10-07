@@ -66,13 +66,23 @@ def make_figure(summary, destination):
     for index, row in enumerate(pairs):
         confirmation = row["confirmation"]
         if confirmation is None:
-            confirm_axis.annotate(row["status"], (0, index), xytext=(5, 0),
-                                  textcoords="offset points", va="center", fontsize=8)
+            confirm_axis.annotate(
+                row["status"],
+                (0, index),
+                xytext=(5, 0),
+                textcoords="offset points",
+                va="center",
+                fontsize=8,
+            )
             continue
         mean = confirmation["mean_difference"]
         low, high = confirmation["confidence_interval"]
         confirm_axis.errorbar(
-            mean, index, xerr=[[mean - low], [high - mean]], fmt="o", capsize=2,
+            mean,
+            index,
+            xerr=[[mean - low], [high - mean]],
+            fmt="o",
+            capsize=2,
             color="#426b8a" if confirmation["detected"] else "0.55",
         )
     confirm_axis.set_xlabel("Fresh-item mean accuracy difference (A − B)")
@@ -80,12 +90,16 @@ def make_figure(summary, destination):
     detection = summary["detection"]
     if detection["tested"]:
         low, high = detection["wilson_interval"]
-        caption = (f"Observed detections: {detection['detected']}/{detection['tested']}; "
-                   f"descriptive Wilson interval [{low:.2f}, {high:.2f}].")
+        caption = (
+            f"Observed detections: {detection['detected']}/{detection['tested']}; "
+            f"descriptive Wilson interval [{low:.2f}, {high:.2f}]."
+        )
     else:
         caption = "No feasible comparisons were tested."
-    figure.suptitle(caption + "\nShared models/items are not independent trials or single-pair power.",
-                   fontsize=11)
+    figure.suptitle(
+        caption + "\nShared models/items are not independent trials or single-pair power.",
+        fontsize=11,
+    )
     destination.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(destination, format="svg", metadata={"Date": None})
     plt.close(figure)

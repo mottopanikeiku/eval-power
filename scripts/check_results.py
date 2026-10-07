@@ -63,12 +63,16 @@ def check_prospective() -> None:
         assert summary[key] == value, f"Prospective summary differs: {key}"
     for group in ("protocol", "plan"):
         source = summary["sources"][group]
-        assert source["sha256"] == hashlib.sha256((directory / source["file"]).read_bytes()).hexdigest()
+        assert (
+            source["sha256"]
+            == hashlib.sha256((directory / source["file"]).read_bytes()).hexdigest()
+        )
     for stage in ("pilot", "confirm"):
         for source in summary["sources"][stage]:
-            assert source["sha256"] == hashlib.sha256(
-                (directory / source["file"]).read_bytes()
-            ).hexdigest()
+            assert (
+                source["sha256"]
+                == hashlib.sha256((directory / source["file"]).read_bytes()).hexdigest()
+            )
     assert ET.parse("figures/prospective.svg").getroot().tag.endswith("svg")
 
 

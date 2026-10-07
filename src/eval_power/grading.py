@@ -8,8 +8,7 @@ def make_prompt(benchmark, row):
     if benchmark == "gsm8k":
         reference = row["answer"].split("####")[-1].strip()
         return (
-            row["question"]
-            + "\nSolve this problem. End with #### followed by the numeric answer.",
+            row["question"] + "\nSolve this problem. End with #### followed by the numeric answer.",
             reference,
         )
     if benchmark == "arc":

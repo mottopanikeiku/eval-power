@@ -10,9 +10,9 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.linalg import solve
 from scipy.optimize import brentq
-from scipy.special import expit, ndtr
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import connected_components
+from scipy.special import expit, ndtr
 from scipy.stats import norm
 
 ELO_SCALE = 400 / np.log(10)
@@ -72,8 +72,7 @@ def fit_bt(counts, models, max_iterations=80):
         gradient -= np.bincount(b, residual, minlength=models)
         weight = n * p * (1 - p)
         hessian = np.diag(
-            np.bincount(a, weight, minlength=models)
-            + np.bincount(b, weight, minlength=models)
+            np.bincount(a, weight, minlength=models) + np.bincount(b, weight, minlength=models)
         )
         hessian[a, b] -= weight
         hessian[b, a] -= weight
@@ -83,9 +82,7 @@ def fit_bt(counts, models, max_iterations=80):
         gradient, hessian = curvature(beta)
         if np.max(np.abs(gradient)) < max(1e-7, float(n.sum()) * 1e-11):
             covariance = np.zeros((models, models))
-            covariance[:-1, :-1] = solve(
-                hessian[:-1, :-1], np.eye(models - 1), assume_a="pos"
-            )
+            covariance[:-1, :-1] = solve(hessian[:-1, :-1], np.eye(models - 1), assume_a="pos")
             # Transform reference-model covariance to the sum-zero convention.
             centered = covariance - covariance.mean(axis=0)[None, :]
             centered -= centered.mean(axis=1)[:, None]

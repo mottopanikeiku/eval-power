@@ -19,7 +19,6 @@ from eval_power.prospective import (
     wilson_interval,
 )
 
-
 A = [[1, 1, 0, 1, 0], [1, 0, 0, 0, 0], [1, 1, 1, 1, 1], [0, 0, 0, 0, 0]]
 B = [[0, 0, 0, 0, 0], [1, 1, 1, 0, 0], [1, 0, 1, 0, 1], [0, 0, 0, 0, 0]]
 
@@ -31,11 +30,14 @@ def scalar_variance(values):
 
 def make_rows(ids, samples):
     return [
-        {"item_id": item_id,
-         "greedy": {"correct": row[0], "prediction": str(row[0]), "finish_reason": "stop"},
-         "samples": [
-             {"correct": value, "prediction": str(value), "finish_reason": "stop"} for value in row
-         ]}
+        {
+            "item_id": item_id,
+            "greedy": {"correct": row[0], "prediction": str(row[0]), "finish_reason": "stop"},
+            "samples": [
+                {"correct": value, "prediction": str(value), "finish_reason": "stop"}
+                for value in row
+            ],
+        }
         for item_id, row in zip(ids, samples, strict=True)
     ]
 
@@ -43,8 +45,7 @@ def make_rows(ids, samples):
 def test_decomposition_matches_scalar_reference_and_uint8():
     actual = variance_decomposition(np.asarray(A, dtype=np.uint8), np.asarray(B, dtype=np.uint8))
     differences = [(sum(a) - sum(b)) / 5 for a, b in zip(A, B, strict=True)]
-    sampling = sum(scalar_variance(a) + scalar_variance(b)
-                   for a, b in zip(A, B, strict=True)) / 4
+    sampling = sum(scalar_variance(a) + scalar_variance(b) for a, b in zip(A, B, strict=True)) / 4
     observed = scalar_variance(differences)
     unclipped = observed - sampling / 5
     assert actual["n_items"] == 4
@@ -72,8 +73,9 @@ def test_k_is_used_without_truncation(k):
     a = [[1] * k, [0] * k, [1] * k]
     b = [[0] * k] * 3
     assert variance_decomposition(a, b)["k"] == k
-    aligned = aligned_samples(make_rows(["a", "b", "c"], a),
-                              make_rows(["a", "b", "c"], b), ["a", "b", "c"], k)
+    aligned = aligned_samples(
+        make_rows(["a", "b", "c"], a), make_rows(["a", "b", "c"], b), ["a", "b", "c"], k
+    )
     assert aligned[0].shape == (3, k)
 
 
@@ -83,10 +85,15 @@ def test_decomposition_rejects_too_few_decodes(k):
         variance_decomposition(np.zeros((3, k)), np.zeros((3, k)))
 
 
-@pytest.mark.parametrize("a,b", [([[0] * 5], [[0] * 5]),
-                                  ([[0] * 5] * 2, [[0] * 6] * 2),
-                                  ([[2] * 5] * 2, [[0] * 5] * 2),
-                                  ([[float("nan")] * 5] * 2, [[0] * 5] * 2)])
+@pytest.mark.parametrize(
+    "a,b",
+    [
+        ([[0] * 5], [[0] * 5]),
+        ([[0] * 5] * 2, [[0] * 6] * 2),
+        ([[2] * 5] * 2, [[0] * 5] * 2),
+        ([[float("nan")] * 5] * 2, [[0] * 5] * 2),
+    ],
+)
 def test_bad_sample_arrays_error(a, b):
     with pytest.raises(ValueError):
         variance_decomposition(a, b)
@@ -101,10 +108,15 @@ def test_normal_item_requirement_matches_requested_formula():
     assert required_items(delta, 0) == 0
 
 
-@pytest.mark.parametrize("delta,variance,alpha,power", [
-    (2, 0.1, 0.05, 0.8), (0.1, -1, 0.05, 0.8),
-    (0.1, 0.1, 0, 0.8), (0.1, 0.1, 0.05, 1),
-])
+@pytest.mark.parametrize(
+    "delta,variance,alpha,power",
+    [
+        (2, 0.1, 0.05, 0.8),
+        (0.1, -1, 0.05, 0.8),
+        (0.1, 0.1, 0, 0.8),
+        (0.1, 0.1, 0.05, 1),
+    ],
+)
 def test_invalid_planning_inputs_error(delta, variance, alpha, power):
     with pytest.raises(ValueError):
         required_items(delta, variance, alpha, power)
@@ -187,10 +199,18 @@ def test_wilson_reference_and_empty_detection():
 def example_plan():
     pilot_ids = ["p0", "p1", "p2", "p3"]
     pilot = {
-        "a": {"slug": "a", "model": "org/a", "revision": "rev-a",
-              "benchmarks": {"gsm8k": make_rows(pilot_ids, A)}},
-        "b": {"slug": "b", "model": "org/b", "revision": "rev-b",
-              "benchmarks": {"gsm8k": make_rows(pilot_ids, B)}},
+        "a": {
+            "slug": "a",
+            "model": "org/a",
+            "revision": "rev-a",
+            "benchmarks": {"gsm8k": make_rows(pilot_ids, A)},
+        },
+        "b": {
+            "slug": "b",
+            "model": "org/b",
+            "revision": "rev-b",
+            "benchmarks": {"gsm8k": make_rows(pilot_ids, B)},
+        },
     }
     estimate = variance_decomposition(A, B)
     n = max(16, required_items(estimate["mean_difference"], estimate["total_variance"]))
@@ -199,13 +219,25 @@ def example_plan():
         name: {**document, "benchmarks": {"gsm8k": make_rows(ids, [samples[0]] * n)}}
         for (name, document), samples in zip(pilot.items(), (A, B), strict=True)
     }
-    plan = {"protocol_commit": "abc123", "alpha": 0.05, "target_power": 0.8, "k": 5,
-            "pilot_items": {"gsm8k": pilot_ids}, "pairs": [{
-                "benchmark": "gsm8k", "model_a": "a", "model_b": "b", "n_items": n,
-                "item_ids": ids, "fresh_pool": 512,
+    plan = {
+        "protocol_commit": "abc123",
+        "alpha": 0.05,
+        "target_power": 0.8,
+        "k": 5,
+        "pilot_items": {"gsm8k": pilot_ids},
+        "pairs": [
+            {
+                "benchmark": "gsm8k",
+                "model_a": "a",
+                "model_b": "b",
+                "n_items": n,
+                "item_ids": ids,
+                "fresh_pool": 512,
                 "pilot_difference": estimate["mean_difference"],
                 "pilot_variance": estimate["total_variance"],
-            }]}
+            }
+        ],
+    }
     return plan, pilot, confirm
 
 
@@ -250,8 +282,13 @@ def test_zero_gap_pair_is_nonestimable_not_tested():
     plan, pilot, _ = example_plan()
     pilot["b"]["benchmarks"] = copy.deepcopy(pilot["a"]["benchmarks"])
     estimate = variance_decomposition(A, A)
-    plan["pairs"][0].update(n_items=None, item_ids=[], status="nonestimable",
-                             pilot_difference=0, pilot_variance=estimate["total_variance"])
+    plan["pairs"][0].update(
+        n_items=None,
+        item_ids=[],
+        status="nonestimable",
+        pilot_difference=0,
+        pilot_variance=estimate["total_variance"],
+    )
     assert analyze_plan(plan, pilot, {})["pairs"][0]["status"] == "nonestimable"
 
 
@@ -314,8 +351,13 @@ def test_confirmation_collection_must_equal_planned_union(change):
 
 def example_protocol(plan, pilot, confirm):
     protocol = {
-        "alpha": 0.05, "target_power": 0.8, "k": 5, "minimum_confirm_items": 16,
-        "fresh_pool": 512, "benchmarks": {"gsm8k": {}}, "pairs": [["a", "b"]],
+        "alpha": 0.05,
+        "target_power": 0.8,
+        "k": 5,
+        "minimum_confirm_items": 16,
+        "fresh_pool": 512,
+        "benchmarks": {"gsm8k": {}},
+        "pairs": [["a", "b"]],
         "models": [
             {"slug": slug, "id": document["model"], "revision": document["revision"]}
             for slug, document in pilot.items()
@@ -324,9 +366,7 @@ def example_protocol(plan, pilot, confirm):
     for document in pilot.values():
         document["metadata"] = {"protocol_sha256": "protocol-hash"}
     for document in confirm.values():
-        document["metadata"] = {
-            "protocol_sha256": "protocol-hash", "plan_sha256": "plan-hash"
-        }
+        document["metadata"] = {"protocol_sha256": "protocol-hash", "plan_sha256": "plan-hash"}
     return protocol
 
 

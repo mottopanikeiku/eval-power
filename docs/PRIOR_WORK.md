@@ -54,6 +54,15 @@ $$Var(\bar D_n\mid D_{1:N})=(1-n/N)S_D^2/n,$$
 
 with $S_D^2$ using denominator $N-1$. This concerns the fixed pool mean, **not** superpopulation uncertainty. Response matrices cannot establish future-subject power or decoding variability. Position this as a broader, independently calibrated replication with explicit estimands and selection handling, not a new statistical method.
 
+## 5. Repeated answers and preference votes
+
+I extend the accuracy analysis with newly generated answers from pinned instruct models on identified, disjoint benchmark items. The [collection protocol](../results/prospective/protocol.json) separates repeated-decoding noise from item-selection variation using a standard within-item/between-item variance decomposition, not a new power formula. I retain negative component estimates before clipping them for planning. The observed-gap rule deliberately tests the pilot-planning concern in [9,10]; it is not my recommendation for choosing a meaningful effect.
+
+I use flexible final-number extraction inspired by lm-eval-harness [12] for GSM8K. For ARC-Challenge, I measure guided direct-choice generation using vLLM [13], not conventional option likelihood: every model can generate only `Answer: <one of the provided labels>`. Changing this constraint changes the quantity being measured. I also reserve a separate block of child seeds for every item because vLLM offsets the parent seed for repeated answers [14]. The [pilot revision analysis](../results/prospective/pilot_revision.json) retains the earlier outputs and explains these changes before fresh-item confirmation.
+
+I also analyze public human-preference votes using the Bradley–Terry approach used by Chatbot Arena [11]. I compare inverse-Hessian intervals with an individual-vote bootstrap, then test pilot plans by resampling disjoint heldout votes. This is historical resampling, not collection of new human votes. Ties, graph identification, failed fits, score-independent planning-pair selection, and the distinction between total network votes and direct pair votes are described in [the methods](../results/arena/methods.txt).
+
+
 ## References (opened; EXT)
 
 1. Evan Miller. 2024. *Adding Error Bars to Evals: A Statistical Approach to Language Model Evaluations*. arXiv preprint 2411.00640. [Full text](https://arxiv.org/html/2411.00640).
@@ -67,5 +76,9 @@ with $S_D^2$ using denominator $N-1$. This concerns the fixed pool mean, **not**
 8. Robert E. Blackwell, Jon Barry, Anthony G. Cohn. 2025 revision of 2024 preprint. *Towards Reproducible LLM Evaluation: Quantifying Uncertainty in LLM Benchmark Scores*. [arXiv 2410.03492v2 full text](https://arxiv.org/html/2410.03492v2).
 9. Casper Albers, Daniël Lakens. 2018. *When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias*. Journal of Experimental Social Psychology 74:187–195. [DOI](https://doi.org/10.1016/j.jesp.2017.09.004); [opened publisher PDF via Groningen](https://pure.rug.nl/ws/files/64849114/1_s2.0_S002210311630230X_main.pdf).
 10. Helena Chmura Kraemer, Jim Mintz, Art Noda, Jared Tinklenberg, Jerome A. Yesavage. 2006. *Caution regarding the use of pilot studies to guide power calculations for study proposals*. Archives of General Psychiatry 63(5):484–489. DOI: 10.1001/archpsyc.63.5.484. [Opened PubMed record/abstract](https://pubmed.ncbi.nlm.nih.gov/16651505/); [opened publisher metadata/abstract](https://www.ovid.com/journals/aogp/abstract/00000756-200605000-00003~caution-regarding-the-use-of-pilot-studies-to-guide-power).
+11. Wei-Lin Chiang et al. 2024. *Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference*. [Opened arXiv abstract and metadata](https://arxiv.org/abs/2403.04132). [Pinned public vote source and license](../data/arena_manifest.json).
+12. EleutherAI lm-evaluation-harness. [Opened GSM8K strict-match and flexible-extract configuration](https://github.com/EleutherAI/lm-evaluation-harness/blob/main/lm_eval/tasks/gsm8k/gsm8k.yaml). My numeric normalization is inspired by, not byte-identical to, its regex pipeline.
+13. vLLM 0.10.2. [Opened native guided-choice documentation](https://docs.vllm.ai/en/v0.10.2/serving/openai_compatible_server.html#extra-parameters); [guided-decoding parameters](https://docs.vllm.ai/en/v0.10.2/api/vllm/sampling_params.html).
+14. vLLM 0.10.2. [Opened repeated-request seed implementation](https://github.com/vllm-project/vllm/blob/v0.10.2/vllm/v1/engine/parallel_sampling.py#L45-L74): child seed is parent seed plus child index.
 
 Written with AI coding assistance.

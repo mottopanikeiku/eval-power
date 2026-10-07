@@ -8,10 +8,11 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import numpy as np
+from pilot_revision import build_revision
 
 from eval_power.analysis import BENCHMARKS
-from eval_power.grading import grade_answer
-from eval_power.prospective import analyze_plan, validate_sources
+from eval_power.grading import grade_answer, grade_strict_answer
+from eval_power.prospective import analyze_plan, analyze_strict_secondary, validate_sources
 from eval_power.stats import holm_adjust
 
 
@@ -24,7 +25,8 @@ def rows(name: str) -> list[dict]:
 
 def check_prospective() -> None:
     directory = Path("results/prospective")
-    protocol_path, plan_path = directory / "protocol.json", directory / "plan.json"
+    raw_directory = directory / "primary"
+    protocol_path, plan_path = directory / "protocol.json", raw_directory / "plan.json"
     protocol = json.loads(protocol_path.read_text())
     plan = json.loads(plan_path.read_text())
     summary = json.loads((directory / "summary.json").read_text())
@@ -32,7 +34,7 @@ def check_prospective() -> None:
     item_references = {}
     for stage in ("pilot", "confirm"):
         documents = {}
-        for path in sorted((directory / stage).glob("*.json.gz")):
+        for path in sorted((raw_directory / stage).glob("*.json.gz")):
             with gzip.open(path, "rt") as stream:
                 document = json.load(stream)
             slug = path.name.removesuffix(".json.gz")
@@ -49,6 +51,14 @@ def check_prospective() -> None:
                         )
                         assert answer["prediction"] == prediction
                         assert answer["correct"] == correct
+                        strict_prediction, strict_correct = grade_strict_answer(
+                            benchmark, answer["text"], item["reference"]
+                        )
+                        assert answer["strict_prediction"] == strict_prediction
+                        assert answer["strict_correct"] == strict_correct
+                        if benchmark == "arc":
+                            assert answer["text"] == f"Answer: {prediction}"
+                            assert correct == strict_correct
         stages[stage] = documents
     validate_sources(
         plan,
@@ -61,19 +71,17 @@ def check_prospective() -> None:
     recalculated = analyze_plan(plan, stages["pilot"], stages["confirm"])
     for key, value in recalculated.items():
         assert summary[key] == value, f"Prospective summary differs: {key}"
+    assert summary["strict_secondary"] == analyze_strict_secondary(
+        plan, stages["pilot"], stages["confirm"]
+    )
     for group in ("protocol", "plan"):
         source = summary["sources"][group]
-        assert (
-            source["sha256"]
-            == hashlib.sha256((directory / source["file"]).read_bytes()).hexdigest()
-        )
+        assert source["sha256"] == hashlib.sha256(Path(source["file"]).read_bytes()).hexdigest()
     for stage in ("pilot", "confirm"):
         for source in summary["sources"][stage]:
-            assert (
-                source["sha256"]
-                == hashlib.sha256((directory / source["file"]).read_bytes()).hexdigest()
-            )
+            assert source["sha256"] == hashlib.sha256(Path(source["file"]).read_bytes()).hexdigest()
     assert ET.parse("figures/prospective.svg").getroot().tag.endswith("svg")
+    assert json.loads((directory / "pilot_revision.json").read_text()) == build_revision()
 
 
 def main() -> None:

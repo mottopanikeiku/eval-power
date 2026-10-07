@@ -171,20 +171,13 @@
     "qwen15_gsm_sample_answers": 320,
     "phi35_arc_sample_truncations": 175,
     "phi35_arc_sample_answers": 320,
-    "gsm8k_action": "The old stored pilot demonstrates strict versus flexible grading on identical text. Recollect the primary GSM8K pilot with distinct child seeds and the final flexible grader.",
+    "gsm8k_action": "Regrade the original stored GSM8K pilot answers; no model rerun. Prompts and generation limits unchanged.",
     "arc_action": "Collect the same 64 pilot ARC items for all models using native guided choice over Answer: <valid label>. Preserve the original 128-token and later 1024-token unconstrained answers. Prompts and references are unchanged; the decoding distribution changes.",
-    "selection_policy": "Models, item order, pilot size, pairs, base seeds, alpha, target power, minimum and fresh pool are unchanged. The request-seed stride is corrected to k. No confirmation data had been collected at this revision.",
+    "selection_policy": "Models, item order, pilot size, pairs, seeds, alpha, target power, minimum and fresh pool are unchanged. No confirmation data had been collected at this revision.",
     "arc_long_collection_protocol_file": "results/prospective/protocol_arc_long_collection.json",
     "arc_long_collection_protocol_sha256": "b31d3ec5e038d56539aea92e944c2d93104acc7d1c2adf9323f13023bd8a6a3a",
     "phi35_arc_long_sample_truncations": 58,
     "scoring_note": "The final ARC rule is a standard native structured-output choice constraint, not standard benchmark option likelihood. It removes formatting and post-answer prose from the task. No model received a different rule, and no confirmation data informed this revision.",
-    "stop_token_note": "Phi's pinned generation config already includes end-of-turn token 32007. vLLM inherits it, so I did not claim or apply a missing-stop-token fix.",
-    "seed_revision_utc": "2026-10-07T11:59:02.271940+00:00",
-    "seed_revision_source": "https://github.com/vllm-project/vllm/blob/v0.10.2/vllm/v1/engine/parallel_sampling.py#L45-L74",
-    "guided_before_seed_fix_protocol_file": "results/prospective/protocol_arc_direct_before_seed_fix.json",
-    "guided_before_seed_fix_protocol_sha256": "0e1deb407e346003331d4f2a49f3e893dcda202dc3d993e40af8b23ec3207b08",
-    "seed_action": "Space item parent seeds by k rather than 1, because vLLM offsets n child seeds by their sample index. Recollect every primary pilot on both benchmarks; preserve earlier raw outputs only as method diagnostics."
-  },
-  "seed_stride": 5,
-  "generation_seed_rule": "base + model_index*1000000 + (100000 for confirmation, else 0) + (10000 for ARC, else 0) + dataset_index*k; vLLM child j uses parent_seed+j. All primary child streams must be distinct."
+    "stop_token_note": "Phi's pinned generation config already includes end-of-turn token 32007. vLLM inherits it, so I did not claim or apply a missing-stop-token fix."
+  }
 }

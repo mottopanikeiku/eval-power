@@ -1,6 +1,6 @@
 """Generate new, identified answers for the committed pilot or confirmation plan.
 
-Run with Modal's CLI: modal run modal_app.py --phase pilot --models qwen15
+Run with Modal's CLI: modal run modal_app.py::main --phase pilot --models qwen15
 Model weights and datasets are downloaded inside the GPU container, never locally.
 """
 
@@ -10,6 +10,7 @@ import json
 import os
 import random
 import time
+from datetime import UTC, datetime
 from pathlib import Path
 
 import modal
@@ -49,10 +50,17 @@ def generate(model, protocol, item_indices, phase):
     os.environ["HF_HOME"] = "/cache/huggingface"
     from datasets import load_dataset
     from vllm import LLM, SamplingParams
+    from vllm.sampling_params import GuidedDecodingParams
 
-    from eval_power.grading import grade_answer, make_prompt
+    from eval_power.grading import (
+        generation_seed,
+        grade_answer,
+        grade_strict_answer,
+        make_prompt,
+    )
 
     start = time.monotonic()
+    started_utc = datetime.now(UTC).isoformat()
     llm = LLM(
         model=model["id"],
         revision=model["revision"],
@@ -65,6 +73,23 @@ def generate(model, protocol, item_indices, phase):
         trust_remote_code=False,
     )
     tokenizer = llm.get_tokenizer()
+    stop_audit = SamplingParams()
+    stop_audit.update_from_generation_config(
+        llm.llm_engine.processor.generation_config_fields, tokenizer.eos_token_id
+    )
+    native_stop_ids = set(stop_audit.all_stop_token_ids)
+    marker = "EVAL_POWER_ASSISTANT_CONTENT"
+    rendered = tokenizer.apply_chat_template(
+        [{"role": "user", "content": "_"}, {"role": "assistant", "content": marker}],
+        tokenize=False,
+        add_generation_prompt=False,
+    )
+    suffix = rendered.split(marker, 1)[1]
+    chat_end_ids = {
+        tokenizer.convert_tokens_to_ids(token)
+        for token in tokenizer.all_special_tokens
+        if token in suffix
+    }
     load_seconds = time.monotonic() - start
     results = {}
     model_index = next(i for i, x in enumerate(protocol["models"]) if x["slug"] == model["slug"])
@@ -84,23 +109,27 @@ def generate(model, protocol, item_indices, phase):
             )
             references.append(reference)
             hashes.append(hashlib.sha256(user.encode()).hexdigest())
-            item_seed = (
-                protocol["generation_seed"]
-                + model_index * 1000000
-                + (100000 if phase == "confirm" else 0)
-                + (10000 if bench == "arc" else 0)
-                + idx
+            guided = (
+                GuidedDecodingParams(
+                    choice=[f"Answer: {label}" for label in row["choices"]["label"]],
+                )
+                if source.get("decoding") == "guided_direct_choice"
+                else None
             )
+            item_seed = generation_seed(protocol, model_index, bench, idx, phase)
             prompts.extend([prompt, prompt])
             parameters.extend(
                 [
-                    SamplingParams(temperature=0, max_tokens=source["max_tokens"]),
+                    SamplingParams(
+                        temperature=0, max_tokens=source["max_tokens"], guided_decoding=guided
+                    ),
                     SamplingParams(
                         n=protocol["k"],
                         temperature=protocol["temperature"],
                         top_p=protocol["top_p"],
                         max_tokens=source["max_tokens"],
                         seed=item_seed,
+                        guided_decoding=guided,
                     ),
                 ]
             )
@@ -111,14 +140,22 @@ def generate(model, protocol, item_indices, phase):
         rows = []
         for j, idx in enumerate(indices):
 
-            def record(output, benchmark=bench, reference=references[j]):
+            def record(output, *, seed=None, benchmark=bench, reference=references[j]):
                 prediction, correct = grade_answer(benchmark, output.text, reference)
+                strict_prediction, strict_correct = grade_strict_answer(
+                    benchmark, output.text, reference
+                )
                 return {
                     "text": output.text,
                     "prediction": prediction,
                     "correct": correct,
+                    "strict_prediction": strict_prediction,
+                    "strict_correct": strict_correct,
                     "finish_reason": output.finish_reason,
                     "output_tokens": len(output.token_ids),
+                    "stop_reason": output.stop_reason,
+                    "sample_index": output.index,
+                    "seed": seed,
                 }
 
             rows.append(
@@ -127,7 +164,10 @@ def generate(model, protocol, item_indices, phase):
                     "prompt_sha256": hashes[j],
                     "reference": references[j],
                     "greedy": record(outputs[2 * j].outputs[0]),
-                    "samples": [record(o) for o in outputs[2 * j + 1].outputs],
+                    "samples": [
+                        record(o, seed=parameters[2 * j + 1].seed + o.index)
+                        for o in outputs[2 * j + 1].outputs
+                    ],
                 }
             )
         results[bench] = rows
@@ -144,6 +184,7 @@ def generate(model, protocol, item_indices, phase):
         "benchmarks": results,
         "metadata": {
             "phase": phase,
+            "started_utc": started_utc,
             "gpu": "L4",
             "load_seconds": load_seconds,
             "elapsed_seconds": elapsed,
@@ -152,8 +193,17 @@ def generate(model, protocol, item_indices, phase):
             "vllm": "0.10.2",
             "k": protocol["k"],
             "temperature": protocol["temperature"],
+            "seed_stride": protocol["seed_stride"],
             "max_model_len": 2048,
             "dtype": "half",
+            "arc_decoding": protocol["benchmarks"]["arc"].get("decoding", "unconstrained"),
+            "stop_token_audit": {
+                "native_stop_ids": sorted(native_stop_ids),
+                "chat_template_end_ids": sorted(chat_end_ids),
+                "native_plus_chat_end_ids": sorted(native_stop_ids | chat_end_ids),
+                "additional_chat_end_ids_needed": sorted(chat_end_ids - native_stop_ids),
+                "note": "Audit only: I did not override native EOS or chat-end token handling.",
+            },
         },
     }
 
@@ -165,22 +215,34 @@ def item_order(protocol, benchmark):
 
 
 @app.local_entrypoint()
-def main(phase: str = "pilot", models: str = "qwen15", throughput: bool = False):
+def main(
+    phase: str = "pilot",
+    models: str = "qwen15",
+    throughput: bool = False,
+    output_dir: str = "results/prospective/primary",
+    benchmarks: str = "gsm8k,arc",
+):
     protocol_bytes = (ROOT / "results/prospective/protocol.json").read_bytes()
     protocol = json.loads(protocol_bytes)
     selected = [m for m in protocol["models"] if m["slug"] in models.split(",")]
     if not selected or len(selected) != len(models.split(",")):
         raise ValueError("Unknown or duplicate model slug")
+    selected_benchmarks = benchmarks.split(",")
+    if any(benchmark not in protocol["benchmarks"] for benchmark in selected_benchmarks):
+        raise ValueError("Unknown benchmark")
+    if phase == "confirm" and set(selected_benchmarks) != set(protocol["benchmarks"]):
+        raise ValueError("Confirmation must collect every planned benchmark")
     if phase not in ("pilot", "confirm"):
         raise ValueError("phase must be pilot or confirm")
     if throughput and phase != "pilot":
         raise ValueError("throughput pilot cannot confirm comparisons")
     plan = None
     plan_bytes = None
+    directory = ROOT / output_dir
     if phase == "confirm":
-        plan_bytes = (ROOT / "results/prospective/plan.json").read_bytes()
+        plan_bytes = (directory / "plan.json").read_bytes()
         plan = json.loads(plan_bytes)
-    out = ROOT / "results/prospective" / ("throughput" if throughput else phase)
+    out = directory / ("throughput" if throughput else phase)
     out.mkdir(parents=True, exist_ok=True)
     jobs = []
     for model in selected:
@@ -189,7 +251,7 @@ def main(phase: str = "pilot", models: str = "qwen15", throughput: bool = False)
             raise FileExistsError(f"Refusing to overwrite completed answers: {destination}")
         if phase == "pilot":
             n = 8 if throughput else protocol["pilot_items"]
-            indices = {b: item_order(protocol, b)[:n] for b in protocol["benchmarks"]}
+            indices = {b: item_order(protocol, b)[:n] for b in selected_benchmarks}
         else:
             indices = {}
             for bench in protocol["benchmarks"]:
@@ -217,3 +279,40 @@ def main(phase: str = "pilot", models: str = "qwen15", throughput: bool = False)
         print(f"Saved {destination.name}: {result['metadata']}")
     if failures:
         raise RuntimeError("Some models did not finish:\n" + "\n".join(failures))
+
+
+@app.function(
+    image=modal.Image.debian_slim(python_version="3.11"),
+    cpu=1,
+    memory=1024,
+    timeout=120,
+    max_containers=1,
+    volumes={"/cache": cache},
+)
+def remove_weight_cache(model_ids):
+    import shutil
+
+    removed = []
+    total_bytes = 0
+    for model_id in model_ids:
+        directory = Path("/cache/huggingface/hub") / ("models--" + model_id.replace("/", "--"))
+        if not directory.exists():
+            continue
+        total_bytes += sum(
+            path.stat().st_size for path in (directory / "blobs").glob("*") if path.is_file()
+        )
+        shutil.rmtree(directory)
+        removed.append(model_id)
+    cache.commit()
+    return {"removed_model_caches": removed, "removed_blob_bytes": total_bytes}
+
+
+@app.local_entrypoint()
+def clean_cache():
+    """Remove only this experiment's cached model weights after all runs finish."""
+    protocol = json.loads((ROOT / "results/prospective/protocol.json").read_text())
+    result = remove_weight_cache.remote([model["id"] for model in protocol["models"]])
+    (ROOT / "results/prospective/cache_cleanup.json").write_text(
+        json.dumps(result, indent=2) + "\n"
+    )
+    print(result)

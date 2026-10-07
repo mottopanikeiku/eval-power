@@ -7,9 +7,11 @@ import numpy as np
 import pytest
 from scipy.stats import norm, ttest_rel
 
+from eval_power.grading import generation_seed
 from eval_power.prospective import (
     aligned_samples,
     analyze_plan,
+    analyze_strict_secondary,
     indexed_rows,
     paired_t_test,
     plan_pair,
@@ -220,7 +222,7 @@ def example_plan():
         for (name, document), samples in zip(pilot.items(), (A, B), strict=True)
     }
     plan = {
-        "protocol_commit": "abc123",
+        "protocol_sha256": "protocol-hash",
         "alpha": 0.05,
         "target_power": 0.8,
         "k": 5,
@@ -386,4 +388,105 @@ def test_source_hashes_and_pinned_model_mapping(change):
     else:
         confirm["a"]["model"] = "wrong"
     with pytest.raises(ValueError):
+        validate_sources(plan, protocol, pilot, confirm, "protocol-hash", "plan-hash")
+
+
+def test_benchmark_overview_matches_pair_values():
+    plan, pilot, confirm = example_plan()
+    summary = analyze_plan(plan, pilot, confirm)
+    row = summary["pairs"][0]
+    overview = summary["benchmark_overview"]["gsm8k"]
+    assert overview["pairs"] == overview["confirmed_pairs"] == 1
+    assert overview["median_sampling_fraction"] == row["pilot"]["sampling_fraction"]
+    assert overview["median_k1_to_k5_item_ratio"] == (
+        row["required_items_k1"] / row["required_items_k5"]
+    )
+    assert overview["median_k5_to_k1_sampled_completion_ratio"] == (
+        5 * row["required_items_k5"] / row["required_items_k1"]
+    )
+    assert overview["detected_pairs"] == int(row["confirmation"]["detected"])
+    assert overview["fixed_difference"] == 0.01
+    assert overview["median_one_point_items_k5"] == required_items(
+        0.01, row["pilot"]["item_variance"] + row["pilot"]["sampling_variance"] / 5
+    )
+
+
+def test_strict_secondary_uses_primary_items_without_replanning():
+    plan, pilot, confirm = example_plan()
+    plan["pairs"][0]["status"] = "feasible"
+    for documents in (pilot, confirm):
+        for document in documents.values():
+            for rows in document["benchmarks"].values():
+                for row in rows:
+                    for answer in (row["greedy"], *row["samples"]):
+                        answer["strict_correct"] = False
+    summary = analyze_strict_secondary(plan, pilot, confirm)
+    assert summary["tested"] == 1
+    assert summary["detected"] == 0
+    assert summary["pairs"][0]["primary_planned_n_items"] == plan["pairs"][0]["n_items"]
+    assert summary["pairs"][0]["pilot"]["required_items"] is None
+    assert "not a confirmatory test" in summary["interpretation"]
+
+
+def test_equal_binary_totals_are_exactly_zero_not_tiny_finite_gap():
+    a = [[1, 1, 1, 0, 0], [0, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]]
+    b = [[0, 0, 0, 0, 0], [1, 1, 0, 0, 0], [0, 0, 0, 0, 0], [1, 1, 0, 0, 0]]
+    assert variance_decomposition(a, b)["mean_difference"] == 0
+    assert plan_pair(a, b, 512)["required_items"] is None
+    test = paired_t_test(a, b)
+    assert test["mean_difference"] == 0
+    assert test["pvalue"] == 1
+
+
+@pytest.mark.parametrize("change", ["none", "seed", "index", "missing_index", "phase", "stride"])
+def test_raw_child_seeds_match_rule_and_are_unique(change):
+    plan, pilot, confirm = example_plan()
+    protocol = example_protocol(plan, pilot, confirm)
+    protocol.update(generation_seed=1707, seed_stride=5)
+    pilot_map = {old: str(i) for i, old in enumerate(plan["pilot_items"]["gsm8k"])}
+    confirm_map = {old: str(i + 100) for i, old in enumerate(plan["pairs"][0]["item_ids"])}
+    plan["pilot_items"]["gsm8k"] = list(pilot_map.values())
+    plan["pairs"][0]["item_ids"] = list(confirm_map.values())
+    for stage, documents, mapping in (
+        ("pilot", pilot, pilot_map),
+        ("confirm", confirm, confirm_map),
+    ):
+        for model_index, document in enumerate(documents.values()):
+            document["metadata"].update(phase=stage, seed_stride=5)
+            for row in document["benchmarks"]["gsm8k"]:
+                row["item_id"] = mapping[row["item_id"]]
+                parent = generation_seed(protocol, model_index, "gsm8k", int(row["item_id"]), stage)
+                for index, answer in enumerate(row["samples"]):
+                    answer.update(sample_index=index, seed=parent + index)
+    answer = pilot["a"]["benchmarks"]["gsm8k"][0]["samples"][0]
+    if change == "seed":
+        answer["seed"] += 1
+    elif change == "index":
+        answer["sample_index"] = 1
+    elif change == "missing_index":
+        del answer["sample_index"]
+    elif change == "phase":
+        pilot["a"]["metadata"]["phase"] = "confirm"
+    elif change == "stride":
+        protocol["seed_stride"] = 1
+    if change == "none":
+        validate_sources(plan, protocol, pilot, confirm, "protocol-hash", "plan-hash")
+    else:
+        with pytest.raises(ValueError):
+            validate_sources(plan, protocol, pilot, confirm, "protocol-hash", "plan-hash")
+
+
+def test_guided_arc_metadata_must_match_protocol():
+    plan, pilot, confirm = example_plan()
+    protocol = example_protocol(plan, pilot, confirm)
+    protocol["benchmarks"] = {"arc": {"decoding": "guided_direct_choice"}}
+    plan["pilot_items"]["arc"] = plan["pilot_items"].pop("gsm8k")
+    plan["pairs"][0]["benchmark"] = "arc"
+    for documents in (pilot, confirm):
+        for document in documents.values():
+            document["benchmarks"]["arc"] = document["benchmarks"].pop("gsm8k")
+            document["metadata"]["arc_decoding"] = "guided_direct_choice"
+    validate_sources(plan, protocol, pilot, confirm, "protocol-hash", "plan-hash")
+    confirm["a"]["metadata"]["arc_decoding"] = "unconstrained"
+    with pytest.raises(ValueError, match="ARC decoding"):
         validate_sources(plan, protocol, pilot, confirm, "protocol-hash", "plan-hash")

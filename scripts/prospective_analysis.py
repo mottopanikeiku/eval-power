@@ -10,7 +10,7 @@ import matplotlib
 import numpy as np
 import scipy
 
-from eval_power.prospective import analyze_plan, validate_sources
+from eval_power.prospective import analyze_plan, analyze_strict_secondary, validate_sources
 
 matplotlib.use("Agg")
 
@@ -21,8 +21,8 @@ def load_json(path):
         return json.load(stream)
 
 
-def source_pin(path, label):
-    return {"file": label, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+def source_pin(path):
+    return {"file": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
 def load_models(directory):
@@ -34,7 +34,7 @@ def load_models(directory):
         if slug != expected or slug in models:
             raise ValueError(f"model slug must match its unique filename: {path.name}")
         models[slug] = document
-        pins.append(source_pin(path, f"{directory.name}/{path.name}"))
+        pins.append(source_pin(path))
     return models, pins
 
 
@@ -49,7 +49,11 @@ def make_figure(summary, destination):
         1, 2, figsize=(13, height), sharey=True, layout="constrained"
     )
     y = np.arange(len(pairs))
-    labels = [f"{row['benchmark']}: {row['model_a']} − {row['model_b']}" for row in pairs]
+    names = {"gsm8k": "GSM8K", "arc": "ARC direct"}
+    labels = [
+        f"{names.get(row['benchmark'], row['benchmark'])}: {row['model_a']} − {row['model_b']}"
+        for row in pairs
+    ]
     item = np.array([row["pilot"]["item_variance"] for row in pairs])
     sampling = np.array([row["pilot"]["sampling_variance"] / summary["k"] for row in pairs])
     unclipped = [row["pilot"]["item_variance_unclipped"] for row in pairs]
@@ -89,15 +93,16 @@ def make_figure(summary, destination):
     confirm_axis.set_title(f"Paired t intervals ({100 * (1 - summary['alpha']):g}%)")
     detection = summary["detection"]
     if detection["tested"]:
-        low, high = detection["wilson_interval"]
         caption = (
             f"Observed detections: {detection['detected']}/{detection['tested']}; "
-            f"descriptive Wilson interval [{low:.2f}, {high:.2f}]."
+            "the planning target was 80%."
         )
     else:
         caption = "No feasible comparisons were tested."
     figure.suptitle(
-        caption + "\nShared models/items are not independent trials or single-pair power.",
+        caption
+        + "\nShared models/items are not independent trials or single-pair power."
+        + "\nARC uses guided direct-choice, not conventional option likelihood.",
         fontsize=11,
     )
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -107,19 +112,20 @@ def make_figure(summary, destination):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--plan", type=Path, default=Path("results/prospective/plan.json"))
+    parser.add_argument("--plan", type=Path, default=Path("results/prospective/primary/plan.json"))
     parser.add_argument("--protocol", type=Path, default=Path("results/prospective/protocol.json"))
-    parser.add_argument("--raw-dir", type=Path, default=Path("results/prospective"))
+    parser.add_argument("--raw-dir", type=Path, default=Path("results/prospective/primary"))
     parser.add_argument("--summary", type=Path, default=Path("results/prospective/summary.json"))
     parser.add_argument("--figure", type=Path, default=Path("figures/prospective.svg"))
     args = parser.parse_args()
     plan, protocol = load_json(args.plan), load_json(args.protocol)
     pilot, pilot_pins = load_models(args.raw_dir / "pilot")
     confirm, confirm_pins = load_models(args.raw_dir / "confirm")
-    protocol_pin = source_pin(args.protocol, args.protocol.name)
-    plan_pin = source_pin(args.plan, args.plan.name)
+    protocol_pin = source_pin(args.protocol)
+    plan_pin = source_pin(args.plan)
     validate_sources(plan, protocol, pilot, confirm, protocol_pin["sha256"], plan_pin["sha256"])
     summary = analyze_plan(plan, pilot, confirm)
+    summary["strict_secondary"] = analyze_strict_secondary(plan, pilot, confirm)
     summary["sources"] = {
         "protocol": protocol_pin,
         "plan": plan_pin,

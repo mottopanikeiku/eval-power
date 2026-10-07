@@ -34,7 +34,7 @@ def numeric_value(text):
         return None
 
 
-def grade_answer(benchmark, text, reference):
+def grade_strict_answer(benchmark, text, reference):
     if benchmark == "gsm8k":
         if "####" not in text:
             return None, False
@@ -51,3 +51,49 @@ def grade_answer(benchmark, text, reference):
         prediction = match.group(1).upper() if match else None
         return prediction, prediction == reference.upper()
     raise ValueError(f"Unknown benchmark: {benchmark}")
+
+
+def grade_answer(benchmark, text, reference):
+    """Flexible exact match; the last number follows lm-eval's GSM8K convention."""
+    if benchmark == "gsm8k":
+        numbers = re.findall(r"[-+]?(?:\d[\d,]*(?:\.\d+)?|\.\d+)", text.replace("−", "-"))
+        if not numbers:
+            return None, False
+        value = numeric_value(numbers[-1])
+        prediction = format(value.normalize(), "f") if value is not None else None
+        return prediction, value is not None and value == numeric_value(reference)
+    if benchmark == "arc":
+        labels = "12345" if reference.isdecimal() else "ABCDE"
+        markers = re.findall(
+            r"\b(?:answer|option|choice)\s*(?:is|:|=)?\s*[\(\[]?([A-E1-5])\b",
+            text,
+            re.IGNORECASE,
+        )
+        markers = [label.upper() for label in markers if label.upper() in labels]
+        parenthesized = re.findall(r"\(([A-E1-5])\)", text, re.IGNORECASE)
+        listed = re.findall(r"(?<!\w)([A-E1-5])[.)]\s+\S", text, re.IGNORECASE)
+        explicit = {label.upper() for label in [*listed, *parenthesized] if label.upper() in labels}
+        final = re.search(r"\b([A-E1-5])[.!]?\s*$", text, re.IGNORECASE)
+        prediction = (
+            markers[-1]
+            if markers
+            else next(iter(explicit))
+            if len(explicit) == 1
+            else final.group(1)
+            if final and final.group(1).upper() in labels
+            else None
+        )
+        prediction = prediction.upper() if prediction else None
+        return prediction, prediction == reference.upper()
+    raise ValueError(f"Unknown benchmark: {benchmark}")
+
+
+def generation_seed(protocol, model_index, benchmark, dataset_index, phase):
+    """Reserve k child seeds per item; vLLM's n children use parent_seed + index."""
+    return (
+        protocol["generation_seed"]
+        + model_index * 1000000
+        + (100000 if phase == "confirm" else 0)
+        + (10000 if benchmark == "arc" else 0)
+        + dataset_index * protocol["seed_stride"]
+    )

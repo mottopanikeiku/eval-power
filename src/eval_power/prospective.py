@@ -12,6 +12,7 @@ from numbers import Integral, Real
 import numpy as np
 from scipy.stats import norm, t
 
+from .grading import generation_seed
 from .stats import paired_variance
 
 
@@ -63,7 +64,7 @@ def variance_decomposition(a, b):
     return {
         "n_items": n,
         "k": k,
-        "mean_difference": float(differences.mean()),
+        "mean_difference": float((a.sum() - b.sum()) / (n * k)),
         "observed_variance": observed,
         "sampling_variance": sampling,
         "item_variance_unclipped": unclipped,
@@ -129,7 +130,7 @@ def paired_t_test(a, b, alpha=0.05):
     alpha = _alpha(alpha)
     differences = a.mean(axis=1) - b.mean(axis=1)
     n = len(differences)
-    mean = float(differences.mean())
+    mean = float((a.sum() - b.sum()) / a.size)
     se = math.sqrt(float(differences.var(ddof=1)) / n)
     if se == 0:
         statistic, pvalue = None, 1.0 if mean == 0 else 0.0
@@ -366,6 +367,8 @@ def validate_collection(plan, pilot_models, confirm_models):
 
 def validate_sources(plan, protocol, pilot_models, confirm_models, protocol_sha256, plan_sha256):
     """Check raw-file protocol/plan hashes and pinned model identities."""
+    if plan["protocol_sha256"] != protocol_sha256:
+        raise ValueError("plan protocol_sha256 differs from the protocol file")
     for key in ("alpha", "target_power", "k"):
         if plan[key] != protocol[key]:
             raise ValueError(f"plan {key} differs from the pilot protocol")
@@ -385,6 +388,12 @@ def validate_sources(plan, protocol, pilot_models, confirm_models, protocol_sha2
     }
     if planned_pairs != protocol_pairs:
         raise ValueError("plan comparisons differ from the protocol")
+    arc_mode = protocol["benchmarks"].get("arc", {}).get("decoding")
+    stride = protocol.get("seed_stride")
+    if stride is not None and stride != protocol["k"]:
+        raise ValueError("seed_stride must reserve k child seeds per item")
+    model_indices = {model["slug"]: i for i, model in enumerate(protocol["models"])}
+    seen_seeds = set()
     for stage, documents in (("pilot", pilot_models), ("confirm", confirm_models)):
         for slug, document in documents.items():
             model = models.get(slug)
@@ -400,6 +409,31 @@ def validate_sources(plan, protocol, pilot_models, confirm_models, protocol_sha2
                 raise ValueError("raw protocol_sha256 differs from the protocol file")
             if stage == "confirm" and metadata.get("plan_sha256") != plan_sha256:
                 raise ValueError("raw plan_sha256 differs from the plan file")
+            if arc_mode is not None and "arc" in document["benchmarks"]:
+                if metadata.get("arc_decoding") != arc_mode:
+                    raise ValueError("raw ARC decoding differs from the protocol")
+            if stride is not None:
+                if metadata.get("seed_stride") != stride or metadata.get("phase") != stage:
+                    raise ValueError("raw seed stride or collection phase differs")
+                for benchmark, rows in document["benchmarks"].items():
+                    for row in rows:
+                        samples = row["samples"]
+                        indices = [
+                            _integer(answer.get("sample_index"), "sample_index", minimum=0)
+                            for answer in samples
+                        ]
+                        if sorted(indices) != list(range(protocol["k"])):
+                            raise ValueError("sample indices must identify all k children")
+                        parent_seed = generation_seed(
+                            protocol, model_indices[slug], benchmark, int(row["item_id"]), stage
+                        )
+                        for answer in samples:
+                            seed = parent_seed + answer["sample_index"]
+                            if answer.get("seed") != seed:
+                                raise ValueError("recorded sample seed differs from the rule")
+                            if seed in seen_seeds:
+                                raise ValueError("stochastic child seeds overlap")
+                            seen_seeds.add(seed)
             if set(document["benchmarks"]) - set(protocol["benchmarks"]):
                 raise ValueError("raw output includes an unplanned benchmark")
             if stage == "pilot":
@@ -430,8 +464,8 @@ def analyze_plan(plan, pilot_models, confirm_models):
     )
     if not alpha < power < 1:
         raise ValueError("target_power must lie strictly between alpha and 1")
-    if not isinstance(plan.get("protocol_commit"), str) or not plan["protocol_commit"]:
-        raise ValueError("plan must identify protocol_commit")
+    if not isinstance(plan.get("protocol_sha256"), str) or not plan["protocol_sha256"]:
+        raise ValueError("plan must identify protocol_sha256")
     results, seen = [], set()
     for pair in plan["pairs"]:
         benchmark, name_a, name_b = pair["benchmark"], pair["model_a"], pair["model_b"]
@@ -497,6 +531,17 @@ def analyze_plan(plan, pilot_models, confirm_models):
             if pilot["total_variance"] > 0
             else None
         )
+        for samples_per_item in (1, 5):
+            result[f"required_items_one_point_k{samples_per_item}"] = (
+                required_items(
+                    0.01,
+                    pilot["item_variance"] + pilot["sampling_variance"] / samples_per_item,
+                    alpha,
+                    power,
+                )
+                if pilot["total_variance"] > 0
+                else None
+            )
         result["greedy"] = _greedy_comparison(
             rows_a, rows_b, ids, pilot["mean_difference"], alpha, power
         )
@@ -551,15 +596,86 @@ def analyze_plan(plan, pilot_models, confirm_models):
         )
         result["confirmation"] = paired_t_test(a, b, alpha)
         results.append(result)
+    overview = {}
+    for benchmark in sorted({row["benchmark"] for row in results}):
+        rows = [row for row in results if row["benchmark"] == benchmark]
+        fractions = [
+            row["pilot"]["sampling_fraction"]
+            for row in rows
+            if row["pilot"]["sampling_fraction"] is not None
+        ]
+        budget_rows = [
+            row for row in rows if row["required_items_k1"] is not None and row["required_items_k5"]
+        ]
+        fixed_effect_rows = [row for row in rows if row["required_items_one_point_k5"] is not None]
+        confirmed = [row for row in rows if row["confirmation"] is not None]
+        found = sum(row["confirmation"]["detected"] for row in confirmed)
+        overview[benchmark] = {
+            "pairs": len(rows),
+            "fixed_difference": 0.01,
+            "fixed_difference_pairs": len(fixed_effect_rows),
+            "median_one_point_items_k1": (
+                float(np.median([row["required_items_one_point_k1"] for row in fixed_effect_rows]))
+                if fixed_effect_rows
+                else None
+            ),
+            "median_one_point_items_k5": (
+                float(np.median([row["required_items_one_point_k5"] for row in fixed_effect_rows]))
+                if fixed_effect_rows
+                else None
+            ),
+            "sampling_fraction_pairs": len(fractions),
+            "median_sampling_fraction": float(np.median(fractions)) if fractions else None,
+            "sampling_fraction_range": [min(fractions), max(fractions)] if fractions else None,
+            "negative_unclipped_item_estimates": sum(
+                row["pilot"]["item_variance_unclipped"] < 0 for row in rows
+            ),
+            "budget_ratio_pairs": len(budget_rows),
+            "median_k1_to_k5_item_ratio": (
+                float(
+                    np.median(
+                        [row["required_items_k1"] / row["required_items_k5"] for row in budget_rows]
+                    )
+                )
+                if budget_rows
+                else None
+            ),
+            "median_k5_to_k1_sampled_completion_ratio": (
+                float(
+                    np.median(
+                        [
+                            5 * row["required_items_k5"] / row["required_items_k1"]
+                            for row in budget_rows
+                        ]
+                    )
+                )
+                if budget_rows
+                else None
+            ),
+            "confirmed_pairs": len(confirmed),
+            "detected_pairs": found,
+            "detection_proportion": found / len(confirmed) if confirmed else None,
+            "planned_item_range": (
+                [
+                    min(row["planned_n_items"] for row in confirmed),
+                    max(row["planned_n_items"] for row in confirmed),
+                ]
+                if confirmed
+                else None
+            ),
+            "infeasible_pairs": sum(row["status"] == "infeasible" for row in rows),
+            "nonestimable_pairs": sum(row["status"] == "nonestimable" for row in rows),
+        }
     tests = [row["confirmation"] for row in results if row["confirmation"] is not None]
     detected = sum(row["detected"] for row in tests)
     return {
-        "protocol_commit": plan["protocol_commit"],
+        "protocol_sha256": plan["protocol_sha256"],
         "alpha": alpha,
         "target_power": power,
         "k": k,
         "pairs": results,
         "pilot_models": model_summary(pilot_models, k),
+        "benchmark_overview": overview,
         "detection": {
             "detected": detected,
             "tested": len(tests),
@@ -586,4 +702,62 @@ def analyze_plan(plan, pilot_models, confirm_models):
             "Zero-gap or zero-variance pilots are nonestimable under the protocol and are not "
             "confirmed; zero pilot variance does not prove zero population variance.",
         ],
+    }
+
+
+def analyze_strict_secondary(plan, pilot_models, confirm_models):
+    """Apply the original grader to the primary experiment's exact collected items."""
+
+    def rows(document, benchmark):
+        return [
+            {
+                "item_id": row["item_id"],
+                "samples": [{"correct": answer["strict_correct"]} for answer in row["samples"]],
+            }
+            for row in _benchmark(document, benchmark)
+        ]
+
+    results = []
+    for pair in plan["pairs"]:
+        benchmark, a, b = pair["benchmark"], pair["model_a"], pair["model_b"]
+        pilot_a, pilot_b = rows(pilot_models[a], benchmark), rows(pilot_models[b], benchmark)
+        ids = list(indexed_rows(pilot_a))
+        x, y = aligned_samples(pilot_a, pilot_b, ids, plan["k"], exact=True)
+        pilot = plan_pair(x, y, pair["fresh_pool"], plan["alpha"], plan["target_power"])
+        test = None
+        if pair["status"] == "feasible":
+            x, y = aligned_samples(
+                rows(confirm_models[a], benchmark),
+                rows(confirm_models[b], benchmark),
+                pair["item_ids"],
+                plan["k"],
+                pilot_item_ids=ids,
+            )
+            test = paired_t_test(x, y, plan["alpha"])
+        results.append(
+            {
+                "benchmark": benchmark,
+                "model_a": a,
+                "model_b": b,
+                "pilot": pilot,
+                "primary_planned_n_items": pair["n_items"],
+                "confirmation_at_primary_n": test,
+            }
+        )
+    tests = [
+        row["confirmation_at_primary_n"]
+        for row in results
+        if row["confirmation_at_primary_n"] is not None
+    ]
+    detected = sum(test["detected"] for test in tests)
+    return {
+        "pairs": results,
+        "detected": detected,
+        "tested": len(tests),
+        "detection_proportion": detected / len(tests) if tests else None,
+        "interpretation": (
+            "Secondary strict-format scoring of exactly the primary experiment's answers. "
+            "Item counts were planned using flexible grading, not this secondary metric; "
+            "this is not a confirmatory test of strict-format pilot power."
+        ),
     }

@@ -74,11 +74,7 @@
       "config": "ARC-Challenge",
       "split": "test",
       "size": 1172,
-      "max_tokens": 16,
-      "decoding": "guided_direct_choice",
-      "choices": "Native vLLM guided decoding over Answer: <label> for every provided choice label, not only the reference.",
-      "guided_backend": "auto",
-      "rule_source": "https://docs.vllm.ai/en/v0.10.2/api/vllm/sampling_params.html#vllm.sampling_params.GuidedDecodingParams"
+      "max_tokens": 1024
     }
   },
   "k": 5,
@@ -158,7 +154,7 @@
   "freshness": "Newly generated responses to disjoint, existing public test items; not newly authored questions or contamination-free evaluation.",
   "grading": {
     "gsm8k": "Primary: extract the last signed decimal number anywhere in the response, remove commas, normalize Decimal, and compare numeric values exactly; inspired by lm-eval-harness flexible extraction. No number is incorrect.",
-    "arc": "Primary: controlled direct-label ARC-Challenge generation, constrained to Answer: <one of the provided choice labels>. Greedy and five temperature-0.7 samples use the same native guided-choice rule for all models. Exact label match. This is not conventional option-likelihood ARC.",
+    "arc": "Primary: last explicit answer/option/choice label; otherwise last parenthesized label or terminal label. Exact match to the original choice label. No option-position randomization. This is generated-answer scoring, not option log-likelihood.",
     "strict_secondary": "Original marker-only rules in protocol_initial.json; recomputed on the same stored text, without selecting different items or model outputs."
   },
   "truncation": "Outputs reaching token limit remain scored, with finish_reason retained. No reruns or dropping malformed answers.",
@@ -166,25 +162,13 @@
     "created_utc": "2026-10-07T10:35:50.293275+00:00",
     "original_protocol_file": "results/prospective/protocol_initial.json",
     "original_protocol_sha256": "ea46e9eb4c4f3eacb2c65eec8acc61c495239073fe1269bb8bb281571a2aa5d3",
-    "reason": "The original evaluation confused answer formatting with accuracy and cut off many ARC explanations. Increasing ARC's cap to 1024 still left 58 of 320 Phi samples truncated, and later prose could overwrite the first answer. I changed ARC to controlled direct-label generation for every model; the rule requires re-collecting all ARC pilots and revising GSM8K grading on stored text before planning or collecting confirmation.",
+    "reason": "The original evaluation confused answer formatting with accuracy and cut off many ARC explanations. I revised the grader after the pilot and before planning or collecting confirmation.",
     "qwen15_gsm_sample_null_predictions": 250,
     "qwen15_gsm_sample_answers": 320,
     "phi35_arc_sample_truncations": 175,
     "phi35_arc_sample_answers": 320,
-    "gsm8k_action": "The old stored pilot demonstrates strict versus flexible grading on identical text. Recollect the primary GSM8K pilot with distinct child seeds and the final flexible grader.",
-    "arc_action": "Collect the same 64 pilot ARC items for all models using native guided choice over Answer: <valid label>. Preserve the original 128-token and later 1024-token unconstrained answers. Prompts and references are unchanged; the decoding distribution changes.",
-    "selection_policy": "Models, item order, pilot size, pairs, base seeds, alpha, target power, minimum and fresh pool are unchanged. The request-seed stride is corrected to k. No confirmation data had been collected at this revision.",
-    "arc_long_collection_protocol_file": "results/prospective/protocol_arc_long_collection.json",
-    "arc_long_collection_protocol_sha256": "b31d3ec5e038d56539aea92e944c2d93104acc7d1c2adf9323f13023bd8a6a3a",
-    "phi35_arc_long_sample_truncations": 58,
-    "scoring_note": "The final ARC rule is a standard native structured-output choice constraint, not standard benchmark option likelihood. It removes formatting and post-answer prose from the task. No model received a different rule, and no confirmation data informed this revision.",
-    "stop_token_note": "Phi's pinned generation config already includes end-of-turn token 32007. vLLM inherits it, so I did not claim or apply a missing-stop-token fix.",
-    "seed_revision_utc": "2026-10-07T11:59:02.271940+00:00",
-    "seed_revision_source": "https://github.com/vllm-project/vllm/blob/v0.10.2/vllm/v1/engine/parallel_sampling.py#L45-L74",
-    "guided_before_seed_fix_protocol_file": "results/prospective/protocol_arc_direct_before_seed_fix.json",
-    "guided_before_seed_fix_protocol_sha256": "0e1deb407e346003331d4f2a49f3e893dcda202dc3d993e40af8b23ec3207b08",
-    "seed_action": "Space item parent seeds by k rather than 1, because vLLM offsets n child seeds by their sample index. Recollect every primary pilot on both benchmarks; preserve earlier raw outputs only as method diagnostics."
-  },
-  "seed_stride": 5,
-  "generation_seed_rule": "base + model_index*1000000 + (100000 for confirmation, else 0) + (10000 for ARC, else 0) + dataset_index*k; vLLM child j uses parent_seed+j. All primary child streams must be distinct."
+    "gsm8k_action": "Regrade the original stored GSM8K pilot answers; no model rerun. Prompts and generation limits unchanged.",
+    "arc_action": "Collect the same 64 pilot ARC items again with a 1024-token cap. Preserve the original 128-token answers as secondary data.",
+    "selection_policy": "Models, item order, pilot size, pairs, seeds, alpha, target power, minimum and fresh pool are unchanged. No confirmation data had been collected at this revision."
+  }
 }

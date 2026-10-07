@@ -1,23 +1,25 @@
 """Plan fresh-item counts from the completed pilot, before fresh inference."""
 
+import argparse
 import gzip
 import hashlib
 import json
 import random
-import subprocess
 from pathlib import Path
 
-from eval_power.prospective import aligned_samples, plan_pair
+from eval_power.prospective import aligned_samples, plan_pair, validate_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    directory = ROOT / "results/prospective"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--raw-dir", type=Path, default=ROOT / "results/prospective/primary")
+    directory = parser.parse_args().raw_dir
     destination = directory / "plan.json"
     if destination.exists():
         raise FileExistsError("Refusing to replace a committed experiment plan")
-    protocol_path = directory / "protocol.json"
+    protocol_path = ROOT / "results/prospective/protocol.json"
     protocol = json.loads(protocol_path.read_text())
     raw = {
         model["slug"]: json.loads(
@@ -69,15 +71,23 @@ def main():
                 }
             )
     plan = {
-        "protocol_commit": subprocess.check_output(
-            ["git", "log", "-1", "--format=%H", "--", str(protocol_path.relative_to(ROOT))],
-            cwd=ROOT,
-            text=True,
-        ).strip(),
+        "protocol_file": str(protocol_path.relative_to(ROOT)),
         "protocol_sha256": hashlib.sha256(protocol_path.read_bytes()).hexdigest(),
         "alpha": protocol["alpha"],
         "target_power": protocol["target_power"],
+        "metric": (
+            "Flexible numeric-match GSM8K and guided direct-label ARC-Challenge accuracy. "
+            "ARC is not conventional option-likelihood scoring. Strict-format scores "
+            "remain a secondary analysis of the same answers."
+        ),
         "k": protocol["k"],
+        "item_seed": protocol["item_seed"],
+        "generation_seed": protocol["generation_seed"],
+        "generation_seed_rule": (
+            "base + model_index*1000000 + (100000 for confirmation, else 0) "
+            "+ (10000 for ARC, else 0) + dataset_index*k; child j uses parent_seed+j. "
+            "Greedy decoding uses temperature zero."
+        ),
         "minimum_items": protocol["minimum_confirm_items"],
         "pilot_items": pilot_ids,
         "pairs": pairs,
@@ -87,6 +97,7 @@ def main():
             "estimate of a single pair's power."
         ),
     }
+    validate_sources(plan, protocol, raw, {}, plan["protocol_sha256"], "")
     destination.write_text(json.dumps(plan, indent=2) + "\n")
     print(
         json.dumps(

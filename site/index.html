@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Plan an accuracy comparison with a two-sided Gaussian item budget, and check how pilot plans performed on heldout benchmark items.">
+  <title>How many test items? · eval-power</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+<a class="skip" href="#calculator">Skip to calculator</a>
+<header>
+  <nav aria-label="Project"><a href="https://github.com/mottopanikeiku/eval-power">eval-power / source</a><label class="theme">Theme <select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label></nav>
+  <p class="eyebrow">Accuracy comparison · item-budget planning</p>
+  <h1>How many test items do I need?</h1>
+  <p class="intro">I use a two-sided Gaussian approximation to plan a comparison between two models. Choose a meaningful gap before evaluation; an observed pilot gap can give an unreliable budget.</p>
+</header>
+<main>
+  <section id="calculator" aria-labelledby="plan-title" tabindex="-1">
+    <h2 id="plan-title">1. Plan a comparison</h2>
+    <p>Accuracies are binary correct/incorrect rates. For unpaired studies, the budget is per model; for paired studies, both models answer the same items.</p>
+    <div class="planner">
+      <form id="plan-form">
+        <fieldset>
+          <legend>Target difference</legend>
+          <label for="input-mode">Specify</label>
+          <select id="input-mode"><option value="accuracies">Two accuracies</option><option value="gap">Baseline accuracy and a gap</option></select>
+          <div class="fields">
+            <div><label for="accuracy-a">Model A accuracy (%)</label><input id="accuracy-a" type="number" min="0" max="100" step="any" value="70" required></div>
+            <div id="accuracy-b-field"><label for="accuracy-b">Model B accuracy (%)</label><input id="accuracy-b" type="number" min="0" max="100" step="any" value="72" required></div>
+            <div id="gap-field" hidden><label for="gap">B − A gap (percentage points)</label><input id="gap" type="number" min="-100" max="100" step="any" value="2" disabled required></div>
+          </div>
+          <p class="hint">Gap-only planning still needs a baseline to determine binary variance. A 2-point gap means 70% versus 72%, not a 2% relative increase.</p>
+        </fieldset>
+        <fieldset>
+          <legend>Study design</legend>
+          <label for="design">Items</label><select id="design"><option value="paired">Paired: same items for both models</option><option value="unpaired">Unpaired: independent items, equal counts</option></select>
+          <div id="paired-fields">
+            <label for="dependence">Dependence between models</label><select id="dependence"><option value="correlation">Correlation of correctness</option><option value="discordance">Fraction of items where models disagree</option></select>
+            <div id="correlation-field"><label for="correlation">Correlation (−1 to 1)</label><input id="correlation" type="number" min="-1" max="1" step="any" value="0.5" required></div>
+            <div id="discordance-field" hidden><label for="discordance">Discordant items (%)</label><input id="discordance" type="number" min="0" max="100" step="any" value="20.601191" disabled required></div>
+            <p class="hint">Discordance counts items on which exactly one model is correct. Not every correlation is possible for two binary accuracies.</p>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Error rates</legend>
+          <div class="fields"><div><label for="alpha">Two-sided alpha</label><input id="alpha" type="number" min="0.000001" max="0.5" step="any" value="0.05" required></div><div><label for="power">Target power (%)</label><input id="power" type="number" min="1" max="99.9999" step="any" value="80" required></div></div>
+          <p class="hint">Alpha is the false-positive rate for one comparison. Power is the chance of detecting the assumed gap if that gap and variance hold.</p>
+        </fieldset>
+        <button type="submit">Calculate item budget</button>
+      </form>
+      <div class="answer" aria-live="polite" aria-atomic="true" id="answer">
+        <p class="eyebrow">Items needed</p>
+        <p class="item-count" id="item-count">—</p>
+        <p id="item-unit">per model</p>
+        <p id="plan-details">Choose the comparison, then calculate.</p>
+        <p id="plan-error" class="error" hidden></p>
+        <hr>
+        <p><strong>An approximation, not a guarantee.</strong> I assume independent, identically distributed items and a fixed variance. This is not exact McNemar power, a clustered-item budget, a finite-pool calculation, or a multiple-comparison correction.</p>
+        <p>For very small budgets or rare discordance, the Gaussian approximation can be poor. Keep the meaningful gap fixed; do not use a noisy pilot gap as a promise.</p>
+      </div>
+    </div>
+  </section>
+  <section aria-labelledby="calibration-title">
+    <h2 id="calibration-title">2. Did pilot plans deliver 80% power?</h2>
+    <p>I checked plans from small pilots against disjoint heldout items in five historical benchmarks. This panel is a fixed result from committed data, not a prediction for the inputs above.</p>
+    <div class="fields filters"><div><label for="benchmark">Benchmark</label><select id="benchmark"><option value="arc">ARC-Challenge</option><option value="gsm8k">GSM8K</option><option value="winogrande">WinoGrande</option><option value="hellaswag">HellaSwag</option><option value="mmlu">MMLU</option></select></div><div><label for="pilot">Pilot items</label><select id="pilot"><option value="128">128</option><option value="256">256</option></select></div></div>
+    <div id="calibration" aria-live="polite" aria-atomic="true"><p>Loading committed results…</p></div>
+    <p class="hint">Each benchmark has 40 score-independent model pairs × 5 item splits. Each evaluable plan has 1,000 exact two-sided McNemar trials from the empirical heldout distribution, sampled with replacement. An estimated detection rate is not the true power; Monte Carlo bounds show simulation uncertainty only.</p>
+    <p class="hint">These are selected 395-model, 2024 Open LLM Leaderboard data, not current frontier models. Resampling existing items does not establish power on newly collected questions. The 80% target uses alpha 0.05, with no multiple-comparison adjustment.</p>
+    <p class="source-links"><a href="data/calibration.csv">Summary CSV</a> · <a href="data/pilot-summary.json">Counts derived from individual plans</a> · <a href="https://github.com/mottopanikeiku/eval-power/blob/main/results/pilot_plans.csv.gz">Committed individual plans</a> · <a href="https://github.com/mottopanikeiku/eval-power/blob/main/results/configuration.json">Experiment settings</a></p>
+  </section>
+  <section aria-labelledby="method-title" class="method">
+    <h2 id="method-title">What I calculate</h2>
+    <p>For a gap δ, the unpaired variance is p<sub>A</sub>(1 − p<sub>A</sub>) + p<sub>B</sub>(1 − p<sub>B</sub>). For paired items it is q − δ², where q is discordance. Equivalently, subtract twice the covariance from the unpaired variance. I find the smallest integer n with Φ(−z − |δ|√(n/v)) + Φ(|δ|√(n/v) − z) at least the target power, where z is the two-sided normal critical value.</p>
+    <p><a href="https://github.com/mottopanikeiku/eval-power/tree/main/site">Source, Python comparison fixture, and tests</a>. The browser and Python item counts must agree within one item on the committed input grid. The formula uses population variance implied by your assumptions, not a fitted sample variance.</p>
+  </section>
+</main>
+<footer>Alp Cetin · <a href="https://github.com/mottopanikeiku/eval-power">eval-power</a><br>Written with AI coding assistance.</footer>
+<noscript><p class="error">This calculator needs JavaScript. The source repository contains a Python command-line planner and the committed calibration results.</p></noscript>
+</body>
+</html>

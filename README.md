@@ -19,9 +19,9 @@ Each model answered the same 64 pilot questions per benchmark once greedily and 
 
 I estimate
 
-\[
+$$
 \operatorname{Var}(\bar Y_A-\bar Y_B)=\sigma^2_{\mathrm{item}}+\sigma^2_{\mathrm{decode}}/k.
-\]
+$$
 
 I estimate decoding variance within questions, subtract it from the observed variance of item means, and retain the unclipped item estimate before applying a zero floor for planning. Neither component is perfectly identified by a 64-question pilot.
 

@@ -1,0 +1,3096 @@
+{
+  "protocol_sha256": "42da27e203d5ebf126e74882c62b4a6b1ac31cd2049c460b4362e796b827572f",
+  "alpha": 0.05,
+  "target_power": 0.8,
+  "k": 5,
+  "pairs": [
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen15",
+      "model_b": "qwen3",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.146875,
+        "observed_variance": 0.08792658730158731,
+        "sampling_variance": 0.21093750000000006,
+        "item_variance_unclipped": 0.0457390873015873,
+        "item_variance": 0.0457390873015873,
+        "total_variance": 0.08792658730158731,
+        "sampling_fraction": 0.47980367821279485
+      },
+      "required_items": 32,
+      "planned_n_items": 32,
+      "required_items_k1": 94,
+      "required_items_k5": 32,
+      "required_items_one_point_k1": 20147,
+      "required_items_one_point_k5": 6902,
+      "greedy": {
+        "mean_difference": -0.203125,
+        "paired_variance": 0.2914186507936508,
+        "required_items_same_fixed_gap": 107,
+        "fixed_gap": -0.146875,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 32,
+        "k": 5,
+        "mean_difference": -0.1,
+        "standard_error": 0.05819876952473779,
+        "degrees_of_freedom": 31,
+        "statistic": -1.7182493859684491,
+        "degenerate": null,
+        "pvalue": 0.09572534497277432,
+        "detected": false,
+        "confidence_interval": [
+          -0.21869717300942823,
+          0.01869717300942822
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen15",
+      "model_b": "qwen7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.234375,
+        "observed_variance": 0.08832341269841269,
+        "sampling_variance": 0.17343750000000002,
+        "item_variance_unclipped": 0.05363591269841269,
+        "item_variance": 0.05363591269841269,
+        "total_variance": 0.08832341269841269,
+        "sampling_fraction": 0.39273278670111206
+      },
+      "required_items": 13,
+      "planned_n_items": 16,
+      "required_items_k1": 33,
+      "required_items_k5": 13,
+      "required_items_one_point_k1": 17823,
+      "required_items_one_point_k5": 6933,
+      "greedy": {
+        "mean_difference": -0.21875,
+        "paired_variance": 0.26884920634920634,
+        "required_items_same_fixed_gap": 39,
+        "fixed_gap": -0.234375,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": -0.1625,
+        "standard_error": 0.07352720584926371,
+        "degrees_of_freedom": 15,
+        "statistic": -2.210066302983649,
+        "degenerate": null,
+        "pvalue": 0.04305978259198769,
+        "detected": true,
+        "confidence_interval": [
+          -0.31921952949369325,
+          -0.005780470506306756
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen15",
+      "model_b": "smol17",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.384375,
+        "observed_variance": 0.08546626984126984,
+        "sampling_variance": 0.259375,
+        "item_variance_unclipped": 0.03359126984126984,
+        "item_variance": 0.03359126984126984,
+        "total_variance": 0.08546626984126984,
+        "sampling_fraction": 0.6069645966337783
+      },
+      "required_items": 5,
+      "planned_n_items": 16,
+      "required_items_k1": 16,
+      "required_items_k5": 5,
+      "required_items_one_point_k1": 22995,
+      "required_items_one_point_k5": 6709,
+      "greedy": {
+        "mean_difference": 0.484375,
+        "paired_variance": 0.2537202380952381,
+        "required_items_same_fixed_gap": 14,
+        "fixed_gap": 0.384375,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": 0.4125,
+        "standard_error": 0.10077822185373188,
+        "degrees_of_freedom": 15,
+        "statistic": 4.093146241443878,
+        "degenerate": null,
+        "pvalue": 0.0009595001418440195,
+        "detected": true,
+        "confidence_interval": [
+          0.1976963048275409,
+          0.6273036951724591
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen15",
+      "model_b": "phi35",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.171875,
+        "observed_variance": 0.08237103174603175,
+        "sampling_variance": 0.16875,
+        "item_variance_unclipped": 0.048621031746031745,
+        "item_variance": 0.048621031746031745,
+        "total_variance": 0.08237103174603175,
+        "sampling_fraction": 0.40973142237745397
+      },
+      "required_items": 22,
+      "planned_n_items": 22,
+      "required_items_k1": 58,
+      "required_items_k5": 22,
+      "required_items_one_point_k1": 17062,
+      "required_items_one_point_k5": 6466,
+      "greedy": {
+        "mean_difference": -0.25,
+        "paired_variance": 0.25396825396825395,
+        "required_items_same_fixed_gap": 68,
+        "fixed_gap": -0.171875,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 22,
+        "k": 5,
+        "mean_difference": -0.15454545454545454,
+        "standard_error": 0.05572321546214268,
+        "degrees_of_freedom": 21,
+        "statistic": -2.7734482524693833,
+        "degenerate": null,
+        "pvalue": 0.011386836367629088,
+        "detected": true,
+        "confidence_interval": [
+          -0.27042822489326995,
+          -0.03866268419763913
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen15",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.23125,
+        "observed_variance": 0.12345238095238097,
+        "sampling_variance": 0.26093750000000004,
+        "item_variance_unclipped": 0.07126488095238095,
+        "item_variance": 0.07126488095238095,
+        "total_variance": 0.12345238095238097,
+        "sampling_fraction": 0.42273384763741567
+      },
+      "required_items": 19,
+      "planned_n_items": 19,
+      "required_items_k1": 49,
+      "required_items_k5": 19,
+      "required_items_one_point_k1": 26075,
+      "required_items_one_point_k5": 9690,
+      "greedy": {
+        "mean_difference": 0.1875,
+        "paired_variance": 0.34523809523809523,
+        "required_items_same_fixed_gap": 51,
+        "fixed_gap": 0.23125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 19,
+        "k": 5,
+        "mean_difference": 0.30526315789473685,
+        "standard_error": 0.08834861973343278,
+        "degrees_of_freedom": 18,
+        "statistic": 3.455211397934489,
+        "degenerate": null,
+        "pvalue": 0.002823913746666224,
+        "detected": true,
+        "confidence_interval": [
+          0.1196495954718936,
+          0.4908767203175801
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen3",
+      "model_b": "qwen7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.0875,
+        "observed_variance": 0.05190476190476191,
+        "sampling_variance": 0.11875000000000002,
+        "item_variance_unclipped": 0.028154761904761908,
+        "item_variance": 0.028154761904761908,
+        "total_variance": 0.05190476190476191,
+        "sampling_fraction": 0.45756880733944955
+      },
+      "required_items": 54,
+      "planned_n_items": 54,
+      "required_items_k1": 151,
+      "required_items_k5": 54,
+      "required_items_one_point_k1": 11531,
+      "required_items_one_point_k5": 4074,
+      "greedy": {
+        "mean_difference": -0.015625,
+        "paired_variance": 0.07911706349206349,
+        "required_items_same_fixed_gap": 82,
+        "fixed_gap": -0.0875,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 54,
+        "k": 5,
+        "mean_difference": -0.15185185185185185,
+        "standard_error": 0.03622091746380703,
+        "degrees_of_freedom": 53,
+        "statistic": -4.192380052316083,
+        "degenerate": null,
+        "pvalue": 0.00010525422336941748,
+        "detected": true,
+        "confidence_interval": [
+          -0.22450181200162186,
+          -0.07920189170208183
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen3",
+      "model_b": "smol17",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.53125,
+        "observed_variance": 0.12345238095238098,
+        "sampling_variance": 0.20468750000000002,
+        "item_variance_unclipped": 0.08251488095238098,
+        "item_variance": 0.08251488095238098,
+        "total_variance": 0.12345238095238098,
+        "sampling_fraction": 0.33160559305689485
+      },
+      "required_items": 4,
+      "planned_n_items": 16,
+      "required_items_k1": 8,
+      "required_items_k5": 4,
+      "required_items_one_point_k1": 22543,
+      "required_items_one_point_k5": 9690,
+      "greedy": {
+        "mean_difference": 0.6875,
+        "paired_variance": 0.21825396825396826,
+        "required_items_same_fixed_gap": 7,
+        "fixed_gap": 0.53125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": 0.45,
+        "standard_error": 0.09916316520429012,
+        "degrees_of_freedom": 15,
+        "statistic": 4.537975356806497,
+        "degenerate": null,
+        "pvalue": 0.00039247024916535443,
+        "detected": true,
+        "confidence_interval": [
+          0.23863871658904684,
+          0.6613612834109532
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen3",
+      "model_b": "phi35",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.025,
+        "observed_variance": 0.0692063492063492,
+        "sampling_variance": 0.11406250000000001,
+        "item_variance_unclipped": 0.0463938492063492,
+        "item_variance": 0.0463938492063492,
+        "total_variance": 0.0692063492063492,
+        "sampling_fraction": 0.3296301605504588
+      },
+      "required_items": 870,
+      "planned_n_items": null,
+      "required_items_k1": 2016,
+      "required_items_k5": 870,
+      "required_items_one_point_k1": 12595,
+      "required_items_one_point_k5": 5432,
+      "greedy": {
+        "mean_difference": -0.046875,
+        "paired_variance": 0.17237103174603174,
+        "required_items_same_fixed_gap": 2165,
+        "fixed_gap": -0.025,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "infeasible",
+      "confirmation": null
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen3",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.378125,
+        "observed_variance": 0.1322123015873016,
+        "sampling_variance": 0.20625000000000004,
+        "item_variance_unclipped": 0.09096230158730159,
+        "item_variance": 0.09096230158730159,
+        "total_variance": 0.1322123015873016,
+        "sampling_fraction": 0.3119981991445937
+      },
+      "required_items": 8,
+      "planned_n_items": 16,
+      "required_items_k1": 17,
+      "required_items_k5": 8,
+      "required_items_one_point_k1": 23328,
+      "required_items_one_point_k5": 10378,
+      "greedy": {
+        "mean_difference": 0.390625,
+        "paired_variance": 0.27356150793650796,
+        "required_items_same_fixed_gap": 16,
+        "fixed_gap": 0.378125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": 0.3625,
+        "standard_error": 0.1036319609644309,
+        "degrees_of_freedom": 15,
+        "statistic": 3.497955617422111,
+        "degenerate": null,
+        "pvalue": 0.0032370822121752744,
+        "detected": true,
+        "confidence_interval": [
+          0.1416137038968953,
+          0.5833862961031047
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen7",
+      "model_b": "smol17",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.61875,
+        "observed_variance": 0.11138888888888888,
+        "sampling_variance": 0.16718750000000002,
+        "item_variance_unclipped": 0.07795138888888889,
+        "item_variance": 0.07795138888888889,
+        "total_variance": 0.1113888888888889,
+        "sampling_fraction": 0.3001870324189526
+      },
+      "required_items": 3,
+      "planned_n_items": 16,
+      "required_items_k1": 6,
+      "required_items_k5": 3,
+      "required_items_one_point_k1": 19241,
+      "required_items_one_point_k5": 8743,
+      "greedy": {
+        "mean_difference": 0.703125,
+        "paired_variance": 0.21205357142857142,
+        "required_items_same_fixed_gap": 5,
+        "fixed_gap": 0.61875,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": 0.575,
+        "standard_error": 0.09464847243000457,
+        "degrees_of_freedom": 15,
+        "statistic": 6.075111253646803,
+        "degenerate": null,
+        "pvalue": 2.1248380231732422e-05,
+        "detected": true,
+        "confidence_interval": [
+          0.37326155645113973,
+          0.7767384435488602
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen7",
+      "model_b": "phi35",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.0625,
+        "observed_variance": 0.07349206349206348,
+        "sampling_variance": 0.0765625,
+        "item_variance_unclipped": 0.058179563492063484,
+        "item_variance": 0.058179563492063484,
+        "total_variance": 0.07349206349206348,
+        "sampling_fraction": 0.20835583153347736
+      },
+      "required_items": 148,
+      "planned_n_items": 148,
+      "required_items_k1": 271,
+      "required_items_k5": 148,
+      "required_items_one_point_k1": 10576,
+      "required_items_one_point_k5": 5769,
+      "greedy": {
+        "mean_difference": -0.03125,
+        "paired_variance": 0.15773809523809523,
+        "required_items_same_fixed_gap": 317,
+        "fixed_gap": 0.0625,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 148,
+        "k": 5,
+        "mean_difference": 0.0445945945945946,
+        "standard_error": 0.012400876841814014,
+        "degrees_of_freedom": 147,
+        "statistic": 3.5960839836928216,
+        "degenerate": null,
+        "pvalue": 0.0004403922087762053,
+        "detected": true,
+        "confidence_interval": [
+          0.020087568720293054,
+          0.06910162046889615
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "qwen7",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.465625,
+        "observed_variance": 0.12070436507936509,
+        "sampling_variance": 0.16875,
+        "item_variance_unclipped": 0.08695436507936509,
+        "item_variance": 0.08695436507936509,
+        "total_variance": 0.12070436507936509,
+        "sampling_fraction": 0.27960877784170296
+      },
+      "required_items": 5,
+      "planned_n_items": 16,
+      "required_items_k1": 10,
+      "required_items_k5": 5,
+      "required_items_one_point_k1": 20070,
+      "required_items_one_point_k5": 9474,
+      "greedy": {
+        "mean_difference": 0.40625,
+        "paired_variance": 0.24503968253968253,
+        "required_items_same_fixed_gap": 9,
+        "fixed_gap": 0.465625,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": 0.4875,
+        "standard_error": 0.10160175523418218,
+        "degrees_of_freedom": 15,
+        "statistic": 4.798145454046142,
+        "degenerate": null,
+        "pvalue": 0.0002347393313242108,
+        "detected": true,
+        "confidence_interval": [
+          0.27094098497802677,
+          0.7040590150219732
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "smol17",
+      "model_b": "phi35",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.55625,
+        "observed_variance": 0.13519841269841273,
+        "sampling_variance": 0.16250000000000003,
+        "item_variance_unclipped": 0.10269841269841273,
+        "item_variance": 0.10269841269841273,
+        "total_variance": 0.13519841269841273,
+        "sampling_fraction": 0.24038743762841208
+      },
+      "required_items": 4,
+      "planned_n_items": 16,
+      "required_items_k1": 7,
+      "required_items_k5": 4,
+      "required_items_one_point_k1": 20816,
+      "required_items_one_point_k5": 10612,
+      "greedy": {
+        "mean_difference": -0.734375,
+        "paired_variance": 0.22991071428571427,
+        "required_items_same_fixed_gap": 6,
+        "fixed_gap": -0.55625,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": -0.475,
+        "standard_error": 0.09810708435174292,
+        "degrees_of_freedom": 15,
+        "statistic": -4.841648318657442,
+        "degenerate": null,
+        "pvalue": 0.0002155643326648874,
+        "detected": true,
+        "confidence_interval": [
+          -0.684110300357717,
+          -0.26588969964228293
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "smol17",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.153125,
+        "observed_variance": 0.14443452380952385,
+        "sampling_variance": 0.25468750000000007,
+        "item_variance_unclipped": 0.09349702380952384,
+        "item_variance": 0.09349702380952384,
+        "total_variance": 0.14443452380952385,
+        "sampling_fraction": 0.352668452503606
+      },
+      "required_items": 49,
+      "planned_n_items": 49,
+      "required_items_k1": 117,
+      "required_items_k5": 49,
+      "required_items_one_point_k1": 27329,
+      "required_items_one_point_k5": 11337,
+      "greedy": {
+        "mean_difference": -0.296875,
+        "paired_variance": 0.3072916666666667,
+        "required_items_same_fixed_gap": 103,
+        "fixed_gap": -0.153125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 49,
+        "k": 5,
+        "mean_difference": -0.12244897959183673,
+        "standard_error": 0.04157458936217013,
+        "degrees_of_freedom": 48,
+        "statistic": -2.9452841620428956,
+        "degenerate": null,
+        "pvalue": 0.004963711177344609,
+        "detected": true,
+        "confidence_interval": [
+          -0.20604029399737062,
+          -0.038857665186302834
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "gsm8k",
+      "model_a": "phi35",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.403125,
+        "observed_variance": 0.12887896825396827,
+        "sampling_variance": 0.16406250000000003,
+        "item_variance_unclipped": 0.09606646825396827,
+        "item_variance": 0.09606646825396827,
+        "total_variance": 0.12887896825396827,
+        "sampling_fraction": 0.25459933800323303
+      },
+      "required_items": 7,
+      "planned_n_items": 16,
+      "required_items_k1": 13,
+      "required_items_k5": 7,
+      "required_items_one_point_k1": 20418,
+      "required_items_one_point_k5": 10116,
+      "greedy": {
+        "mean_difference": 0.4375,
+        "paired_variance": 0.28174603174603174,
+        "required_items_same_fixed_gap": 14,
+        "fixed_gap": 0.403125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": 0.3875,
+        "standard_error": 0.0956882960450232,
+        "degrees_of_freedom": 15,
+        "statistic": 4.049607068117022,
+        "degenerate": null,
+        "pvalue": 0.0010481331484486136,
+        "detected": true,
+        "confidence_interval": [
+          0.183545224879446,
+          0.591454775120554
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen15",
+      "model_b": "qwen3",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.075,
+        "observed_variance": 0.0996825396825397,
+        "sampling_variance": 0.026562500000000006,
+        "item_variance_unclipped": 0.09437003968253971,
+        "item_variance": 0.09437003968253971,
+        "total_variance": 0.0996825396825397,
+        "sampling_fraction": 0.05329418789808917
+      },
+      "required_items": 140,
+      "planned_n_items": 140,
+      "required_items_k1": 169,
+      "required_items_k5": 140,
+      "required_items_one_point_k1": 9492,
+      "required_items_one_point_k5": 7824,
+      "greedy": {
+        "mean_difference": -0.0625,
+        "paired_variance": 0.12301587301587301,
+        "required_items_same_fixed_gap": 172,
+        "fixed_gap": -0.075,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 140,
+        "k": 5,
+        "mean_difference": -0.07571428571428572,
+        "standard_error": 0.029623735458918898,
+        "degrees_of_freedom": 139,
+        "statistic": -2.5558655767529217,
+        "degenerate": null,
+        "pvalue": 0.011667143528809928,
+        "detected": true,
+        "confidence_interval": [
+          -0.13428567557985457,
+          -0.017142895848716866
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen15",
+      "model_b": "qwen7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.128125,
+        "observed_variance": 0.12237103174603174,
+        "sampling_variance": 0.028125000000000004,
+        "item_variance_unclipped": 0.11674603174603174,
+        "item_variance": 0.11674603174603174,
+        "total_variance": 0.12237103174603174,
+        "sampling_fraction": 0.04596676124847994
+      },
+      "required_items": 59,
+      "planned_n_items": 59,
+      "required_items_k1": 70,
+      "required_items_k5": 59,
+      "required_items_one_point_k1": 11371,
+      "required_items_one_point_k5": 9605,
+      "greedy": {
+        "mean_difference": -0.125,
+        "paired_variance": 0.14285714285714285,
+        "required_items_same_fixed_gap": 69,
+        "fixed_gap": -0.128125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 59,
+        "k": 5,
+        "mean_difference": -0.10847457627118644,
+        "standard_error": 0.047943575324775126,
+        "degrees_of_freedom": 58,
+        "statistic": -2.2625466610774763,
+        "degenerate": null,
+        "pvalue": 0.027424735591554984,
+        "detected": true,
+        "confidence_interval": [
+          -0.20444406925122288,
+          -0.01250508329114998
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen15",
+      "model_b": "smol17",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.175,
+        "observed_variance": 0.153015873015873,
+        "sampling_variance": 0.15156250000000002,
+        "item_variance_unclipped": 0.12270337301587299,
+        "item_variance": 0.12270337301587299,
+        "total_variance": 0.153015873015873,
+        "sampling_fraction": 0.19810036307053946
+      },
+      "required_items": 40,
+      "planned_n_items": 40,
+      "required_items_k1": 71,
+      "required_items_k5": 40,
+      "required_items_one_point_k1": 21527,
+      "required_items_one_point_k5": 12011,
+      "greedy": {
+        "mean_difference": 0.0625,
+        "paired_variance": 0.21825396825396826,
+        "required_items_same_fixed_gap": 56,
+        "fixed_gap": 0.175,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 40,
+        "k": 5,
+        "mean_difference": 0.235,
+        "standard_error": 0.07334061735386574,
+        "degrees_of_freedom": 39,
+        "statistic": 3.2042271865006775,
+        "degenerate": null,
+        "pvalue": 0.0026994090758924783,
+        "detected": true,
+        "confidence_interval": [
+          0.08665459920844526,
+          0.3833454007915547
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen15",
+      "model_b": "phi35",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.103125,
+        "observed_variance": 0.13840277777777776,
+        "sampling_variance": 0.023437500000000007,
+        "item_variance_unclipped": 0.13371527777777775,
+        "item_variance": 0.13371527777777775,
+        "total_variance": 0.13840277777777776,
+        "sampling_fraction": 0.033868539889613664
+      },
+      "required_items": 103,
+      "planned_n_items": 103,
+      "required_items_k1": 116,
+      "required_items_k5": 103,
+      "required_items_one_point_k1": 12335,
+      "required_items_one_point_k5": 10864,
+      "greedy": {
+        "mean_difference": -0.09375,
+        "paired_variance": 0.1498015873015873,
+        "required_items_same_fixed_gap": 111,
+        "fixed_gap": -0.103125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 103,
+        "k": 5,
+        "mean_difference": -0.16893203883495145,
+        "standard_error": 0.03531234878084884,
+        "degrees_of_freedom": 102,
+        "statistic": -4.783936630309038,
+        "degenerate": null,
+        "pvalue": 5.81396421623265e-06,
+        "detected": true,
+        "confidence_interval": [
+          -0.23897391521048378,
+          -0.0988901624594191
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen15",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.021875,
+        "observed_variance": 0.09157738095238095,
+        "sampling_variance": 0.023437500000000007,
+        "item_variance_unclipped": 0.08688988095238095,
+        "item_variance": 0.08688988095238095,
+        "total_variance": 0.09157738095238095,
+        "sampling_fraction": 0.051186220344491405
+      },
+      "required_items": 1503,
+      "planned_n_items": null,
+      "required_items_k1": 1810,
+      "required_items_k5": 1503,
+      "required_items_one_point_k1": 8660,
+      "required_items_one_point_k5": 7188,
+      "greedy": {
+        "mean_difference": 0.03125,
+        "paired_variance": 0.09424603174603174,
+        "required_items_same_fixed_gap": 1546,
+        "fixed_gap": 0.021875,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "infeasible",
+      "confirmation": null
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen3",
+      "model_b": "qwen7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.053125,
+        "observed_variance": 0.07649801587301586,
+        "sampling_variance": 0.007812500000000002,
+        "item_variance_unclipped": 0.07493551587301586,
+        "item_variance": 0.07493551587301586,
+        "total_variance": 0.07649801587301586,
+        "sampling_fraction": 0.020425366359745827
+      },
+      "required_items": 213,
+      "planned_n_items": 213,
+      "required_items_k1": 231,
+      "required_items_k5": 213,
+      "required_items_one_point_k1": 6495,
+      "required_items_one_point_k5": 6005,
+      "greedy": {
+        "mean_difference": -0.0625,
+        "paired_variance": 0.09126984126984126,
+        "required_items_same_fixed_gap": 254,
+        "fixed_gap": -0.053125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 213,
+        "k": 5,
+        "mean_difference": -0.03568075117370892,
+        "standard_error": 0.023683713596704112,
+        "degrees_of_freedom": 212,
+        "statistic": -1.5065522147960084,
+        "degenerate": null,
+        "pvalue": 0.1334140634247984,
+        "detected": false,
+        "confidence_interval": [
+          -0.08236649033584056,
+          0.011004987988422726
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen3",
+      "model_b": "smol17",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.25,
+        "observed_variance": 0.15238095238095237,
+        "sampling_variance": 0.13125,
+        "item_variance_unclipped": 0.12613095238095237,
+        "item_variance": 0.12613095238095237,
+        "total_variance": 0.15238095238095237,
+        "sampling_fraction": 0.17226562500000003
+      },
+      "required_items": 20,
+      "planned_n_items": 20,
+      "required_items_k1": 33,
+      "required_items_k5": 20,
+      "required_items_one_point_k1": 20202,
+      "required_items_one_point_k5": 11961,
+      "greedy": {
+        "mean_difference": 0.125,
+        "paired_variance": 0.20634920634920634,
+        "required_items_same_fixed_gap": 26,
+        "fixed_gap": 0.25,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 20,
+        "k": 5,
+        "mean_difference": 0.28,
+        "standard_error": 0.08385451059643972,
+        "degrees_of_freedom": 19,
+        "statistic": 3.3391167393193064,
+        "degenerate": null,
+        "pvalue": 0.003447496951672948,
+        "detected": true,
+        "confidence_interval": [
+          0.10449049225101525,
+          0.4555095077489848
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen3",
+      "model_b": "phi35",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.028125,
+        "observed_variance": 0.08872023809523807,
+        "sampling_variance": 0.003125000000000001,
+        "item_variance_unclipped": 0.08809523809523807,
+        "item_variance": 0.08809523809523807,
+        "total_variance": 0.08872023809523807,
+        "sampling_fraction": 0.007044615900704466
+      },
+      "required_items": 881,
+      "planned_n_items": null,
+      "required_items_k1": 906,
+      "required_items_k5": 881,
+      "required_items_one_point_k1": 7160,
+      "required_items_one_point_k5": 6964,
+      "greedy": {
+        "mean_difference": -0.03125,
+        "paired_variance": 0.09424603174603174,
+        "required_items_same_fixed_gap": 936,
+        "fixed_gap": -0.028125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "infeasible",
+      "confirmation": null
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen3",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.096875,
+        "observed_variance": 0.14983134920634925,
+        "sampling_variance": 0.003125000000000001,
+        "item_variance_unclipped": 0.14920634920634926,
+        "item_variance": 0.14920634920634926,
+        "total_variance": 0.14983134920634925,
+        "sampling_fraction": 0.004171356684102496
+      },
+      "required_items": 126,
+      "planned_n_items": 126,
+      "required_items_k1": 128,
+      "required_items_k5": 126,
+      "required_items_one_point_k1": 11957,
+      "required_items_one_point_k5": 11761,
+      "greedy": {
+        "mean_difference": 0.09375,
+        "paired_variance": 0.1498015873015873,
+        "required_items_same_fixed_gap": 126,
+        "fixed_gap": 0.096875,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 126,
+        "k": 5,
+        "mean_difference": 0.07936507936507936,
+        "standard_error": 0.03470176721756648,
+        "degrees_of_freedom": 125,
+        "statistic": 2.2870616031596147,
+        "degenerate": null,
+        "pvalue": 0.023873670683092645,
+        "detected": true,
+        "confidence_interval": [
+          0.010685975225181166,
+          0.14804418350497756
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen7",
+      "model_b": "smol17",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.303125,
+        "observed_variance": 0.15110119047619047,
+        "sampling_variance": 0.13281250000000003,
+        "item_variance_unclipped": 0.12453869047619047,
+        "item_variance": 0.12453869047619047,
+        "total_variance": 0.15110119047619047,
+        "sampling_fraction": 0.17579279101831796
+      },
+      "required_items": 13,
+      "planned_n_items": 16,
+      "required_items_k1": 22,
+      "required_items_k5": 13,
+      "required_items_one_point_k1": 20200,
+      "required_items_one_point_k5": 11860,
+      "greedy": {
+        "mean_difference": 0.1875,
+        "paired_variance": 0.25,
+        "required_items_same_fixed_gap": 22,
+        "fixed_gap": 0.303125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 16,
+        "k": 5,
+        "mean_difference": 0.45,
+        "standard_error": 0.10082988974836116,
+        "degrees_of_freedom": 15,
+        "statistic": 4.462962333124183,
+        "degenerate": null,
+        "pvalue": 0.00045575755848588877,
+        "detected": true,
+        "confidence_interval": [
+          0.2350861773170133,
+          0.6649138226829867
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen7",
+      "model_b": "phi35",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.025,
+        "observed_variance": 0.02095238095238095,
+        "sampling_variance": 0.004687500000000001,
+        "item_variance_unclipped": 0.02001488095238095,
+        "item_variance": 0.02001488095238095,
+        "total_variance": 0.02095238095238095,
+        "sampling_fraction": 0.04474431818181819
+      },
+      "required_items": 264,
+      "planned_n_items": 264,
+      "required_items_k1": 311,
+      "required_items_k5": 264,
+      "required_items_one_point_k1": 1939,
+      "required_items_one_point_k5": 1645,
+      "greedy": {
+        "mean_difference": 0.03125,
+        "paired_variance": 0.030753968253968252,
+        "required_items_same_fixed_gap": 387,
+        "fixed_gap": 0.025,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 264,
+        "k": 5,
+        "mean_difference": -0.0015151515151515152,
+        "standard_error": 0.018959949669975062,
+        "degrees_of_freedom": 263,
+        "statistic": -0.07991326672933663,
+        "degenerate": null,
+        "pvalue": 0.9363670115481904,
+        "detected": false,
+        "confidence_interval": [
+          -0.038847765919281595,
+          0.03581746288897856
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "qwen7",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.15,
+        "observed_variance": 0.1257142857142857,
+        "sampling_variance": 0.004687500000000001,
+        "item_variance_unclipped": 0.1247767857142857,
+        "item_variance": 0.1247767857142857,
+        "total_variance": 0.1257142857142857,
+        "sampling_fraction": 0.0074573863636363666
+      },
+      "required_items": 44,
+      "planned_n_items": 44,
+      "required_items_k1": 46,
+      "required_items_k5": 44,
+      "required_items_one_point_k1": 10162,
+      "required_items_one_point_k5": 9868,
+      "greedy": {
+        "mean_difference": 0.15625,
+        "paired_variance": 0.13392857142857142,
+        "required_items_same_fixed_gap": 47,
+        "fixed_gap": 0.15,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 44,
+        "k": 5,
+        "mean_difference": 0.11818181818181818,
+        "standard_error": 0.06891431755128599,
+        "degrees_of_freedom": 43,
+        "statistic": 1.7149095047464897,
+        "degenerate": null,
+        "pvalue": 0.0935612929434395,
+        "detected": false,
+        "confidence_interval": [
+          -0.02079714843896939,
+          0.25716078480260574
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "smol17",
+      "model_b": "phi35",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.278125,
+        "observed_variance": 0.16967261904761907,
+        "sampling_variance": 0.12812500000000002,
+        "item_variance_unclipped": 0.14404761904761906,
+        "item_variance": 0.14404761904761906,
+        "total_variance": 0.16967261904761907,
+        "sampling_fraction": 0.15102613576565513
+      },
+      "required_items": 18,
+      "planned_n_items": 18,
+      "required_items_k1": 28,
+      "required_items_k5": 18,
+      "required_items_one_point_k1": 21363,
+      "required_items_one_point_k5": 13318,
+      "greedy": {
+        "mean_difference": -0.15625,
+        "paired_variance": 0.26091269841269843,
+        "required_items_same_fixed_gap": 27,
+        "fixed_gap": -0.278125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 18,
+        "k": 5,
+        "mean_difference": -0.45555555555555555,
+        "standard_error": 0.09261002014640636,
+        "degrees_of_freedom": 17,
+        "statistic": -4.919074143762973,
+        "degenerate": null,
+        "pvalue": 0.00012984018252967897,
+        "detected": true,
+        "confidence_interval": [
+          -0.6509456187239009,
+          -0.2601654923872102
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "smol17",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": -0.153125,
+        "observed_variance": 0.14824404761904764,
+        "sampling_variance": 0.12812500000000002,
+        "item_variance_unclipped": 0.12261904761904763,
+        "item_variance": 0.12261904761904763,
+        "total_variance": 0.14824404761904764,
+        "sampling_fraction": 0.1728568560530014
+      },
+      "required_items": 50,
+      "planned_n_items": 50,
+      "required_items_k1": 84,
+      "required_items_k5": 50,
+      "required_items_one_point_k1": 19681,
+      "required_items_one_point_k5": 11636,
+      "greedy": {
+        "mean_difference": -0.03125,
+        "paired_variance": 0.22123015873015872,
+        "required_items_same_fixed_gap": 75,
+        "fixed_gap": -0.153125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 50,
+        "k": 5,
+        "mean_difference": -0.232,
+        "standard_error": 0.060571428571428575,
+        "degrees_of_freedom": 49,
+        "statistic": -3.830188679245283,
+        "degenerate": null,
+        "pvalue": 0.00036455970680925276,
+        "detected": true,
+        "confidence_interval": [
+          -0.35372284293468537,
+          -0.11027715706531466
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    },
+    {
+      "benchmark": "arc",
+      "model_a": "phi35",
+      "model_b": "mistral7",
+      "pilot": {
+        "n_items": 64,
+        "k": 5,
+        "mean_difference": 0.125,
+        "observed_variance": 0.14285714285714285,
+        "sampling_variance": 0.0,
+        "item_variance_unclipped": 0.14285714285714285,
+        "item_variance": 0.14285714285714285,
+        "total_variance": 0.14285714285714285,
+        "sampling_fraction": 0.0
+      },
+      "required_items": 72,
+      "planned_n_items": 72,
+      "required_items_k1": 72,
+      "required_items_k5": 72,
+      "required_items_one_point_k1": 11213,
+      "required_items_one_point_k5": 11213,
+      "greedy": {
+        "mean_difference": 0.125,
+        "paired_variance": 0.14285714285714285,
+        "required_items_same_fixed_gap": 72,
+        "fixed_gap": 0.125,
+        "interpretation": "Descriptive hypothetical greedy count at the repeated-decoding pilot gap, not greedy power at its own observed gap."
+      },
+      "fresh_pool": 512,
+      "status": "feasible",
+      "confirmation": {
+        "n_items": 72,
+        "k": 5,
+        "mean_difference": 0.14722222222222223,
+        "standard_error": 0.0479620767567065,
+        "degrees_of_freedom": 71,
+        "statistic": 3.069554785315593,
+        "degenerate": null,
+        "pvalue": 0.0030357271386043656,
+        "detected": true,
+        "confidence_interval": [
+          0.05158855736508447,
+          0.24285588707935998
+        ],
+        "alpha": 0.05,
+        "test": "two-sided paired t-test on item means"
+      }
+    }
+  ],
+  "pilot_models": {
+    "mistral7": {
+      "model": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "benchmarks": {
+        "gsm8k": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.46875,
+          "mean_sampled_accuracy": 0.4625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 30,
+            "accuracy": 0.46875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 148,
+            "accuracy": 0.4625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 5,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "arc": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.78125,
+          "mean_sampled_accuracy": 0.78125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 50,
+            "accuracy": 0.78125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 250,
+            "accuracy": 0.78125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "phi35": {
+      "model": "microsoft/Phi-3.5-mini-instruct",
+      "revision": "2fe192450127e6a83f7441aef6e3ca586c338b77",
+      "benchmarks": {
+        "gsm8k": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.90625,
+          "mean_sampled_accuracy": 0.865625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 58,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 277,
+            "accuracy": 0.865625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 4,
+            "truncation_rate": 0.0125,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "arc": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.90625,
+          "mean_sampled_accuracy": 0.90625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 58,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 290,
+            "accuracy": 0.90625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "qwen15": {
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "benchmarks": {
+        "gsm8k": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.65625,
+          "mean_sampled_accuracy": 0.69375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 42,
+            "accuracy": 0.65625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 222,
+            "accuracy": 0.69375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 7,
+            "truncation_rate": 0.021875,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "arc": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.8125,
+          "mean_sampled_accuracy": 0.803125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 52,
+            "accuracy": 0.8125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 257,
+            "accuracy": 0.803125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "qwen3": {
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+      "benchmarks": {
+        "gsm8k": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.859375,
+          "mean_sampled_accuracy": 0.840625,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 55,
+            "accuracy": 0.859375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 1,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 269,
+            "accuracy": 0.840625,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 3,
+            "truncation_rate": 0.009375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "arc": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.878125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 281,
+            "accuracy": 0.878125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "qwen7": {
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "benchmarks": {
+        "gsm8k": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.875,
+          "mean_sampled_accuracy": 0.928125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 56,
+            "accuracy": 0.875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 297,
+            "accuracy": 0.928125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 3,
+            "truncation_rate": 0.009375,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "arc": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.9375,
+          "mean_sampled_accuracy": 0.93125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 60,
+            "accuracy": 0.9375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 298,
+            "accuracy": 0.93125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    },
+    "smol17": {
+      "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "benchmarks": {
+        "gsm8k": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.171875,
+          "mean_sampled_accuracy": 0.309375,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 11,
+            "accuracy": 0.171875,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 99,
+            "accuracy": 0.309375,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 5,
+            "truncation_rate": 0.015625,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        },
+        "arc": {
+          "n_items": 64,
+          "k": 5,
+          "greedy_accuracy": 0.75,
+          "mean_sampled_accuracy": 0.628125,
+          "greedy": {
+            "n_answers": 64,
+            "correct_count": 48,
+            "accuracy": 0.75,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          },
+          "samples": {
+            "n_answers": 320,
+            "correct_count": 201,
+            "accuracy": 0.628125,
+            "malformed_prediction_count": 0,
+            "malformed_prediction_rate": 0.0,
+            "truncated_count": 0,
+            "truncation_rate": 0.0,
+            "missing_prediction_field_count": 0,
+            "missing_finish_reason_field_count": 0
+          }
+        }
+      }
+    }
+  },
+  "benchmark_overview": {
+    "arc": {
+      "pairs": 15,
+      "fixed_difference": 0.01,
+      "fixed_difference_pairs": 15,
+      "median_one_point_items_k1": 11371.0,
+      "median_one_point_items_k5": 10864.0,
+      "sampling_fraction_pairs": 15,
+      "median_sampling_fraction": 0.04596676124847994,
+      "sampling_fraction_range": [
+        0.0,
+        0.19810036307053946
+      ],
+      "negative_unclipped_item_estimates": 0,
+      "budget_ratio_pairs": 15,
+      "median_k1_to_k5_item_ratio": 1.1864406779661016,
+      "median_k5_to_k1_sampled_completion_ratio": 4.214285714285714,
+      "confirmed_pairs": 13,
+      "detected_pairs": 10,
+      "detection_proportion": 0.7692307692307693,
+      "planned_item_range": [
+        16,
+        264
+      ],
+      "infeasible_pairs": 2,
+      "nonestimable_pairs": 0
+    },
+    "gsm8k": {
+      "pairs": 15,
+      "fixed_difference": 0.01,
+      "fixed_difference_pairs": 15,
+      "median_one_point_items_k1": 20147.0,
+      "median_one_point_items_k5": 8743.0,
+      "sampling_fraction_pairs": 15,
+      "median_sampling_fraction": 0.33160559305689485,
+      "sampling_fraction_range": [
+        0.20835583153347736,
+        0.6069645966337783
+      ],
+      "negative_unclipped_item_estimates": 0,
+      "budget_ratio_pairs": 15,
+      "median_k1_to_k5_item_ratio": 2.317241379310345,
+      "median_k5_to_k1_sampled_completion_ratio": 2.1577380952380953,
+      "confirmed_pairs": 14,
+      "detected_pairs": 13,
+      "detection_proportion": 0.9285714285714286,
+      "planned_item_range": [
+        16,
+        148
+      ],
+      "infeasible_pairs": 1,
+      "nonestimable_pairs": 0
+    }
+  },
+  "detection": {
+    "detected": 23,
+    "tested": 27,
+    "proportion": 0.8518518518518519,
+    "wilson_interval": [
+      0.6752131457218702,
+      0.9408407222375568
+    ],
+    "interpretation": "Observed detection across heterogeneous planned pairs, not single-pair power. Pairs share models and items and are not independent replicates; the Wilson interval is descriptive, not a dependence-adjusted coverage guarantee."
+  },
+  "limitations": [
+    "The pilot variance split assumes conditionally independent decodes within and across models; its finite-pilot components are uncertain, not perfectly identified.",
+    "Negative unclipped item estimates are retained; clipping to zero only sets the planning variance used in the normal approximation.",
+    "Required items use a two-sided normal approximation; confirmation uses item-level paired t-tests. Pilot effect and variance estimates can be noisy.",
+    "Detection uses nominal per-comparison alpha, without multiplicity correction.",
+    "Formatting failures and output truncation can change measured accuracy; per-model pilot summaries report null predictions and length-limited outputs separately.",
+    "Hypothetical k=1 and k=5 budgets use the same sampled pilot gap and estimated components, not separate empirical single-decode measurements.",
+    "Zero-gap or zero-variance pilots are nonestimable under the protocol and are not confirmed; zero pilot variance does not prove zero population variance."
+  ],
+  "strict_secondary": {
+    "pairs": [
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen15",
+        "model_b": "qwen3",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.275,
+          "observed_variance": 0.08825396825396827,
+          "sampling_variance": 0.33906250000000004,
+          "item_variance_unclipped": 0.020441468253968254,
+          "item_variance": 0.020441468253968254,
+          "total_variance": 0.08825396825396827,
+          "sampling_fraction": 0.76837904676259,
+          "required_items": 10,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 32,
+        "confirmation_at_primary_n": {
+          "n_items": 32,
+          "k": 5,
+          "mean_difference": -0.15625,
+          "standard_error": 0.04896869885694264,
+          "degrees_of_freedom": 31,
+          "statistic": -3.1908137983504403,
+          "degenerate": null,
+          "pvalue": 0.0032412675002019002,
+          "detected": true,
+          "confidence_interval": [
+            -0.2561223197712709,
+            -0.05637768022872906
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen15",
+        "model_b": "qwen7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.7375,
+          "observed_variance": 0.056984126984126984,
+          "sampling_variance": 0.18593750000000003,
+          "item_variance_unclipped": 0.01979662698412698,
+          "item_variance": 0.01979662698412698,
+          "total_variance": 0.056984126984126984,
+          "sampling_fraction": 0.6525940111420614,
+          "required_items": 1,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": -0.725,
+          "standard_error": 0.06291528696058958,
+          "degrees_of_freedom": 15,
+          "statistic": -11.523431506465881,
+          "degenerate": null,
+          "pvalue": 7.506105774125582e-09,
+          "detected": true,
+          "confidence_interval": [
+            -0.8591007598009115,
+            -0.5908992401990885
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen15",
+        "model_b": "smol17",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.14375,
+          "observed_variance": 0.04503968253968254,
+          "sampling_variance": 0.16250000000000003,
+          "item_variance_unclipped": 0.012539682539682531,
+          "item_variance": 0.012539682539682531,
+          "total_variance": 0.04503968253968254,
+          "sampling_fraction": 0.7215859030837006,
+          "required_items": 18,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": 0.0875,
+          "standard_error": 0.036371921404658655,
+          "degrees_of_freedom": 15,
+          "statistic": 2.4057018881821475,
+          "degenerate": null,
+          "pvalue": 0.02949429500179206,
+          "detected": true,
+          "confidence_interval": [
+            0.009975084650904423,
+            0.16502491534909558
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen15",
+        "model_b": "phi35",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.6,
+          "observed_variance": 0.11047619047619049,
+          "sampling_variance": 0.23281250000000003,
+          "item_variance_unclipped": 0.06391369047619049,
+          "item_variance": 0.06391369047619049,
+          "total_variance": 0.11047619047619049,
+          "sampling_fraction": 0.4214709051724138,
+          "required_items": 3,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 22,
+        "confirmation_at_primary_n": {
+          "n_items": 22,
+          "k": 5,
+          "mean_difference": -0.5636363636363636,
+          "standard_error": 0.07401458103259743,
+          "degrees_of_freedom": 21,
+          "statistic": -7.615207108828021,
+          "degenerate": null,
+          "pvalue": 1.7983619623722105e-07,
+          "detected": true,
+          "confidence_interval": [
+            -0.7175581110634719,
+            -0.40971461620925526
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen15",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.06875,
+          "observed_variance": 0.09297619047619049,
+          "sampling_variance": 0.2515625000000001,
+          "item_variance_unclipped": 0.04266369047619047,
+          "item_variance": 0.04266369047619047,
+          "total_variance": 0.09297619047619049,
+          "sampling_fraction": 0.5411331626120359,
+          "required_items": 155,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 19,
+        "confirmation_at_primary_n": {
+          "n_items": 19,
+          "k": 5,
+          "mean_difference": -0.12631578947368421,
+          "standard_error": 0.07525477399834112,
+          "degrees_of_freedom": 18,
+          "statistic": -1.6785086548325647,
+          "degenerate": null,
+          "pvalue": 0.11052394280205596,
+          "detected": false,
+          "confidence_interval": [
+            -0.28442020280015723,
+            0.03178862385278883
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen3",
+        "model_b": "qwen7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.4625,
+          "observed_variance": 0.08238095238095239,
+          "sampling_variance": 0.2625,
+          "item_variance_unclipped": 0.029880952380952383,
+          "item_variance": 0.029880952380952383,
+          "total_variance": 0.08238095238095239,
+          "sampling_fraction": 0.6372832369942196,
+          "required_items": 4,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 54,
+        "confirmation_at_primary_n": {
+          "n_items": 54,
+          "k": 5,
+          "mean_difference": -0.5444444444444444,
+          "standard_error": 0.03864101898856008,
+          "degrees_of_freedom": 53,
+          "statistic": -14.089805566608652,
+          "degenerate": null,
+          "pvalue": 1.4624190473062587e-19,
+          "detected": true,
+          "confidence_interval": [
+            -0.6219485135357505,
+            -0.4669403753531383
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen3",
+        "model_b": "smol17",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.41875,
+          "observed_variance": 0.08345238095238096,
+          "sampling_variance": 0.23906250000000004,
+          "item_variance_unclipped": 0.03563988095238095,
+          "item_variance": 0.03563988095238095,
+          "total_variance": 0.08345238095238096,
+          "sampling_fraction": 0.5729315263908702,
+          "required_items": 4,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": 0.2375,
+          "standard_error": 0.06884463184107628,
+          "degrees_of_freedom": 15,
+          "statistic": 3.449796936212173,
+          "degenerate": null,
+          "pvalue": 0.003573330666244168,
+          "detected": true,
+          "confidence_interval": [
+            0.09076114074810787,
+            0.3842388592518921
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen3",
+        "model_b": "phi35",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.325,
+          "observed_variance": 0.15555555555555556,
+          "sampling_variance": 0.30937500000000007,
+          "item_variance_unclipped": 0.09368055555555554,
+          "item_variance": 0.09368055555555554,
+          "total_variance": 0.15555555555555556,
+          "sampling_fraction": 0.39776785714285723,
+          "required_items": 12,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": null,
+        "confirmation_at_primary_n": null
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen3",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.20625,
+          "observed_variance": 0.14472222222222222,
+          "sampling_variance": 0.3281250000000001,
+          "item_variance_unclipped": 0.07909722222222221,
+          "item_variance": 0.07909722222222221,
+          "total_variance": 0.14472222222222222,
+          "sampling_fraction": 0.4534548944337813,
+          "required_items": 27,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": -0.025,
+          "standard_error": 0.10626225419530054,
+          "degrees_of_freedom": 15,
+          "statistic": -0.23526698345822997,
+          "degenerate": null,
+          "pvalue": 0.8171832029055357,
+          "detected": false,
+          "confidence_interval": [
+            -0.2514926334147307,
+            0.20149263341473073
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen7",
+        "model_b": "smol17",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.88125,
+          "observed_variance": 0.036468253968253976,
+          "sampling_variance": 0.08593750000000003,
+          "item_variance_unclipped": 0.01928075396825397,
+          "item_variance": 0.01928075396825397,
+          "total_variance": 0.036468253968253976,
+          "sampling_fraction": 0.4713003264417846,
+          "required_items": 1,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": 0.8125,
+          "standard_error": 0.06446898479113813,
+          "degrees_of_freedom": 15,
+          "statistic": 12.602959432854071,
+          "degenerate": null,
+          "pvalue": 2.2056479022281755e-09,
+          "detected": true,
+          "confidence_interval": [
+            0.6750876116642285,
+            0.9499123883357715
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen7",
+        "model_b": "phi35",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.1375,
+          "observed_variance": 0.0811111111111111,
+          "sampling_variance": 0.15625000000000003,
+          "item_variance_unclipped": 0.0498611111111111,
+          "item_variance": 0.0498611111111111,
+          "total_variance": 0.0811111111111111,
+          "sampling_fraction": 0.3852739726027398,
+          "required_items": 34,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 148,
+        "confirmation_at_primary_n": {
+          "n_items": 148,
+          "k": 5,
+          "mean_difference": 0.11891891891891893,
+          "standard_error": 0.01857566903749675,
+          "degrees_of_freedom": 147,
+          "statistic": 6.401864647721157,
+          "degenerate": null,
+          "pvalue": 1.9424978254145374e-09,
+          "detected": true,
+          "confidence_interval": [
+            0.08220906303200226,
+            0.1556287748058356
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "qwen7",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.66875,
+          "observed_variance": 0.09932539682539683,
+          "sampling_variance": 0.17500000000000002,
+          "item_variance_unclipped": 0.06432539682539683,
+          "item_variance": 0.06432539682539683,
+          "total_variance": 0.09932539682539683,
+          "sampling_fraction": 0.3523771474230923,
+          "required_items": 2,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": 0.55,
+          "standard_error": 0.08266397845091497,
+          "degrees_of_freedom": 15,
+          "statistic": 6.653442168000472,
+          "degenerate": null,
+          "pvalue": 7.695495871930887e-06,
+          "detected": true,
+          "confidence_interval": [
+            0.3738059006966342,
+            0.7261940993033659
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "smol17",
+        "model_b": "phi35",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.74375,
+          "observed_variance": 0.09202380952380952,
+          "sampling_variance": 0.1328125,
+          "item_variance_unclipped": 0.06546130952380952,
+          "item_variance": 0.06546130952380952,
+          "total_variance": 0.09202380952380952,
+          "sampling_fraction": 0.28864812419146185,
+          "required_items": 2,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": -0.6625,
+          "standard_error": 0.10282468899377555,
+          "degrees_of_freedom": 15,
+          "statistic": -6.443005142861207,
+          "degenerate": null,
+          "pvalue": 1.107697776532507e-05,
+          "detected": true,
+          "confidence_interval": [
+            -0.8816656366281082,
+            -0.4433343633718918
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "smol17",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.2125,
+          "observed_variance": 0.09253968253968255,
+          "sampling_variance": 0.15156250000000004,
+          "item_variance_unclipped": 0.06222718253968254,
+          "item_variance": 0.06222718253968254,
+          "total_variance": 0.09253968253968255,
+          "sampling_fraction": 0.32756217838765017,
+          "required_items": 17,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 49,
+        "confirmation_at_primary_n": {
+          "n_items": 49,
+          "k": 5,
+          "mean_difference": -0.2,
+          "standard_error": 0.048445214165180495,
+          "degrees_of_freedom": 48,
+          "statistic": -4.12837477233712,
+          "degenerate": null,
+          "pvalue": 0.0001448690137149597,
+          "detected": true,
+          "confidence_interval": [
+            -0.2974056314410617,
+            -0.10259436855893833
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "gsm8k",
+        "model_a": "phi35",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.53125,
+          "observed_variance": 0.1171031746031746,
+          "sampling_variance": 0.22187500000000002,
+          "item_variance_unclipped": 0.0727281746031746,
+          "item_variance": 0.0727281746031746,
+          "total_variance": 0.1171031746031746,
+          "sampling_fraction": 0.3789393425957303,
+          "required_items": 4,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": 0.4,
+          "standard_error": 0.10488088481701517,
+          "degrees_of_freedom": 15,
+          "statistic": 3.813850356982369,
+          "degenerate": null,
+          "pvalue": 0.0016945658814098035,
+          "detected": true,
+          "confidence_interval": [
+            0.17645168571886582,
+            0.6235483142811342
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen15",
+        "model_b": "qwen3",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.075,
+          "observed_variance": 0.0996825396825397,
+          "sampling_variance": 0.026562500000000006,
+          "item_variance_unclipped": 0.09437003968253971,
+          "item_variance": 0.09437003968253971,
+          "total_variance": 0.0996825396825397,
+          "sampling_fraction": 0.05329418789808917,
+          "required_items": 140,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 140,
+        "confirmation_at_primary_n": {
+          "n_items": 140,
+          "k": 5,
+          "mean_difference": -0.07571428571428572,
+          "standard_error": 0.029623735458918898,
+          "degrees_of_freedom": 139,
+          "statistic": -2.5558655767529217,
+          "degenerate": null,
+          "pvalue": 0.011667143528809928,
+          "detected": true,
+          "confidence_interval": [
+            -0.13428567557985457,
+            -0.017142895848716866
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen15",
+        "model_b": "qwen7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.128125,
+          "observed_variance": 0.12237103174603174,
+          "sampling_variance": 0.028125000000000004,
+          "item_variance_unclipped": 0.11674603174603174,
+          "item_variance": 0.11674603174603174,
+          "total_variance": 0.12237103174603174,
+          "sampling_fraction": 0.04596676124847994,
+          "required_items": 59,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 59,
+        "confirmation_at_primary_n": {
+          "n_items": 59,
+          "k": 5,
+          "mean_difference": -0.10847457627118644,
+          "standard_error": 0.047943575324775126,
+          "degrees_of_freedom": 58,
+          "statistic": -2.2625466610774763,
+          "degenerate": null,
+          "pvalue": 0.027424735591554984,
+          "detected": true,
+          "confidence_interval": [
+            -0.20444406925122288,
+            -0.01250508329114998
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen15",
+        "model_b": "smol17",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.175,
+          "observed_variance": 0.153015873015873,
+          "sampling_variance": 0.15156250000000002,
+          "item_variance_unclipped": 0.12270337301587299,
+          "item_variance": 0.12270337301587299,
+          "total_variance": 0.153015873015873,
+          "sampling_fraction": 0.19810036307053946,
+          "required_items": 40,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 40,
+        "confirmation_at_primary_n": {
+          "n_items": 40,
+          "k": 5,
+          "mean_difference": 0.235,
+          "standard_error": 0.07334061735386574,
+          "degrees_of_freedom": 39,
+          "statistic": 3.2042271865006775,
+          "degenerate": null,
+          "pvalue": 0.0026994090758924783,
+          "detected": true,
+          "confidence_interval": [
+            0.08665459920844526,
+            0.3833454007915547
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen15",
+        "model_b": "phi35",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.103125,
+          "observed_variance": 0.13840277777777776,
+          "sampling_variance": 0.023437500000000007,
+          "item_variance_unclipped": 0.13371527777777775,
+          "item_variance": 0.13371527777777775,
+          "total_variance": 0.13840277777777776,
+          "sampling_fraction": 0.033868539889613664,
+          "required_items": 103,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 103,
+        "confirmation_at_primary_n": {
+          "n_items": 103,
+          "k": 5,
+          "mean_difference": -0.16893203883495145,
+          "standard_error": 0.03531234878084884,
+          "degrees_of_freedom": 102,
+          "statistic": -4.783936630309038,
+          "degenerate": null,
+          "pvalue": 5.81396421623265e-06,
+          "detected": true,
+          "confidence_interval": [
+            -0.23897391521048378,
+            -0.0988901624594191
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen15",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.021875,
+          "observed_variance": 0.09157738095238095,
+          "sampling_variance": 0.023437500000000007,
+          "item_variance_unclipped": 0.08688988095238095,
+          "item_variance": 0.08688988095238095,
+          "total_variance": 0.09157738095238095,
+          "sampling_fraction": 0.051186220344491405,
+          "required_items": 1503,
+          "fresh_pool": 512,
+          "feasible": false,
+          "status": "infeasible"
+        },
+        "primary_planned_n_items": null,
+        "confirmation_at_primary_n": null
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen3",
+        "model_b": "qwen7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.053125,
+          "observed_variance": 0.07649801587301586,
+          "sampling_variance": 0.007812500000000002,
+          "item_variance_unclipped": 0.07493551587301586,
+          "item_variance": 0.07493551587301586,
+          "total_variance": 0.07649801587301586,
+          "sampling_fraction": 0.020425366359745827,
+          "required_items": 213,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 213,
+        "confirmation_at_primary_n": {
+          "n_items": 213,
+          "k": 5,
+          "mean_difference": -0.03568075117370892,
+          "standard_error": 0.023683713596704112,
+          "degrees_of_freedom": 212,
+          "statistic": -1.5065522147960084,
+          "degenerate": null,
+          "pvalue": 0.1334140634247984,
+          "detected": false,
+          "confidence_interval": [
+            -0.08236649033584056,
+            0.011004987988422726
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen3",
+        "model_b": "smol17",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.25,
+          "observed_variance": 0.15238095238095237,
+          "sampling_variance": 0.13125,
+          "item_variance_unclipped": 0.12613095238095237,
+          "item_variance": 0.12613095238095237,
+          "total_variance": 0.15238095238095237,
+          "sampling_fraction": 0.17226562500000003,
+          "required_items": 20,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 20,
+        "confirmation_at_primary_n": {
+          "n_items": 20,
+          "k": 5,
+          "mean_difference": 0.28,
+          "standard_error": 0.08385451059643972,
+          "degrees_of_freedom": 19,
+          "statistic": 3.3391167393193064,
+          "degenerate": null,
+          "pvalue": 0.003447496951672948,
+          "detected": true,
+          "confidence_interval": [
+            0.10449049225101525,
+            0.4555095077489848
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen3",
+        "model_b": "phi35",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.028125,
+          "observed_variance": 0.08872023809523807,
+          "sampling_variance": 0.003125000000000001,
+          "item_variance_unclipped": 0.08809523809523807,
+          "item_variance": 0.08809523809523807,
+          "total_variance": 0.08872023809523807,
+          "sampling_fraction": 0.007044615900704466,
+          "required_items": 881,
+          "fresh_pool": 512,
+          "feasible": false,
+          "status": "infeasible"
+        },
+        "primary_planned_n_items": null,
+        "confirmation_at_primary_n": null
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen3",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.096875,
+          "observed_variance": 0.14983134920634925,
+          "sampling_variance": 0.003125000000000001,
+          "item_variance_unclipped": 0.14920634920634926,
+          "item_variance": 0.14920634920634926,
+          "total_variance": 0.14983134920634925,
+          "sampling_fraction": 0.004171356684102496,
+          "required_items": 126,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 126,
+        "confirmation_at_primary_n": {
+          "n_items": 126,
+          "k": 5,
+          "mean_difference": 0.07936507936507936,
+          "standard_error": 0.03470176721756648,
+          "degrees_of_freedom": 125,
+          "statistic": 2.2870616031596147,
+          "degenerate": null,
+          "pvalue": 0.023873670683092645,
+          "detected": true,
+          "confidence_interval": [
+            0.010685975225181166,
+            0.14804418350497756
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen7",
+        "model_b": "smol17",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.303125,
+          "observed_variance": 0.15110119047619047,
+          "sampling_variance": 0.13281250000000003,
+          "item_variance_unclipped": 0.12453869047619047,
+          "item_variance": 0.12453869047619047,
+          "total_variance": 0.15110119047619047,
+          "sampling_fraction": 0.17579279101831796,
+          "required_items": 13,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 16,
+        "confirmation_at_primary_n": {
+          "n_items": 16,
+          "k": 5,
+          "mean_difference": 0.45,
+          "standard_error": 0.10082988974836116,
+          "degrees_of_freedom": 15,
+          "statistic": 4.462962333124183,
+          "degenerate": null,
+          "pvalue": 0.00045575755848588877,
+          "detected": true,
+          "confidence_interval": [
+            0.2350861773170133,
+            0.6649138226829867
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen7",
+        "model_b": "phi35",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.025,
+          "observed_variance": 0.02095238095238095,
+          "sampling_variance": 0.004687500000000001,
+          "item_variance_unclipped": 0.02001488095238095,
+          "item_variance": 0.02001488095238095,
+          "total_variance": 0.02095238095238095,
+          "sampling_fraction": 0.04474431818181819,
+          "required_items": 264,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 264,
+        "confirmation_at_primary_n": {
+          "n_items": 264,
+          "k": 5,
+          "mean_difference": -0.0015151515151515152,
+          "standard_error": 0.018959949669975062,
+          "degrees_of_freedom": 263,
+          "statistic": -0.07991326672933663,
+          "degenerate": null,
+          "pvalue": 0.9363670115481904,
+          "detected": false,
+          "confidence_interval": [
+            -0.038847765919281595,
+            0.03581746288897856
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "qwen7",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.15,
+          "observed_variance": 0.1257142857142857,
+          "sampling_variance": 0.004687500000000001,
+          "item_variance_unclipped": 0.1247767857142857,
+          "item_variance": 0.1247767857142857,
+          "total_variance": 0.1257142857142857,
+          "sampling_fraction": 0.0074573863636363666,
+          "required_items": 44,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 44,
+        "confirmation_at_primary_n": {
+          "n_items": 44,
+          "k": 5,
+          "mean_difference": 0.11818181818181818,
+          "standard_error": 0.06891431755128599,
+          "degrees_of_freedom": 43,
+          "statistic": 1.7149095047464897,
+          "degenerate": null,
+          "pvalue": 0.0935612929434395,
+          "detected": false,
+          "confidence_interval": [
+            -0.02079714843896939,
+            0.25716078480260574
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "smol17",
+        "model_b": "phi35",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.278125,
+          "observed_variance": 0.16967261904761907,
+          "sampling_variance": 0.12812500000000002,
+          "item_variance_unclipped": 0.14404761904761906,
+          "item_variance": 0.14404761904761906,
+          "total_variance": 0.16967261904761907,
+          "sampling_fraction": 0.15102613576565513,
+          "required_items": 18,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 18,
+        "confirmation_at_primary_n": {
+          "n_items": 18,
+          "k": 5,
+          "mean_difference": -0.45555555555555555,
+          "standard_error": 0.09261002014640636,
+          "degrees_of_freedom": 17,
+          "statistic": -4.919074143762973,
+          "degenerate": null,
+          "pvalue": 0.00012984018252967897,
+          "detected": true,
+          "confidence_interval": [
+            -0.6509456187239009,
+            -0.2601654923872102
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "smol17",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": -0.153125,
+          "observed_variance": 0.14824404761904764,
+          "sampling_variance": 0.12812500000000002,
+          "item_variance_unclipped": 0.12261904761904763,
+          "item_variance": 0.12261904761904763,
+          "total_variance": 0.14824404761904764,
+          "sampling_fraction": 0.1728568560530014,
+          "required_items": 50,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 50,
+        "confirmation_at_primary_n": {
+          "n_items": 50,
+          "k": 5,
+          "mean_difference": -0.232,
+          "standard_error": 0.060571428571428575,
+          "degrees_of_freedom": 49,
+          "statistic": -3.830188679245283,
+          "degenerate": null,
+          "pvalue": 0.00036455970680925276,
+          "detected": true,
+          "confidence_interval": [
+            -0.35372284293468537,
+            -0.11027715706531466
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      },
+      {
+        "benchmark": "arc",
+        "model_a": "phi35",
+        "model_b": "mistral7",
+        "pilot": {
+          "n_items": 64,
+          "k": 5,
+          "mean_difference": 0.125,
+          "observed_variance": 0.14285714285714285,
+          "sampling_variance": 0.0,
+          "item_variance_unclipped": 0.14285714285714285,
+          "item_variance": 0.14285714285714285,
+          "total_variance": 0.14285714285714285,
+          "sampling_fraction": 0.0,
+          "required_items": 72,
+          "fresh_pool": 512,
+          "feasible": true,
+          "status": "feasible"
+        },
+        "primary_planned_n_items": 72,
+        "confirmation_at_primary_n": {
+          "n_items": 72,
+          "k": 5,
+          "mean_difference": 0.14722222222222223,
+          "standard_error": 0.0479620767567065,
+          "degrees_of_freedom": 71,
+          "statistic": 3.069554785315593,
+          "degenerate": null,
+          "pvalue": 0.0030357271386043656,
+          "detected": true,
+          "confidence_interval": [
+            0.05158855736508447,
+            0.24285588707935998
+          ],
+          "alpha": 0.05,
+          "test": "two-sided paired t-test on item means"
+        }
+      }
+    ],
+    "detected": 22,
+    "tested": 27,
+    "detection_proportion": 0.8148148148148148,
+    "interpretation": "Secondary strict-format scoring of exactly the primary experiment's answers. Item counts were planned using flexible grading, not this secondary metric; this is not a confirmatory test of strict-format pilot power."
+  },
+  "sources": {
+    "protocol": {
+      "file": "results/prospective/protocol.json",
+      "sha256": "42da27e203d5ebf126e74882c62b4a6b1ac31cd2049c460b4362e796b827572f"
+    },
+    "plan": {
+      "file": "results/prospective/primary/plan.json",
+      "sha256": "4dd1bc1a6b9e56c768862fc76d0b77fd81e741f69e64ca1a45344ebc9da78145"
+    },
+    "pilot": [
+      {
+        "file": "results/prospective/primary/pilot/mistral7.json.gz",
+        "sha256": "8599a500b0d92943006c62d4989a978c3fc3450f0bb0f9956a77b2c2ff6b49e8"
+      },
+      {
+        "file": "results/prospective/primary/pilot/phi35.json.gz",
+        "sha256": "d97af0144610e38be09d6cbae35331136c86fc8e78e93bfbc16f4ff15955feb8"
+      },
+      {
+        "file": "results/prospective/primary/pilot/qwen15.json.gz",
+        "sha256": "2fe68475cd0d81638c70aa930bbf57df6d00d05e06daba46a5839768a083cac8"
+      },
+      {
+        "file": "results/prospective/primary/pilot/qwen3.json.gz",
+        "sha256": "67a46639aca6beab18ebd99bffa63746f0d9ffa648b8bf9424199459a7ae2acc"
+      },
+      {
+        "file": "results/prospective/primary/pilot/qwen7.json.gz",
+        "sha256": "c174a0e97ae67c542c79f57c207a1c73fb856ac29d9493cb4e91e36f7e65276c"
+      },
+      {
+        "file": "results/prospective/primary/pilot/smol17.json.gz",
+        "sha256": "9d7adfbf4a9f36c81ef6c426510b8f5c249abb88b7c5e7b8cc94836d17a60da3"
+      }
+    ],
+    "confirm": [
+      {
+        "file": "results/prospective/primary/confirm/mistral7.json.gz",
+        "sha256": "28ee4f5dbbfef80cfd618f724ecc0358cae134d1a82552be585d7753bba63e74"
+      },
+      {
+        "file": "results/prospective/primary/confirm/phi35.json.gz",
+        "sha256": "8a0193e35fa574008c257c4db152b44f7b6c195a6e3024dea50dbc2f90244591"
+      },
+      {
+        "file": "results/prospective/primary/confirm/qwen15.json.gz",
+        "sha256": "c16f67dc7a45a1b9f76c9c4938532e25b901b5a226ac4ec44a88ae8f1401a1e0"
+      },
+      {
+        "file": "results/prospective/primary/confirm/qwen3.json.gz",
+        "sha256": "3203f8e4ee8f82101f5781fa10b5d66a2a47d678a9dcb1ad480d2b39ee94c02e"
+      },
+      {
+        "file": "results/prospective/primary/confirm/qwen7.json.gz",
+        "sha256": "df671ee480b6f85db615835ee3bb07684e7390acd97b7980d8d5763060c4d860"
+      },
+      {
+        "file": "results/prospective/primary/confirm/smol17.json.gz",
+        "sha256": "362cb8638dd6c506be3fa6297441b8948fd0d5f4204ba354e3de3533e6929725"
+      }
+    ]
+  },
+  "model_sources": [
+    {
+      "id": "Qwen/Qwen2.5-1.5B-Instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "license": "apache-2.0",
+      "gated": false,
+      "source": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct",
+      "slug": "qwen15"
+    },
+    {
+      "id": "Qwen/Qwen2.5-3B-Instruct",
+      "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+      "license": "Qwen Research License (non-commercial research/evaluation)",
+      "gated": false,
+      "source": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct",
+      "slug": "qwen3"
+    },
+    {
+      "id": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "license": "apache-2.0",
+      "gated": false,
+      "source": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
+      "slug": "qwen7"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "license": "apache-2.0",
+      "gated": false,
+      "source": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "slug": "smol17"
+    },
+    {
+      "id": "microsoft/Phi-3.5-mini-instruct",
+      "revision": "2fe192450127e6a83f7441aef6e3ca586c338b77",
+      "license": "mit",
+      "gated": false,
+      "source": "https://huggingface.co/microsoft/Phi-3.5-mini-instruct",
+      "slug": "phi35"
+    },
+    {
+      "id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "license": "apache-2.0",
+      "gated": false,
+      "source": "https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3",
+      "slug": "mistral7"
+    }
+  ],
+  "benchmark_sources": {
+    "gsm8k": {
+      "id": "openai/gsm8k",
+      "revision": "740312add88f781978c0658806c59bc2815b9866",
+      "license": [
+        "mit"
+      ],
+      "gated": false,
+      "source": "https://huggingface.co/datasets/openai/gsm8k",
+      "config": "main",
+      "split": "test",
+      "size": 1319,
+      "max_tokens": 512
+    },
+    "arc": {
+      "id": "allenai/ai2_arc",
+      "revision": "210d026faf9955653af8916fad021475a3f00453",
+      "license": [
+        "cc-by-sa-4.0"
+      ],
+      "gated": false,
+      "source": "https://huggingface.co/datasets/allenai/ai2_arc",
+      "config": "ARC-Challenge",
+      "split": "test",
+      "size": 1172,
+      "max_tokens": 16,
+      "decoding": "guided_direct_choice",
+      "choices": "Native vLLM guided decoding over Answer: <label> for every provided choice label, not only the reference.",
+      "guided_backend": "auto",
+      "rule_source": "https://docs.vllm.ai/en/v0.10.2/api/vllm/sampling_params.html#vllm.sampling_params.GuidedDecodingParams"
+    }
+  },
+  "software": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "matplotlib": "3.11.2"
+  }
+}

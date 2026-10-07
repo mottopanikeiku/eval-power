@@ -1,0 +1,193 @@
+{
+  "cost_upper_usd": 3.0142,
+  "allocation_usd": 5.5,
+  "cost_scope": "All project cloud calls, including failed setup, image building/startup, diagnostics, the final pilot, confirmation and cleanup.",
+  "cost_method": "Client wall time times booked concurrent resources, using list prices plus a 10% margin. This conservative booking-based estimate is not a Modal invoice; idle and queue time are included.",
+  "price_usd_per_hour": {
+    "L4": 0.7992,
+    "cpu_core": 0.04716,
+    "memory_gib": 0.007992
+  },
+  "margin": 1.1,
+  "runs": [
+    {
+      "purpose": "initial dependency setup",
+      "status": "failed",
+      "gpu": "L4",
+      "containers": 1,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 5.0,
+      "client_wall_minutes": 6.84,
+      "booked_upper_usd": 0.0878,
+      "final_upper_usd": 0.1201,
+      "client_exit_code": 1
+    },
+    {
+      "purpose": "image/startup attempt with no saved answers",
+      "status": "aborted_no_answers",
+      "gpu": "L4",
+      "containers": 1,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 5.0,
+      "client_wall_minutes": 7.01,
+      "booked_upper_usd": 0.0878,
+      "final_upper_usd": 0.1231,
+      "client_exit_code": 0
+    },
+    {
+      "purpose": "throughput probe",
+      "status": "completed",
+      "gpu": "L4",
+      "containers": 1,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 10.0,
+      "client_wall_minutes": 1.95,
+      "booked_upper_usd": 0.1755,
+      "final_upper_usd": 0.0342,
+      "client_exit_code": 0
+    },
+    {
+      "purpose": "initial unconstrained pilot",
+      "status": "completed_diagnostic_only",
+      "gpu": "L4",
+      "containers": 2,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 30.0,
+      "client_wall_minutes": 17.64,
+      "booked_upper_usd": 1.0532,
+      "final_upper_usd": 0.6195,
+      "client_exit_code": 0
+    },
+    {
+      "purpose": "ambiguous local entrypoint; no GPU inference",
+      "status": "failed",
+      "gpu": "L4",
+      "containers": 2,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 30.0,
+      "client_wall_minutes": 0.01,
+      "booked_upper_usd": 1.0532,
+      "final_upper_usd": 0.0005,
+      "client_exit_code": 1
+    },
+    {
+      "purpose": "longer unconstrained ARC pilot",
+      "status": "completed_diagnostic_only",
+      "gpu": "L4",
+      "containers": 2,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 30.0,
+      "client_wall_minutes": 25.51,
+      "booked_upper_usd": 1.0532,
+      "final_upper_usd": 0.8955,
+      "client_exit_code": 0
+    },
+    {
+      "purpose": "unsupported request-level backend selector",
+      "status": "failed",
+      "gpu": "L4",
+      "containers": 2,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 30.0,
+      "client_wall_minutes": 8.55,
+      "booked_upper_usd": 1.0532,
+      "final_upper_usd": 0.3002,
+      "client_exit_code": 1
+    },
+    {
+      "purpose": "guided ARC before the seed-stride repair",
+      "status": "completed_diagnostic_only",
+      "gpu": "L4",
+      "containers": 2,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 30.0,
+      "client_wall_minutes": 4.23,
+      "booked_upper_usd": 1.0532,
+      "final_upper_usd": 0.1486,
+      "client_exit_code": 0
+    },
+    {
+      "purpose": "independent-stream primary pilot",
+      "status": "completed",
+      "gpu": "L4",
+      "containers": 2,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 30.0,
+      "client_wall_minutes": 10.51,
+      "booked_upper_usd": 1.0532,
+      "final_upper_usd": 0.369,
+      "client_exit_code": 0
+    },
+    {
+      "purpose": "precommitted fresh-item confirmation",
+      "status": "completed",
+      "gpu": "L4",
+      "containers": 2,
+      "cpu_cores_per_container": 2.0,
+      "memory_gib_per_container": 8.0,
+      "booked_minutes": 60.0,
+      "client_wall_minutes": 11.49,
+      "booked_upper_usd": 2.1064,
+      "final_upper_usd": 0.4034,
+      "client_exit_code": 0
+    },
+    {
+      "purpose": "remove only project model caches",
+      "status": "completed",
+      "gpu": "none",
+      "containers": 1,
+      "cpu_cores_per_container": 1.0,
+      "memory_gib_per_container": 1.0,
+      "booked_minutes": 2.0,
+      "client_wall_minutes": 0.12,
+      "booked_upper_usd": 0.002,
+      "final_upper_usd": 0.0001,
+      "client_exit_code": 0
+    }
+  ],
+  "saved_collections": {
+    "throughput": {
+      "models_saved": 1,
+      "answers_saved": 96,
+      "output_tokens_saved": 10604
+    },
+    "pilot": {
+      "models_saved": 6,
+      "answers_saved": 4608,
+      "output_tokens_saved": 607118
+    },
+    "arc_revised/pilot": {
+      "models_saved": 6,
+      "answers_saved": 2304,
+      "output_tokens_saved": 189254
+    },
+    "arc_direct/pilot": {
+      "models_saved": 6,
+      "answers_saved": 2304,
+      "output_tokens_saved": 10566
+    },
+    "primary/pilot": {
+      "models_saved": 6,
+      "answers_saved": 4608,
+      "output_tokens_saved": 504972
+    },
+    "primary/confirm": {
+      "models_saved": 6,
+      "answers_saved": 9222,
+      "output_tokens_saved": 674994
+    }
+  },
+  "total_answers_saved": 23142,
+  "primary_answers_saved": 13830,
+  "count_scope": "Returned answers in committed inference files, not unreturned work during failures or preemption. Earlier diagnostic outputs are not used for primary plans or confirmation.",
+  "local_timing_claims": false
+}

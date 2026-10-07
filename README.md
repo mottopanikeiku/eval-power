@@ -1,77 +1,58 @@
 # eval-power
 
-This checks whether a small, same-item LLM pilot can reliably plan a larger accuracy comparison.
+I generated **13,830 answers from six small language models**, committed my sample-size plans before collecting fresh-item answers, and detected differences in **23 of 27 planned comparisons**. That is an observed detection fraction, **not proof of 80% power**. My repeated-decoding pilot also found a much larger decoding-noise share on GSM8K than on guided-choice ARC.
 
-**Question:** how many items do two models need, and how often does a pilot get that budget right?
+[Try my power calculator](https://mottopanikeiku.github.io/eval-power/) · [Prior work and citations](docs/PRIOR_WORK.md)
 
-[Try my item-budget calculator](https://mottopanikeiku.github.io/eval-power/) for paired or unpaired comparisons and the committed pilot-calibration results.
+## What the new experiment says
 
-This extends [Kotawala’s paired audit](https://arxiv.org/abs/2605.30315) and [Basile et al.’s planning toolkit](https://aclanthology.org/2026.lrec-1.353/) with disjoint-pilot calibration—not new power formulas. Data are tinyBenchmarks’ **selected 395-model, 2024 Open LLM Leaderboard population**, not current frontier models ([source and licenses](data/manifest.json)).
+Each model answered the same 64 pilot questions per benchmark once greedily and five times at temperature 0.7. I used Qwen2.5 1.5B, 3B and 7B, SmolLM2 1.7B, Phi-3.5-mini and Mistral-7B-v0.3: six checkpoints across four families, with pinned revisions and licenses in the [protocol](results/prospective/protocol.json). Qwen's 3B checkpoint has a noncommercial research license.
 
-[stats.py](src/eval_power/stats.py) contains paired, unpaired and clustered errors plus an item-count planner. [analysis.py](src/eval_power/analysis.py) fits small pilots, then checks their predictions using heldout item subsampling and exact McNemar tests.
-
-**Result:** 128-item observed-gap plans targeting 80% power delivered **49.3–78.6% median heldout detection** ([calibration](results/calibration.csv)). This measures a known pilot-planning problem for LLM comparisons—not a new statistical discovery.
-
-## Planning budgets and leaderboard noise
-
-Rounded medians, **items/model (paired / unpaired)**: prespecified differences, empirical non-identical adjacent-pair variances, two-sided α = 0.05, 80% Gaussian power—not simultaneous leaderboard budgets. Interquartile ranges and more differences: [lookup.csv](results/lookup.csv).
-
-| Benchmark | 1 percentage point | 2 percentage points | Adjacent gaps not distinguishable |
+| Benchmark / decoding task | Median estimated decoding share at k=5 | Median questions for a hypothetical 1-point gap, k=1 → k=5 | Fresh detections |
 |---|---:|---:|---:|
-| ARC-Challenge | 13.0k / 37.3k | 3.3k / 9.3k | 99.7% |
-| GSM8K | 15.1k / 24.4k | 3.8k / 6.1k | 100% |
-| WinoGrande | 13.9k / 28.0k | 3.5k / 7.0k | 100% |
-| HellaSwag | 5.7k / 22.4k | 1.4k / 5.6k | 98.7% |
-| MMLU | 17.0k / 37.6k | 4.3k / 9.4k | 99.7% |
+| GSM8K, free-form numeric answers | 33.2% | 20,147 → 8,743 | 13 / 14 |
+| ARC-Challenge, guided direct choice | 4.6% | 11,371 → 10,864 | 10 / 13 |
 
-Exact McNemar tests use Holm over **all 77,815 pairs/benchmark**, before selecting 394 adjacencies; rankings use item-weighted accuracy and label-sorted ties ([audit](results/audit.csv), [tests](results/all_pair_tests.npz)). Not distinguishable does **not** mean equal.
+[Every pair, variance estimate, question count, p-value and interval](results/prospective/summary.json) is available. The one-point counts assume a two-sided 5% test and an 80% normal-approximation target; they are hypothetical budgets, not tested one-point effects. Here k=1 means one stochastic draw, **not greedy decoding**. Fewer questions with k=5 does not imply fewer generated answers or lower GPU cost.
 
-Without correction, only **1–12 of 394** adjacent pairs differ at α = 0.05 (ARC 1, GSM8K 1, WinoGrande 1, HellaSwag 12, MMLU 11). Exact score ties (same order): 171, 93, 220, 56, 13; trivially indistinguishable ([audit](results/audit.csv)).
+![Pilot variance decomposition and fresh-item paired intervals](figures/prospective.svg)
 
-Measured adjacent-item correlations were 0.34–0.73; pairing reduced median standard errors by 19–48%. For MMLU, clustering its 57 subjects increased median adjacent SE by 1.60× and left no adjacent gap distinguishable ([audit](results/audit.csv)).
+I estimate
 
-## How well do pilots predict power?
+\[
+\operatorname{Var}(\bar Y_A-\bar Y_B)=\sigma^2_{\mathrm{item}}+\sigma^2_{\mathrm{decode}}/k.
+\]
 
-Pairs are selected by indices, not scores: 40 pairs per benchmark, five disjoint item splits, and 1,000 trials per point ([configuration](results/configuration.json)). Each pilot-gap plan targets 80%; the table reports its **median observed** detection under the empirical heldout IID distribution:
+I estimate decoding variance within questions, subtract it from the observed variance of item means, and retain the unclipped item estimate before applying a zero floor for planning. Neither component is perfectly identified by a 64-question pilot.
 
-| Benchmark | Pilot: 128 items | Pilot: 256 items | 128-item plans below target* |
-|---|---:|---:|---:|
-| ARC-Challenge | 67.1% | 65.7% | 56.5% |
-| GSM8K | 49.3% | 53.0% | 75.0% |
-| WinoGrande | 50.4% | 80.8% | 60.1% |
-| HellaSwag | 51.4% | 62.4% | 65.9% |
-| MMLU | 78.6% | 67.1% | 48.5% |
+I published the [exact plan commit](https://github.com/mottopanikeiku/eval-power/commit/bbbae30a37a3b80ca43af6e8e23444e3892bdb78) before confirmation. Each feasible pair received its planned 16–264 new questions and a paired t-test on five-answer item means. Those answers were reused across comparisons sharing a model. I collected **9,222 confirmation answers**, separate from the pilot. Three pairs needed more than my declared 512-question collection limit and were not run: GSM8K Qwen3–Phi required 870; ARC Qwen1.5–Mistral required 1,503 and Qwen3–Phi required 881. I did not cap their plans and call them 80%-power tests.
 
-*Among nonzero-gap, positive-variance plans: upper Monte Carlo 95% bounds below 80%; not future-population guarantees.*
+### What I changed before confirmation
 
-At the smaller pilot size, power-curve mean absolute error was 10.0–25.4 percentage points versus 1.9–4.4 for a heldout-fitted normal reference ([calibration](results/calibration.csv)). Larger pilots did not uniformly improve the gap-based rule. Raw [curves](results/validation_curves.csv.gz) and [plans](results/pilot_plans.csv.gz) retain Monte Carlo intervals; without-replacement results describe only the fixed pool.
+This was a precommitted confirmation, **not a protocol registered before seeing any pilot**. My initial GSM grader demanded `####`; relaxing numeric extraction changed Qwen1.5's score from 15.9% to 65.9% on the same original sampled texts. Phi still truncated 18.1% of unconstrained ARC samples at 1,024 tokens. I therefore changed **all six models** to native constrained `Answer: <label>` generation, rather than claiming Phi became better or its stop tokens were broken. This is **not conventional ARC option-likelihood evaluation**.
 
-Noisy pilot effects producing underpowered follow-ups are established concerns: [Albers & Lakens 2018](https://doi.org/10.1016/j.jesp.2017.09.004) and [Kraemer et al. 2006](https://pubmed.ncbi.nlm.nih.gov/16651505/). The safer variance-based plan fixes the smallest meaningful difference beforehand and uses the pilot for variance, not the target effect; variance transfer still needs checking.
+I also found that vLLM's child-seed offset caused neighboring questions to reuse 426 of 3,840 requested streams in the initial pilot. I repaired the stride and recollected both primary pilots: **3,840 distinct stochastic seeds, zero reused**. I retained [all earlier pilots and the complete revision comparison](results/prospective/pilot_revision.json). Strict-format rescoring of the primary confirmation detects 22/27 differences; those sample sizes were not planned for that secondary metric.
 
-![Out-of-pilot planning](figures/pilot_planning.svg)
+## Human preferences: adjacent ranks are usually unresolved
 
-[Calibration curves](figures/pilot_calibration.svg) · [Minimum detectable differences](figures/minimum_difference.svg) · [Leaderboard noise](figures/leaderboard_noise.svg)
+I also analyzed a [pinned, Apache-2.0 historical Arena vote release](data/arena_manifest.json), retaining only model names and outcome counts—not conversations or user IDs. After an exposure filter, 54,985 votes cover 55 models. Only **4/54 adjacent contrasts** exclude zero under either pointwise Wald or bootstrap 95% intervals. Their median fitted 80%-power requirement is **3.30 million total network votes**, not direct-match votes.
 
-## Reproduce and plan
+![Historical Arena rank uncertainty and held-out planning](figures/arena_votes.svg)
 
-CPU-only, $0 paid compute; Ryzen AI 5 PRO 340, one numerical thread, Python 3.11 ([environment](results/environment.json)). Matrices are committed; the optional [importer](scripts/import_data.py) pins source hashes. Model inference was not run.
+For 12 score-independent planning pairs, 200 resamples each from disjoint held-out vote counts produced a median rejection fraction of 96.25%, ranging from 9% to 100%. The llama-2-7b-chat / llama2-70b-steerlm-chat plan required 142,611 network votes yet rejected in only 18/200 resamples. [Results and assumptions](results/arena/summary.json) make the planning failures visible. These are historical resamples, **not newly collected human votes or a current leaderboard**; selected adjacent intervals are neither simultaneous nor selection-adjusted.
 
-```sh
+## Reproduce and interpret
+
+```bash
 uv sync --locked
-nice -n 19 env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 uv run python scripts/analyze.py && uv run python scripts/figures.py
-uv run eval-power --difference .01 --variance .2
+uv run python scripts/prospective_analysis.py
+uv run python scripts/arena.py --bootstrap 500 --trials 200
+uv run python scripts/check_results.py
+uv run pytest
 ```
 
-CLI example. `--pilot pilot.npy` estimates paired/unpaired variance; choose the meaningful difference **before** evaluating, not the pilot gap. Zero-variance pilots are refused. Group labels report clustered SE, not IID item-budget extrapolation. [Tests](tests/) and [CI](.github/workflows/ci.yml) check references and committed results.
+These commands analyze committed outputs without model downloads. The [collector](modal_app.py) records prompts' hashes, answers, seeds, revisions and generation settings. All cloud calls—including failed setup and diagnostic reruns—cost **at most $3.0142** by my conservative [booking-based estimate](results/prospective/costs.json), not an invoice. I make no local timing claim.
 
-## Limits and prior work
-
-- These are selected historical models, often related fine-tunes or merges—not independent families.
-- Original document IDs and evaluation revisions are absent. MMLU alignment inherits the exporter’s ordering assumption; it was not independently ID-audited.
-- Empirical IID trials resample heldout scores; they are not newly answered questions or proof of future power. One response per item cannot measure decoding variability.
-- Subject clustering assumes independently sampled subjects. Adding questions to existing subjects is not adding independent subjects.
-- Lookup medians hide pair variation; observed identical vectors do not justify a zero-item budget.
-
-Foundations: [Miller 2024](https://arxiv.org/abs/2411.00640), [Madaan et al. 2024](https://arxiv.org/abs/2406.10229), [Polo et al. 2024](https://proceedings.mlr.press/v235/maia-polo24a.html), [Card et al. 2020](https://aclanthology.org/2020.emnlp-main.745/), and [Neuhof & Benjamini 2026](https://arxiv.org/abs/2607.16259). [Prior-work notes](docs/PRIOR_WORK.md) explain the overlap and extension. Code is MIT; data terms are recorded separately.
+My limits: public benchmark contamination is possible; these are small instruction-tuned models; finite pilots can misestimate effects and variance; overlapping comparisons have no multiplicity correction; and Arena's IID, transitive Bradley–Terry model cannot recover unavailable user/prompt clustering. My [earlier single-answer analysis](results/calibration.csv) and calculator remain separate from this new experiment.
 
 Written with AI coding assistance.

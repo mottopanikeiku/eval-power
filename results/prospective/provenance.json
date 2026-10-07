@@ -1,0 +1,12 @@
+{
+  "plan_commit": "bbbae30a37a3b80ca43af6e8e23444e3892bdb78",
+  "plan_commit_utc": "2026-10-07T12:31:14+00:00",
+  "plan_commit_url": "https://github.com/mottopanikeiku/eval-power/commit/bbbae30a37a3b80ca43af6e8e23444e3892bdb78",
+  "plan_file": "results/prospective/primary/plan.json",
+  "plan_sha256": "4dd1bc1a6b9e56c768862fc76d0b77fd81e741f69e64ca1a45344ebc9da78145",
+  "protocol_file": "results/prospective/protocol.json",
+  "protocol_sha256": "42da27e203d5ebf126e74882c62b4a6b1ac31cd2049c460b4362e796b827572f",
+  "push_completed_before_collection": true,
+  "push_recorded_utc": "2026-10-07T12:33:33.298668+00:00",
+  "interpretation": "I revised the method after inspecting pilots. The final protocol, independently seeded primary pilot, grader, rationale and exact item plans were committed and pushed before confirmation. This is not pre-pilot preregistration."
+}

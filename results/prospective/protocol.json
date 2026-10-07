@@ -1,0 +1,161 @@
+{
+  "created_utc": "2026-10-07T10:05:00Z",
+  "models": [
+    {
+      "id": "Qwen/Qwen2.5-1.5B-Instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "license": "apache-2.0",
+      "gated": false,
+      "source": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct",
+      "slug": "qwen15"
+    },
+    {
+      "id": "Qwen/Qwen2.5-3B-Instruct",
+      "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+      "license": "other",
+      "gated": false,
+      "source": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct",
+      "slug": "qwen3"
+    },
+    {
+      "id": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "license": "apache-2.0",
+      "gated": false,
+      "source": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
+      "slug": "qwen7"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "license": "apache-2.0",
+      "gated": false,
+      "source": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "slug": "smol17"
+    },
+    {
+      "id": "microsoft/Phi-3.5-mini-instruct",
+      "revision": "2fe192450127e6a83f7441aef6e3ca586c338b77",
+      "license": "mit",
+      "gated": false,
+      "source": "https://huggingface.co/microsoft/Phi-3.5-mini-instruct",
+      "slug": "phi35"
+    },
+    {
+      "id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "license": "apache-2.0",
+      "gated": false,
+      "source": "https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3",
+      "slug": "mistral7"
+    }
+  ],
+  "benchmarks": {
+    "gsm8k": {
+      "id": "openai/gsm8k",
+      "revision": "740312add88f781978c0658806c59bc2815b9866",
+      "license": [
+        "mit"
+      ],
+      "gated": false,
+      "source": "https://huggingface.co/datasets/openai/gsm8k",
+      "config": "main",
+      "split": "test",
+      "size": 1319,
+      "max_tokens": 512
+    },
+    "arc": {
+      "id": "allenai/ai2_arc",
+      "revision": "210d026faf9955653af8916fad021475a3f00453",
+      "license": [
+        "cc-by-sa-4.0"
+      ],
+      "gated": false,
+      "source": "https://huggingface.co/datasets/allenai/ai2_arc",
+      "config": "ARC-Challenge",
+      "split": "test",
+      "size": 1172,
+      "max_tokens": 128
+    }
+  },
+  "k": 5,
+  "temperature": 0.7,
+  "top_p": 1.0,
+  "pilot_items": 64,
+  "fresh_pool": 512,
+  "minimum_confirm_items": 16,
+  "alpha": 0.05,
+  "target_power": 0.8,
+  "item_seed": 20261007,
+  "generation_seed": 1707,
+  "pairs": [
+    [
+      "qwen15",
+      "qwen3"
+    ],
+    [
+      "qwen15",
+      "qwen7"
+    ],
+    [
+      "qwen15",
+      "smol17"
+    ],
+    [
+      "qwen15",
+      "phi35"
+    ],
+    [
+      "qwen15",
+      "mistral7"
+    ],
+    [
+      "qwen3",
+      "qwen7"
+    ],
+    [
+      "qwen3",
+      "smol17"
+    ],
+    [
+      "qwen3",
+      "phi35"
+    ],
+    [
+      "qwen3",
+      "mistral7"
+    ],
+    [
+      "qwen7",
+      "smol17"
+    ],
+    [
+      "qwen7",
+      "phi35"
+    ],
+    [
+      "qwen7",
+      "mistral7"
+    ],
+    [
+      "smol17",
+      "phi35"
+    ],
+    [
+      "smol17",
+      "mistral7"
+    ],
+    [
+      "phi35",
+      "mistral7"
+    ]
+  ],
+  "planning": "Two-sided Gaussian budget from pilot paired item means: ceil((z_(1-alpha/2)+z_power)^2 * sample_variance / observed_gap^2), minimum 16. Zero-gap or zero-variance pilots are nonestimable; budgets above 512 fresh items are infeasible and are not capped. Every other pair is confirmed.",
+  "testing": "Two-sided paired t-test of sampled per-item mean accuracy, alpha .05, individual comparisons without multiplicity correction. Detection fraction across selected heterogeneous pairs is not a repeated-trial estimate of 80% power. Same fresh answers reused between overlapping pairs.",
+  "freshness": "Newly generated responses to disjoint, existing public test items; not newly authored questions or contamination-free evaluation.",
+  "grading": {
+    "gsm8k": "Exact numeric match after the last #### marker; optional commas removed, decimal values parsed exactly; absent/malformed marker is incorrect.",
+    "arc": "First Answer: label marker, otherwise only a single label token; exact original choice label match. No answer-position randomization."
+  },
+  "truncation": "Outputs reaching token limit remain scored, with finish_reason retained. No reruns or dropping malformed answers."
+}

@@ -1,0 +1,53 @@
+:root { color-scheme: light dark; --bg: #f6f6f2; --card: #fff; --text: #192b32; --muted: #465b64; --line: #b9c6ca; --accent: #075e66; --soft: #e7f2ee; --error: #ad1e32; --input: #fff; }
+:root[data-theme="dark"] { color-scheme: dark; --bg: #101c22; --card: #18282f; --text: #edf4f5; --muted: #bbcbd0; --line: #526b74; --accent: #7dd8cd; --soft: #203d40; --error: #ff9bab; --input: #11242c; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #101c22; --card: #18282f; --text: #edf4f5; --muted: #bbcbd0; --line: #526b74; --accent: #7dd8cd; --soft: #203d40; --error: #ff9bab; --input: #11242c; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 1rem/1.6 system-ui, -apple-system, sans-serif; }
+a { color: var(--accent); text-underline-offset: .2em; }
+a:hover { text-decoration-thickness: 2px; }
+header, main, footer { max-width: 1120px; margin: auto; padding: 0 28px; }
+header { padding-top: 24px; padding-bottom: 32px; }
+nav { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 48px; }
+.theme { display: flex; gap: 10px; align-items: center; }
+.theme select { width: auto; }
+h1 { font-size: clamp(2.1rem, 5vw, 3.3rem); line-height: 1.13; letter-spacing: -.035em; max-width: 850px; margin: 12px 0 24px; }
+h2 { font-size: 1.5rem; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 1rem; margin: 0 0 8px; }
+p { margin: 0 0 16px; }
+.intro { font-size: 1.15rem; max-width: 800px; }
+.eyebrow { color: var(--muted); font-size: .8rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 28px; margin-bottom: 24px; scroll-margin-top: 12px; }
+.planner { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 32px; margin-top: 28px; }
+fieldset { padding: 0; border: 0; margin: 0 0 24px; min-width: 0; }
+legend { font-weight: 700; font-size: 1.05rem; padding: 0; margin-bottom: 12px; }
+label { display: block; font-weight: 600; margin-bottom: 5px; font-size: .92rem; }
+input, select, button { font: inherit; }
+input, select { width: 100%; min-height: 46px; border: 1px solid var(--line); border-radius: 6px; background: var(--input); color: var(--text); padding: 8px 10px; margin-bottom: 12px; }
+.theme select { margin-bottom: 0; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.hint { color: var(--muted); font-size: .88rem; }
+button { padding: 11px 18px; border-radius: 6px; border: 2px solid var(--accent); background: var(--accent); color: var(--card); cursor: pointer; font-weight: 700; min-height: 48px; }
+button:hover { opacity: .87; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.answer { background: var(--soft); border-radius: 8px; padding: 24px; align-self: start; }
+.item-count { font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.2; font-weight: 750; letter-spacing: -.04em; overflow-wrap: anywhere; margin-bottom: 4px; }
+.answer hr { border: 0; border-top: 1px solid var(--line); margin: 24px 0; }
+.answer p:last-child { margin-bottom: 0; }
+.error { color: var(--error); font-weight: 600; }
+.filters { max-width: 600px; margin-top: 24px; }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 12px 0 24px; }
+.metric { border: 1px solid var(--line); border-radius: 8px; padding: 18px; }
+.metric strong { display: block; color: var(--accent); font-size: 1.9rem; line-height: 1.3; margin: 6px 0; }
+.metric p { margin: 0; }
+.bar { display: flex; height: 18px; border-radius: 4px; overflow: hidden; margin: 12px 0; background: var(--line); }
+.bar .below { background: var(--error); }
+.bar .uncertain { background: var(--line); }
+.bar .above { background: var(--accent); }
+.source-links { font-size: .9rem; }
+.method { background: transparent; }
+footer { color: var(--muted); font-size: .9rem; padding-top: 12px; padding-bottom: 32px; }
+.skip { position: absolute; left: 16px; top: -80px; padding: 10px; background: var(--card); z-index: 2; }
+.skip:focus { top: 10px; }
+[hidden] { display: none !important; }
+@media (max-width: 760px) { .planner { grid-template-columns: 1fr; gap: 24px; } .metrics { grid-template-columns: 1fr; gap: 10px; } .metric { padding: 16px; } nav { margin-bottom: 32px; } section { padding: 22px; } }
+@media (max-width: 420px) { header, main, footer { padding-left: 16px; padding-right: 16px; } section { padding: 18px; } .fields { grid-template-columns: 1fr; gap: 0; } .theme { font-size: .85rem; } }

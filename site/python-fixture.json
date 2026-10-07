@@ -1,0 +1,1748 @@
+{
+  "source": "src/eval_power/stats.py",
+  "item_tolerance": 1,
+  "power_absolute_tolerance": 1e-12,
+  "variance_absolute_tolerance": 1e-12,
+  "cases": [
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 8005,
+      "power_at_items": 0.6000519804532054,
+      "power_before_items": 0.5999837041266195
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 11679,
+      "power_at_items": 0.8000013046514461,
+      "power_before_items": 0.7999603408302303
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 17815,
+      "power_at_items": 0.9500102083217796,
+      "power_before_items": 0.9499979913504328
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 4899,
+      "power_at_items": 0.6000371792896668,
+      "power_before_items": 0.5999499137137532
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 7849,
+      "power_at_items": 0.8000069694454764,
+      "power_before_items": 0.799957001324209
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 12995,
+      "power_at_items": 0.9500041613100273,
+      "power_before_items": 0.949989855268552
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 3602,
+      "power_at_items": 0.6000793171210658,
+      "power_before_items": 0.5999777147042865
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 6183,
+      "power_at_items": 0.8000429517610217,
+      "power_before_items": 0.7999866697801994
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 10823,
+      "power_at_items": 0.9500133506584498,
+      "power_before_items": 0.9499976769812194
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 160085,
+      "power_at_items": 0.6000007738947316,
+      "power_before_items": 0.5999973599777197
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 233580,
+      "power_at_items": 0.8000013046514459,
+      "power_before_items": 0.7999992566218262
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 356284,
+      "power_at_items": 0.9500004349625851,
+      "power_before_items": 0.9499998240697608
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 97972,
+      "power_at_items": 0.6000022747258195,
+      "power_before_items": 0.5999979114991024
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 156978,
+      "power_at_items": 0.8000019731142872,
+      "power_before_items": 0.7999994749086162
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 259895,
+      "power_at_items": 0.9500005851572421,
+      "power_before_items": 0.9499998698980802
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 72025,
+      "power_at_items": 0.6000031172495106,
+      "power_before_items": 0.5999980368439897
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 123645,
+      "power_at_items": 0.8000007415941462,
+      "power_before_items": 0.7999979273016935
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 216443,
+      "power_at_items": 0.9500000283287693,
+      "power_before_items": 0.9499992445578601
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 1600848,
+      "power_at_items": 0.6000000911127937,
+      "power_before_items": 0.5999997497215501
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 2335794,
+      "power_at_items": 0.8000000758357135,
+      "power_before_items": 0.7999998710324964
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 3562833,
+      "power_at_items": 0.9500000073383231,
+      "power_before_items": 0.9499999462488704
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 979715,
+      "power_at_items": 0.6000000931168008,
+      "power_before_items": 0.5999996567939555
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 1569773,
+      "power_at_items": 0.8000002243731228,
+      "power_before_items": 0.7999999745518878
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 2598942,
+      "power_at_items": 0.9500000129506753,
+      "power_before_items": 0.9499999414244252
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 720244,
+      "power_at_items": 0.6000000690124094,
+      "power_before_items": 0.599999560971081
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 1236448,
+      "power_at_items": 0.8000001787384691,
+      "power_before_items": 0.799999897310103
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 2164430,
+      "power_at_items": 0.9500000283287693,
+      "power_before_items": 0.9499999499522007
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 4002120,
+      "power_at_items": 0.6000000911127936,
+      "power_before_items": 0.5999999545563178
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 5839485,
+      "power_at_items": 0.8000000758357134,
+      "power_before_items": 0.799999993914447
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 8907083,
+      "power_at_items": 0.9500000195562054,
+      "power_before_items": 0.9499999951204381
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 2449287,
+      "power_at_items": 0.6000000058522594,
+      "power_before_items": 0.5999998313231353
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 3924431,
+      "power_at_items": 0.8000000744804139,
+      "power_before_items": 0.7999999745518878
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 6497355,
+      "power_at_items": 0.9500000129506752,
+      "power_before_items": 0.9499999843401867
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 1800610,
+      "power_at_items": 0.6000000690124095,
+      "power_before_items": 0.5999998657959401
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 3091119,
+      "power_at_items": 0.800000066167165,
+      "power_before_items": 0.7999999535958042
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 5411075,
+      "power_at_items": 0.9500000283287692,
+      "power_before_items": 0.9499999969781558
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 321,
+      "power_at_items": 0.6014159684006122,
+      "power_before_items": 0.5997105256061042
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 468,
+      "power_at_items": 0.8008599756702529,
+      "power_before_items": 0.7998374085765578
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 713,
+      "power_at_items": 0.9501322283440619,
+      "power_before_items": 0.9498266675208965
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 196,
+      "power_at_items": 0.6001244309779645,
+      "power_before_items": 0.5979389723358524
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 314,
+      "power_at_items": 0.8000569268798245,
+      "power_before_items": 0.7988047813176096
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 520,
+      "power_at_items": 0.9500756343278748,
+      "power_before_items": 0.9497173146385123
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 145,
+      "power_at_items": 0.6024104623735496,
+      "power_before_items": 0.5998760915824238
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 248,
+      "power_at_items": 0.8009975957274725,
+      "power_before_items": 0.7995923018650313
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 433,
+      "power_at_items": 0.9500446840887224,
+      "power_before_items": 0.9496516791475441
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 6404,
+      "power_at_items": 0.6000519804532053,
+      "power_before_items": 0.5999666339008796
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 9344,
+      "power_at_items": 0.8000422616753528,
+      "power_before_items": 0.7999910643334139
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 14252,
+      "power_at_items": 0.9500102083217796,
+      "power_before_items": 0.9499949366820314
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 3919,
+      "power_at_items": 0.6000153641976552,
+      "power_before_items": 0.5999062757179179
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 6280,
+      "power_at_items": 0.8000569268798245,
+      "power_before_items": 0.7999944784171199
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 10396,
+      "power_at_items": 0.9500041613100273,
+      "power_before_items": 0.9499862781621626
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 2881,
+      "power_at_items": 0.6000031172495106,
+      "power_before_items": 0.5998760915824238
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 4946,
+      "power_at_items": 0.8000148125289036,
+      "power_before_items": 0.7999444490627944
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 8658,
+      "power_at_items": 0.9500055144001404,
+      "power_before_items": 0.9499859186763462
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 64034,
+      "power_at_items": 0.6000007738947316,
+      "power_before_items": 0.5999922390678795
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 93432,
+      "power_at_items": 0.8000013046514459,
+      "power_before_items": 0.7999961845455346
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 142514,
+      "power_at_items": 0.9500010458486001,
+      "power_before_items": 0.9499995186207952
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 39189,
+      "power_at_items": 0.6000044563261581,
+      "power_before_items": 0.5999935482376665
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 62791,
+      "power_at_items": 0.8000007240147914,
+      "power_before_items": 0.7999944784171199
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 103958,
+      "power_at_items": 0.9500005851572421,
+      "power_before_items": 0.9499987969914583
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 28810,
+      "power_at_items": 0.6000031172495106,
+      "power_before_items": 0.5999904161386552
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 49458,
+      "power_at_items": 0.8000007415941465,
+      "power_before_items": 0.7999937057970744
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 86578,
+      "power_at_items": 0.9500015958357662,
+      "power_before_items": 0.9499996364447656
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 160085,
+      "power_at_items": 0.6000007738947316,
+      "power_before_items": 0.5999973599777196
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 233580,
+      "power_at_items": 0.8000013046514459,
+      "power_before_items": 0.7999992566218262
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 356284,
+      "power_at_items": 0.950000434962585,
+      "power_before_items": 0.9499998240697608
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 97972,
+      "power_at_items": 0.6000022747258192,
+      "power_before_items": 0.5999979114991022
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 156978,
+      "power_at_items": 0.8000019731142872,
+      "power_before_items": 0.7999994749086162
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 259895,
+      "power_at_items": 0.9500005851572421,
+      "power_before_items": 0.94999986989808
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 72025,
+      "power_at_items": 0.6000031172495105,
+      "power_before_items": 0.5999980368439897
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 123645,
+      "power_at_items": 0.8000007415941462,
+      "power_before_items": 0.7999979273016934
+    },
+    {
+      "delta": 0.005,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 216443,
+      "power_at_items": 0.9500000283287692,
+      "power_before_items": 0.9499992445578601
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 81,
+      "power_at_items": 0.6065047531266391,
+      "power_before_items": 0.5997105256061042
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 117,
+      "power_at_items": 0.8008599756702529,
+      "power_before_items": 0.7967441697575403
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 179,
+      "power_at_items": 0.9510387507446558,
+      "power_before_items": 0.9498266675208965
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 49,
+      "power_at_items": 0.6001244309779645,
+      "power_before_items": 0.5913305114419389
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 79,
+      "power_at_items": 0.8025412076610386,
+      "power_before_items": 0.7975459327821367
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 130,
+      "power_at_items": 0.9500756343278748,
+      "power_before_items": 0.9486279279824922
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 37,
+      "power_at_items": 0.6099362172251405,
+      "power_before_items": 0.5998760915824238
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 62,
+      "power_at_items": 0.8009975957274725,
+      "power_before_items": 0.7953234229945869
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 109,
+      "power_at_items": 0.9512063799129264,
+      "power_before_items": 0.9496516791475441
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 1601,
+      "power_at_items": 0.6000519804532053,
+      "power_before_items": 0.5997105256061042
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 2336,
+      "power_at_items": 0.8000422616753528,
+      "power_before_items": 0.7998374085765576
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 3563,
+      "power_at_items": 0.9500102083217796,
+      "power_before_items": 0.9499490962223837
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 980,
+      "power_at_items": 0.6001244309779643,
+      "power_before_items": 0.5996880336596061
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 1570,
+      "power_at_items": 0.8000569268798245,
+      "power_before_items": 0.79980703282311
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 2599,
+      "power_at_items": 0.9500041613100273,
+      "power_before_items": 0.9499325929459763
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 721,
+      "power_at_items": 0.6003840001594098,
+      "power_before_items": 0.5998760915824238
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 1237,
+      "power_at_items": 0.8001554735304728,
+      "power_before_items": 0.7998740636126698
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 2165,
+      "power_at_items": 0.9500446840887224,
+      "power_before_items": 0.9499663156962661
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 16009,
+      "power_at_items": 0.6000178432052063,
+      "power_before_items": 0.5999837041266192
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 23358,
+      "power_at_items": 0.8000013046514459,
+      "power_before_items": 0.79998082359054
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 35629,
+      "power_at_items": 0.9500041001765416,
+      "power_before_items": 0.9499979913504328
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 9798,
+      "power_at_items": 0.6000371792896668,
+      "power_before_items": 0.5999935482376665
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 15698,
+      "power_at_items": 0.8000069694454766,
+      "power_before_items": 0.7999819867208062
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 25990,
+      "power_at_items": 0.9500041613100272,
+      "power_before_items": 0.9499970087660774
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 7203,
+      "power_at_items": 0.600028518500696,
+      "power_before_items": 0.5999777147042865
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 12365,
+      "power_at_items": 0.8000148125289036,
+      "power_before_items": 0.7999866697801994
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 21645,
+      "power_at_items": 0.9500055144001404,
+      "power_before_items": 0.9499976769812194
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 40022,
+      "power_at_items": 0.6000110155359334,
+      "power_before_items": 0.5999973599777196
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 58395,
+      "power_at_items": 0.8000013046514459,
+      "power_before_items": 0.7999931124310073
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 89071,
+      "power_at_items": 0.950000434962585,
+      "power_before_items": 0.9499979913504328
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 24493,
+      "power_at_items": 0.6000022747258192,
+      "power_before_items": 0.5999848216106373
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 39245,
+      "power_at_items": 0.8000069694454764,
+      "power_before_items": 0.7999969766762269
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 64974,
+      "power_at_items": 0.9500013004068691,
+      "power_before_items": 0.9499984393511497
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 18007,
+      "power_at_items": 0.6000183581555047,
+      "power_before_items": 0.5999980368439897
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 30912,
+      "power_at_items": 0.8000091842605008,
+      "power_before_items": 0.7999979273016934
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 54111,
+      "power_at_items": 0.9500008120880712,
+      "power_before_items": 0.9499976769812193
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 4,
+      "power_at_items": 0.7212128765389424,
+      "power_before_items": 0.5646555971496765
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 5,
+      "power_at_items": 0.8313980473486412,
+      "power_before_items": 0.7212128765389424
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 8,
+      "power_at_items": 0.9710402463709474,
+      "power_before_items": 0.9460244382593401
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 2,
+      "power_at_items": 0.6087794846454567,
+      "power_before_items": 0.3526080824447023
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 4,
+      "power_at_items": 0.8853791407623512,
+      "power_before_items": 0.7819079987319797
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 6,
+      "power_at_items": 0.9721272158055216,
+      "power_before_items": 0.9424375431875084
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 2,
+      "power_at_items": 0.7228636263807641,
+      "power_before_items": 0.47522634457257235
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 3,
+      "power_at_items": 0.86297553034739,
+      "power_before_items": 0.7228636263807641
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 5,
+      "power_at_items": 0.9706665924342223,
+      "power_before_items": 0.9354209356049815
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 65,
+      "power_at_items": 0.6081918028103979,
+      "power_before_items": 0.5997105256061042
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 94,
+      "power_at_items": 0.8028923989833733,
+      "power_before_items": 0.7977795152073026
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 143,
+      "power_at_items": 0.9507382618432668,
+      "power_before_items": 0.9492104169543067
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 40,
+      "power_at_items": 0.6087794846454567,
+      "power_before_items": 0.5979389723358524
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 63,
+      "power_at_items": 0.8013023941055797,
+      "power_before_items": 0.7950080284018121
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 104,
+      "power_at_items": 0.9500756343278748,
+      "power_before_items": 0.9482599420018374
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 29,
+      "power_at_items": 0.6024104623735494,
+      "power_before_items": 0.5896089063073627
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 50,
+      "power_at_items": 0.8037819415575254,
+      "power_before_items": 0.7967552583677167
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 87,
+      "power_at_items": 0.9508220148960153,
+      "power_before_items": 0.9488568914556512
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 641,
+      "power_at_items": 0.6005638194497065,
+      "power_before_items": 0.5997105256061044
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 935,
+      "power_at_items": 0.8003492227527668,
+      "power_before_items": 0.7998374085765578
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 1426,
+      "power_at_items": 0.9501322283440619,
+      "power_before_items": 0.9499796607862289
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 392,
+      "power_at_items": 0.6001244309779643,
+      "power_before_items": 0.5990327866845406
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 628,
+      "power_at_items": 0.8000569268798245,
+      "power_before_items": 0.7994316904312836
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 1040,
+      "power_at_items": 0.9500756343278748,
+      "power_before_items": 0.9498967729735807
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 289,
+      "power_at_items": 0.6011448928939211,
+      "power_before_items": 0.5998760915824238
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 495,
+      "power_at_items": 0.8002960466601624,
+      "power_before_items": 0.7995923018650313
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 866,
+      "power_at_items": 0.9500446840887224,
+      "power_before_items": 0.9498485452957653
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 1601,
+      "power_at_items": 0.6000519804532051,
+      "power_before_items": 0.599710525606104
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 2336,
+      "power_at_items": 0.8000422616753528,
+      "power_before_items": 0.7998374085765576
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 3563,
+      "power_at_items": 0.9500102083217795,
+      "power_before_items": 0.9499490962223837
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 980,
+      "power_at_items": 0.6001244309779643,
+      "power_before_items": 0.5996880336596061
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 1570,
+      "power_at_items": 0.8000569268798245,
+      "power_before_items": 0.79980703282311
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 2599,
+      "power_at_items": 0.9500041613100272,
+      "power_before_items": 0.9499325929459762
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 721,
+      "power_at_items": 0.6003840001594097,
+      "power_before_items": 0.5998760915824238
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 1237,
+      "power_at_items": 0.8001554735304727,
+      "power_before_items": 0.7998740636126698
+    },
+    {
+      "delta": 0.05,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 2165,
+      "power_at_items": 0.9500446840887223,
+      "power_before_items": 0.9499663156962661
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 1,
+      "power_at_items": 0.9999111324392156,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 1,
+      "power_at_items": 0.9999111324392156,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 1,
+      "power_at_items": 0.9999111324392156,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 1,
+      "power_at_items": 0.9999936319685956,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 1,
+      "power_at_items": 0.9999936319685956,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 1,
+      "power_at_items": 0.9999936319685956,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 1,
+      "power_at_items": 0.999998563536936,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 1,
+      "power_at_items": 0.999998563536936,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.001,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 1,
+      "power_at_items": 0.999998563536936,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 5,
+      "power_at_items": 0.7212128765389424,
+      "power_before_items": 0.5997105256061042
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 6,
+      "power_at_items": 0.812802855871996,
+      "power_before_items": 0.7212128765389424
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 9,
+      "power_at_items": 0.9522240420192689,
+      "power_before_items": 0.9228014673372622
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 3,
+      "power_at_items": 0.687770420076401,
+      "power_before_items": 0.5160052739761748
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 4,
+      "power_at_items": 0.807430419432557,
+      "power_before_items": 0.687770420076401
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 7,
+      "power_at_items": 0.9626003842286841,
+      "power_before_items": 0.9337270627356234
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 2,
+      "power_at_items": 0.6388938033269339,
+      "power_before_items": 0.40990735653501276
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 4,
+      "power_at_items": 0.881712883205051,
+      "power_before_items": 0.789506321011915
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.02,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 6,
+      "power_at_items": 0.9655633596875937,
+      "power_before_items": 0.9354209356049815
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 41,
+      "power_at_items": 0.613225193769468,
+      "power_before_items": 0.5997105256061044
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 59,
+      "power_at_items": 0.8049079394376157,
+      "power_before_items": 0.7967441697575403
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 90,
+      "power_at_items": 0.9522240420192689,
+      "power_before_items": 0.9498266675208964
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 25,
+      "power_at_items": 0.6087794846454566,
+      "power_before_items": 0.5913305114419387
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 40,
+      "power_at_items": 0.8074304194325572,
+      "power_before_items": 0.7975459327821367
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 65,
+      "power_at_items": 0.9500756343278748,
+      "power_before_items": 0.9471412096731692
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 19,
+      "power_at_items": 0.6197911872525846,
+      "power_before_items": 0.5998760915824238
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 31,
+      "power_at_items": 0.8009975957274725,
+      "power_before_items": 0.789506321011915
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.2,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 55,
+      "power_at_items": 0.9527156222011334,
+      "power_before_items": 0.9496516791475441
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.6,
+      "items": 101,
+      "power_at_items": 0.605151792337446,
+      "power_before_items": 0.599710525606104
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.8,
+      "items": 146,
+      "power_at_items": 0.8000422616753528,
+      "power_before_items": 0.7967441697575403
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.01,
+      "power": 0.95,
+      "items": 223,
+      "power_at_items": 0.9503147489134226,
+      "power_before_items": 0.949334216422921
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.6,
+      "items": 62,
+      "power_at_items": 0.6053341213215806,
+      "power_before_items": 0.598376758489038
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 99,
+      "power_at_items": 0.8035274844561174,
+      "power_before_items": 0.7995568714356514
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.05,
+      "power": 0.95,
+      "items": 163,
+      "power_at_items": 0.9506439996219015,
+      "power_before_items": 0.9495011741135022
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.6,
+      "items": 46,
+      "power_at_items": 0.6079406670738623,
+      "power_before_items": 0.5998760915824238
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.8,
+      "items": 78,
+      "power_at_items": 0.8032278596845257,
+      "power_before_items": 0.7987449022184763
+    },
+    {
+      "delta": 0.2,
+      "variance": 0.5,
+      "alpha": 0.1,
+      "power": 0.95,
+      "items": 136,
+      "power_at_items": 0.9508991161102774,
+      "power_before_items": 0.949651679147544
+    },
+    {
+      "delta": 1e-05,
+      "variance": 0.5,
+      "alpha": 1e-06,
+      "power": 0.999999,
+      "items": 465136180586,
+      "power_at_items": 0.999999,
+      "power_before_items": 0.9999989999999999
+    },
+    {
+      "delta": -0.02,
+      "variance": 0.2,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 3925,
+      "power_at_items": 0.8000569268798244,
+      "power_before_items": 0.7999570013242088
+    },
+    {
+      "delta": 1.0,
+      "variance": 0.0001,
+      "alpha": 0.05,
+      "power": 0.8,
+      "items": 1,
+      "power_at_items": 1.0,
+      "power_before_items": null
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.25,
+      "alpha": 0.5,
+      "power": 0.51,
+      "items": 118,
+      "power_at_items": 0.5100160981937576,
+      "power_before_items": 0.509932055902788
+    },
+    {
+      "delta": 0.01,
+      "variance": 0.25,
+      "alpha": 0.05,
+      "power": 0.0501,
+      "items": 3,
+      "power_at_items": 0.05013747184022658,
+      "power_before_items": 0.05009164532486582
+    },
+    {
+      "delta": 0.001,
+      "variance": 0.25,
+      "alpha": 1e-08,
+      "power": 0.99,
+      "items": 16229122,
+      "power_at_items": 0.9900000039183213,
+      "power_before_items": 0.9899999973024874
+    }
+  ],
+  "comparisons": [
+    {
+      "pa": 0.7,
+      "pb": 0.72,
+      "rho": 0.4665694748158435,
+      "discordance": 0.22,
+      "paired_variance": 0.21959999999999993,
+      "unpaired_variance": 0.4116
+    },
+    {
+      "pa": 0.7,
+      "pb": 0.5,
+      "rho": -0.2182178902359925,
+      "discordance": 0.6,
+      "paired_variance": 0.56,
+      "unpaired_variance": 0.46
+    },
+    {
+      "pa": 0.2,
+      "pb": 0.5,
+      "rho": 0.4999999999999999,
+      "discordance": 0.3,
+      "paired_variance": 0.20999999999999994,
+      "unpaired_variance": 0.41000000000000003
+    },
+    {
+      "pa": 0.3,
+      "pb": 0.4,
+      "rho": -0.5345224838248489,
+      "discordance": 0.7,
+      "paired_variance": 0.6900000000000003,
+      "unpaired_variance": 0.44999999999999996
+    },
+    {
+      "pa": 0.8,
+      "pb": 0.9,
+      "rho": 0.6666666666666664,
+      "discordance": 0.1,
+      "paired_variance": 0.09,
+      "unpaired_variance": 0.24999999999999994
+    },
+    {
+      "pa": 0.0,
+      "pb": 0.25,
+      "rho": null,
+      "discordance": 0.25,
+      "paired_variance": 0.1875,
+      "unpaired_variance": 0.1875
+    },
+    {
+      "pa": 1.0,
+      "pb": 0.0,
+      "rho": null,
+      "discordance": 1.0,
+      "paired_variance": 0.0,
+      "unpaired_variance": 0.0
+    },
+    {
+      "pa": 0.75,
+      "pb": 0.75,
+      "rho": -0.3333333333333333,
+      "discordance": 0.5,
+      "paired_variance": 0.5,
+      "unpaired_variance": 0.375
+    }
+  ]
+}

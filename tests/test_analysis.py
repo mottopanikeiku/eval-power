@@ -5,7 +5,7 @@ import math
 
 import numpy as np
 import pytest
-from scipy.stats import binomtest
+from scipy.stats import binomtest, norm
 
 from eval_power.analysis import (
     calibrate,
@@ -95,6 +95,13 @@ def test_finite_correction_is_not_applied_to_test_threshold():
     assert finite_detection_power(0.1, 0.2, 1000, 1000) == 1
     with pytest.raises(ValueError):
         finite_detection_power(0.01, 0.2, 1001, 1000)
+
+
+def test_full_population_boundary_matches_p_value_rejection():
+    """A two-sided p-value of exactly alpha rejects, as in rejection_rates (p <= alpha)."""
+    threshold = float(norm.ppf(0.975)) * math.sqrt(0.2 / 1000)
+    assert finite_detection_power(threshold, 0.2, 1000, 1000) == 1
+    assert finite_detection_power(math.nextafter(threshold, 0), 0.2, 1000, 1000) == 0
 
 
 def test_monte_carlo_interval_extremes():

@@ -109,7 +109,7 @@ def finite_detection_power(delta: float, variance: float, n: int, population: in
     threshold = z * math.sqrt(variance / n)
     spread = math.sqrt(variance / n * (1 - n / population))
     if spread == 0:
-        return float(abs(delta) > threshold)
+        return float(abs(delta) >= threshold)
     return float(
         norm.cdf((-threshold - abs(delta)) / spread) + norm.sf((threshold - abs(delta)) / spread)
     )

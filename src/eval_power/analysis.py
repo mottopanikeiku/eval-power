@@ -29,7 +29,7 @@ def write_csv(path: Path, rows: list[dict]) -> None:
         raise ValueError(f"no rows for {path}")
     opener = gzip.open if path.suffix == ".gz" else open
     with opener(path, "wt", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -109,7 +109,7 @@ def finite_detection_power(delta: float, variance: float, n: int, population: in
     threshold = z * math.sqrt(variance / n)
     spread = math.sqrt(variance / n * (1 - n / population))
     if spread == 0:
-        return float(abs(delta) > threshold)
+        return float(abs(delta) >= threshold)
     return float(
         norm.cdf((-threshold - abs(delta)) / spread) + norm.sf((threshold - abs(delta)) / spread)
     )

@@ -4,6 +4,7 @@ import csv
 import gzip
 import hashlib
 import json
+import math
 import subprocess
 import xml.etree.ElementTree as ET
 from datetime import UTC, datetime
@@ -24,6 +25,29 @@ def rows(name: str) -> list[dict]:
     opener = gzip.open if path.suffix == ".gz" else open
     with opener(path, "rt", encoding="utf-8", newline="") as handle:
         return list(csv.DictReader(handle))
+
+
+def assert_matches(actual, expected, path: str = "") -> None:
+    """Require identical JSON structure and values, allowing last-bit float differences.
+
+    SciPy's distribution functions can differ in the final bits across CPU architectures,
+    so floats use a 1e-12 relative tolerance; everything else must match exactly.
+    """
+    if isinstance(expected, float) or isinstance(actual, float):
+        assert isinstance(actual, float) and isinstance(expected, float), path
+        assert math.isclose(actual, expected, rel_tol=1e-12, abs_tol=1e-15), (
+            f"{path}: {actual} vs {expected}"
+        )
+    elif isinstance(expected, dict):
+        assert isinstance(actual, dict) and actual.keys() == expected.keys(), path
+        for key in expected:
+            assert_matches(actual[key], expected[key], f"{path}.{key}")
+    elif isinstance(expected, list):
+        assert isinstance(actual, list) and len(actual) == len(expected), path
+        for index, (left, right) in enumerate(zip(actual, expected, strict=True)):
+            assert_matches(left, right, f"{path}[{index}]")
+    else:
+        assert type(actual) is type(expected) and actual == expected, f"{path}: {actual}"
 
 
 def check_prospective() -> None:
@@ -90,9 +114,13 @@ def check_prospective() -> None:
         json.dumps(analyze_plan(plan, stages["pilot"], stages["confirm"]), allow_nan=False)
     )
     for key, value in recalculated.items():
-        assert summary[key] == value, f"Prospective summary differs: {key}"
+        assert_matches(value, summary[key], f"prospective summary {key}")
     strict_secondary = analyze_strict_secondary(plan, stages["pilot"], stages["confirm"])
-    assert summary["strict_secondary"] == json.loads(json.dumps(strict_secondary, allow_nan=False))
+    assert_matches(
+        json.loads(json.dumps(strict_secondary, allow_nan=False)),
+        summary["strict_secondary"],
+        "prospective summary strict_secondary",
+    )
     for group in ("protocol", "plan"):
         source = summary["sources"][group]
         assert source["sha256"] == hashlib.sha256(Path(source["file"]).read_bytes()).hexdigest()
@@ -100,7 +128,11 @@ def check_prospective() -> None:
         for source in summary["sources"][stage]:
             assert source["sha256"] == hashlib.sha256(Path(source["file"]).read_bytes()).hexdigest()
     assert ET.parse("figures/prospective.svg").getroot().tag.endswith("svg")
-    assert json.loads((directory / "pilot_revision.json").read_text()) == build_revision()
+    assert_matches(
+        build_revision(),
+        json.loads((directory / "pilot_revision.json").read_text()),
+        "pilot_revision.json",
+    )
 
 
 def check_arena() -> None:

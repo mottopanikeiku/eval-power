@@ -29,7 +29,7 @@ def write_csv(path: Path, rows: list[dict]) -> None:
         raise ValueError(f"no rows for {path}")
     opener = gzip.open if path.suffix == ".gz" else open
     with opener(path, "wt", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

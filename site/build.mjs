@@ -8,7 +8,7 @@ const site = fileURLToPath(new URL('.', import.meta.url));
 const root = resolve(site, '..');
 const dist = resolve(site, 'dist');
 await mkdir(resolve(dist, 'data'), { recursive: true });
-for (const file of ['index.html', 'style.css', 'app.mjs', 'math.mjs', 'csv.mjs']) {
+for (const file of ['index.html', 'style.css', 'app.mjs', 'math.mjs', 'csv.mjs', 'format.mjs']) {
   await copyFile(resolve(site, file), resolve(dist, file));
 }
 await copyFile(resolve(root, 'results/calibration.csv'), resolve(dist, 'data/calibration.csv'));

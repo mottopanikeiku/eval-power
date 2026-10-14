@@ -1,9 +1,9 @@
 import { comparisonVariance, gaussianPower, requiredItems } from './math.mjs';
 import { parseCSV } from './csv.mjs';
+import { formatDecimal, formatPercent as percent, formatPointGap } from './format.mjs';
 
 const element = (id) => document.getElementById(id);
 const number = (id) => Number(element(id).value);
-const percent = (n) => `${(n * 100).toFixed(1)}%`;
 const integer = new Intl.NumberFormat('en-US');
 
 function showField(id, shown) {
@@ -44,7 +44,7 @@ function calculate() {
     const n = requiredItems(delta, variance, alpha, power);
     element('item-count').textContent = integer.format(n);
     element('item-unit').textContent = paired ? 'shared items · both models answer each item' : `items per model · ${integer.format(BigInt(n) * 2n)} responses in total`;
-    element('plan-details').textContent = `For a ${Math.abs(delta * 100).toFixed(3)}-point gap, alpha ${alpha}, and ${percent(power)} target power. Variance: ${variance.toFixed(6)}.${paired ? ` Discordance: ${percent(discordance)}.` : ''} Gaussian power at this budget: ${percent(gaussianPower(delta, variance, n, alpha))}.`;
+    element('plan-details').textContent = `For a ${formatPointGap(delta)}-point gap, alpha ${alpha}, and ${percent(power)} target power. Variance: ${formatDecimal(variance, 6)}.${paired ? ` Discordance: ${percent(discordance)}.` : ''} Gaussian power at this budget: ${percent(gaussianPower(delta, variance, n, alpha))}.`;
     element('plan-error').hidden = true;
   } catch (error) {
     element('item-count').textContent = '—';

@@ -1,4 +1,6 @@
 // Two-sided Gaussian planning, matching src/eval_power/stats.py.
+import { formatPercent } from './format.mjs';
+
 const finite = (value, name) => {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
     throw new RangeError(`${name} must be a finite number.`);
@@ -115,7 +117,7 @@ export function comparisonVariance({ pa, pb, paired, dependence = 'correlation',
   }
   const tolerance = 1e-12;
   if (q < minDiscordance - tolerance || q > maxDiscordance + tolerance) {
-    throw new RangeError(`These accuracies require discordance between ${(100 * minDiscordance).toFixed(2)}% and ${(100 * maxDiscordance).toFixed(2)}%. Choose a feasible correlation or discordance.`);
+    throw new RangeError(`These accuracies require discordance between ${formatPercent(minDiscordance, 2)} and ${formatPercent(maxDiscordance, 2)}. Choose a feasible correlation or discordance.`);
   }
   q = Math.max(minDiscordance, Math.min(maxDiscordance, q));
   return { variance: q - (pa - pb) ** 2, discordance: q, minDiscordance, maxDiscordance };

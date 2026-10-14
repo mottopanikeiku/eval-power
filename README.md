@@ -2,6 +2,8 @@
 
 How many shared questions do I need to distinguish two models?
 
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/hero-dark.svg"><img alt="23 of 27 planned comparisons found the difference they were sized for: six open models on GSM8K and ARC, with sample sizes fixed from a pilot before any fresh answers were collected." src="docs/hero-light.svg" width="600"></picture>
+
 [Try my power calculator](https://mottopanikeiku.github.io/eval-power/) · [Prior work and citations](docs/PRIOR_WORK.md)
 
 I generated **13,830 answers from six small language models** and detected differences in **23 of 27 planned comparisons** on fresh items. My repeated-decoding pilot found a larger decoding-noise share on GSM8K than on guided-choice ARC. These are detection frequencies, not proof of 80% power.

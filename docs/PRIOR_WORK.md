@@ -58,9 +58,25 @@ with $S_D^2$ using denominator $N-1$. This concerns the fixed pool mean, **not**
 
 I extend the accuracy analysis with newly generated answers from pinned instruct models on identified, disjoint benchmark items. The [collection protocol](../results/prospective/protocol.json) separates repeated-decoding noise from item-selection variation using a standard within-item/between-item variance decomposition, not a new power formula. I retain negative component estimates before clipping them for planning. The observed-gap rule deliberately tests the pilot-planning concern in [9,10]; it is not my recommendation for choosing a meaningful effect.
 
-I use flexible final-number extraction inspired by lm-eval-harness [12] for GSM8K. For ARC-Challenge, I measure guided direct-choice generation using vLLM [13], not conventional option likelihood: every model can generate only `Answer: <one of the provided labels>`. Changing this constraint changes the quantity being measured. I also reserve a separate block of child seeds for every item because vLLM offsets the parent seed for repeated answers [14]. The [pilot revision analysis](../results/prospective/pilot_revision.json) retains the earlier outputs and explains these changes before fresh-item confirmation.
+I estimate
+
+$$
+\operatorname{Var}(\bar Y_A-\bar Y_B)=\sigma^2_{\mathrm{item}}+\sigma^2_{\mathrm{decode}}/k.
+$$
+
+I estimate decoding variance within questions and subtract it from the observed variance of item means. I retain the unclipped item estimate before applying a zero floor for planning.
+
+I published the [sample-size plan](https://github.com/mottopanikeiku/eval-power/commit/bbbae30a37a3b80ca43af6e8e23444e3892bdb78) after the pilots and before confirmation. Each feasible pair received its planned 16–264 new questions and a paired t-test on five-answer item means. I reused answers across comparisons sharing a model and collected **9,222 confirmation answers**, separate from the pilot. Three pairs exceeded the 512-question collection limit and were not run: GSM8K Qwen3–Phi required 870; ARC Qwen1.5–Mistral required 1,503 and Qwen3–Phi required 881.
+
+I use flexible final-number extraction inspired by lm-eval-harness [12] for GSM8K. My initial grader demanded `####`; relaxing numeric extraction changed Qwen1.5's score from 15.9% to 65.9% on the same original sampled texts. Phi still truncated 18.1% of unconstrained ARC samples at 1,024 tokens. I changed all six models to guided direct-choice generation using vLLM [13]: each can generate only `Answer: <one of the provided labels>`. This changes the quantity being measured and is not conventional option-likelihood scoring.
+
+I found that vLLM's child-seed offset [14] caused neighboring questions to reuse 426 of 3,840 requested streams in the initial pilot. I reserved a separate block of child seeds for every item and recollected both primary pilots: **3,840 distinct stochastic seeds, zero reused**. I retained the earlier outputs in the [pilot revision analysis](../results/prospective/pilot_revision.json). Strict-format rescoring of the primary confirmation detects 22/27 differences; I did not plan the sample sizes for that secondary metric.
+
+The [collector](../modal_app.py) records prompts' hashes, answers, seeds, revisions and generation settings. I estimate all cloud calls, including failed setup and diagnostic reruns, at **at most $3.02** from [booked resources](../results/prospective/costs.json). This is not an invoice or a local timing measurement.
 
 I also analyze public human-preference votes using the Bradley–Terry approach used by Chatbot Arena [11]. I compare inverse-Hessian intervals with an individual-vote bootstrap, then test pilot plans by resampling disjoint heldout votes. This is historical resampling, not collection of new human votes. Ties, graph identification, failed fits, score-independent planning-pair selection, and the distinction between total network votes and direct pair votes are described in [the methods](../results/arena/methods.txt).
+
+I retained only model names and outcome counts from the Apache-2.0 release, not conversations or user IDs. For the llama-2-7b-chat / llama2-70b-steerlm-chat comparison, I planned 142,611 network votes but detected a difference in only 18/200 held-out resamples.
 
 
 ## References (opened; EXT)
